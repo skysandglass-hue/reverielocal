@@ -51,7 +51,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .bp{background:var(--ac);border-color:var(--ac);color:#fff;}.bp:hover{background:var(--ach);}
 .bdel{border-color:#c0705a;color:#c0705a;}.bdel:hover{background:rgba(192,112,90,.08);}
 .bs2{font-size:13px;padding:5px 12px;}
-.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-top:8px;}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:14px 0 10px;position:sticky;top:-16px;z-index:10;background:var(--bg);}
 .sht{font-size:24px;font-weight:700;color:var(--tx3);}
 .bk{font-size:15px;color:var(--tx2);cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:6px 0;}.bk:hover{color:var(--ac);}
 .li{display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;cursor:pointer;margin-bottom:10px;box-shadow:0 1px 2px var(--sh);position:relative;flex-wrap:wrap;}
@@ -249,7 +249,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
   <div class="card"><div class="stt">本地向量 Embedding</div>
   <div style="font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:12px;">使用 transformers.js 在瀏覽器本地運行 Embedding 模型（約 23MB）。首次載入需要下載模型，之後會快取在瀏覽器中。</div>
   <div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用本地向量搜尋</label><div class="tog" id="set-emb-local" onclick="this.classList.toggle('on')"></div></div>
-  <div class="stt" style="margin-top:10px;">搜尋參數</div><div class="f"><label>相似度門檻（越低撈越多）</label><div class="sr"><input type="range" id="set-vec-threshold" min="0" max="90" value="30" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">0.30</span></div></div><div class="fr"><div class="f"><label>附加資訊筆數</label><input type="number" id="set-vec-extras" value="3" min="1" max="20"></div><div class="f"><label>事件筆數</label><input type="number" id="set-vec-events" value="3" min="1" max="20"></div><div class="f"><label>記憶筆數</label><input type="number" id="set-vec-memories" value="5" min="1" max="30"></div></div><button class="btn bs2" onclick="rebuildAllEmb()" style="width:100%;margin-top:8px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);">🔄 重新生成所有向量</button></div>
+  <div class="stt" style="margin-top:10px;">搜尋參數</div><div class="f"><label>相似度門檻（越低撈越多）</label><div class="sr"><input type="range" id="set-vec-threshold" min="0" max="90" value="30" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">0.30</span></div></div><div class="fr"><div class="f"><label>附加資訊筆數</label><input type="number" id="set-vec-extras" value="3" min="1" max="20"></div><div class="f"><label>事件筆數</label><input type="number" id="set-vec-events" value="3" min="1" max="20"></div><div class="f"><label>記憶筆數</label><input type="number" id="set-vec-memories" value="5" min="1" max="30"></div></div><button class="btn bs2" onclick="rebuildAllEmb()" style="width:100%;margin-top:8px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>重新生成所有向量</button></div>
   <div style="margin-top:12px;"><button class="btn bp" onclick="saveMemSettings()">儲存</button></div>
   </div>
 </div></div>
@@ -274,7 +274,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
   <div style="font-size:12px;color:var(--tx2);line-height:1.5;">支援格式：Reverie 備份 JSON（雲端版/本地版通用）、Character Card V2 JSON/PNG。</div>
   </div></div>
   <div class="card"><div class="stt" style="color:#c0705a;">危險區域</div>
-  <button class="btn bdel bs2" onclick="clearAllData()" style="width:100%;">🗑️ 清除所有資料</button>
+  <button class="btn bdel bs2" onclick="clearAllData()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>清除所有資料</button>
   <div style="font-size:12px;color:var(--tx2);margin-top:8px;">此操作不可復原，請先匯出備份。</div>
   </div>
 </div></div>
@@ -427,7 +427,7 @@ if(s.vec_extras_count)$('set-vec-extras').value=s.vec_extras_count;if(s.vec_even
 ['sum','mem'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});cntF($('sum-prompt'));cntF($('mem-prompt'));}
 
 // API Configs
-async function loadApiCfgs(){_apiCfgs=sortBy(await dbAll('api_configs'),'sort_order');renderApiCfgList();syncPrApiPop();}
+async function loadApiCfgs(){_apiCfgs=sortBy(await dbAll('api_configs'),'sort_order');renderApiCfgList();syncPrApiPop();['sum','mem'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});}
 function renderApiCfgList(){const el=$('api-cfg-list');if(!_apiCfgs.length){el.innerHTML='<div class="empty" style="font-size:13px;">尚未設定 API</div>';return;}el.innerHTML=_apiCfgs.map(a=>'<div class="ev-toggle-item" onclick="openApiCfgEdit(\''+a.id+'\')"><div class="lb"><div class="lt">'+esc(a.name||'未命名')+'</div><div class="ls">'+esc((a.provider||'').charAt(0).toUpperCase()+(a.provider||'').slice(1))+'</div></div><svg style="width:16px;height:16px;color:var(--tx2);stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>').join('');}
 async function addApiCfg(){const r={id:uid(),name:'新 API',provider:'anthropic',api_key:'',sort_order:_apiCfgs.length};await dbPut('api_configs',r);toast('已新增');await loadApiCfgs();openApiCfgEdit(r.id);}
 function openApiCfgEdit(id){const a=_apiCfgs.find(x=>x.id===id);if(!a)return;$('acfg-id').value=a.id;$('acfg-name').value=a.name||'';$('acfg-provider').value=a.provider||'anthropic';$('acfg-provider-btn').childNodes[0].textContent=(a.provider||'anthropic').charAt(0).toUpperCase()+(a.provider||'anthropic').slice(1);$('acfg-key').value=a.api_key||'';$('acfg-test-result').style.display='none';openFP('fp-api-cfg');}
