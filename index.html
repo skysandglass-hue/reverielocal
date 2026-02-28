@@ -434,7 +434,7 @@ function addExUI(ex){ex=ex||{};const el=$('ce-ex'),n=el.children.length+1,d=docu
 async function rmEx(btn){const c=btn.closest('.card'),eid=c.dataset.exId;if(!await cfm('確定刪除？'))return;if(eid)await dbDel('character_extras',eid);c.remove();}
 async function saveChar(){const id=$('ce-id').value;const c=await dbGet('characters',id)||{id};Object.assign(c,{name:$('ce-name').value.trim()||'未命名',age:parseInt($('ce-age').value)||null,gender:$('ce-gen').textContent.trim(),job:$('ce-job').value.trim()||null,setting:$('ce-set').value,greeting_scenario:$('ce-scn').value,greeting_message:$('ce-grt').value});await dbPut('characters',c);saveAvOff('char_'+id,_charAvOx,_charAvOy);
 const cards=$('ce-ex').querySelectorAll('.card');
-for(let i=0;i<cards.length;i++){const cd=cards[i],eid=cd.dataset.exId,ti=cd.querySelector('input[type="text"]').value,co=cd.querySelector('textarea').value;if(eid){const ex=await dbGet('character_extras',eid)||{id:eid};Object.assign(ex,{character_id:id,title:ti,content:co,sort_order:i});await dbPut('character_extras',ex);}else{const nid=uid();cd.dataset.exId=nid;await dbPut('character_extras',{id:nid,character_id:id,title:ti,content:co,sort_order:i});}}
+for(let i=0;i<cards.length;i++){const cd=cards[i],eid=cd.dataset.exId,ti=cd.querySelector('input[type="text"]').value,co=cd.querySelector('textarea').value;if(eid){const ex=await dbGet('character_extras',eid)||{id:eid};Object.assign(ex,{character_id:id,title:ti,content:co,sort_order:i});await dbPut('character_extras',ex);embedAndPatch('character_extras',eid,ti+' '+co);}else{const nid=uid();cd.dataset.exId=nid;await dbPut('character_extras',{id:nid,character_id:id,title:ti,content:co,sort_order:i});embedAndPatch('character_extras',nid,ti+' '+co);}}
 toast('已儲存');loadChars();_charDataCache=null;}
 async function delChar(){if(!await cfm('確定刪除？'))return;const id=$('ce-id').value;await dbDel('characters',id);for(const x of await dbByIndex('character_extras','character_id',id))await dbDel('character_extras',x.id);for(const x of await dbByIndex('character_events','character_id',id))await dbDel('character_events',x.id);toast('已刪除');closeCharEdit();await loadChars();_charDataCache=null;}
 function closeCharEdit(q){$('vl').style.display='block';$('vd').style.display='none';_avUrl=null;if(!q)showNav();}
@@ -444,7 +444,7 @@ let _cevCid=null;
 async function openCEvs(cid,name){_cevCid=cid;$('cev-t').textContent=(name||'')+' 預設事件';const evs=sortBy(await dbByIndex('character_events','character_id',cid),'sort_order');const b=$('cev-body');b.innerHTML='';if(!evs.length){b.innerHTML='<div class="empty">尚未建立</div>';openFP('fp-cev');return;}evs.forEach(ev=>{b.innerHTML+='<div class="ev-toggle-item" data-evid="'+ev.id+'"><div class="lb" onclick="openCEvD(\''+ev.id+'\')"><div class="lt">'+esc(ev.name)+'</div><div class="ls">'+esc(ev.time_or_keyword||'')+' · '+(ev.content||'').length+' 字</div></div></div>';});initEvDrag(b,'character_events','data-evid');openFP('fp-cev');}
 function newCEv(){$('ev-id').value='';$('ev-n').value='';$('ev-t').value='';$('ev-c').value='';openFP('fp-cev-d');}
 async function openCEvD(id){const ev=await dbGet('character_events',id);$('ev-id').value=ev.id;$('ev-n').value=ev.name;$('ev-t').value=ev.time_or_keyword||'';$('ev-c').value=ev.content||'';cntF($('ev-c'));openFP('fp-cev-d');}
-async function saveCEv(){const eid=$('ev-id').value,data={character_id:_cevCid,name:$('ev-n').value.trim()||'未命名',time_or_keyword:$('ev-t').value,content:$('ev-c').value};if(eid){const ev=await dbGet('character_events',eid)||{id:eid};Object.assign(ev,data);await dbPut('character_events',ev);}else{data.id=uid();data.sort_order=0;await dbPut('character_events',data);}toast('已儲存');closeFP('fp-cev-d');closeFP('fp-cev');openCEvs(_cevCid);_charDataCache=null;}
+async function saveCEv(){const eid=$('ev-id').value,data={character_id:_cevCid,name:$('ev-n').value.trim()||'未命名',time_or_keyword:$('ev-t').value,content:$('ev-c').value};if(eid){const ev=await dbGet('character_events',eid)||{id:eid};Object.assign(ev,data);await dbPut('character_events',ev);embedAndPatch('character_events',eid,data.name+' '+data.time_or_keyword+' '+data.content);}else{data.id=uid();data.sort_order=0;await dbPut('character_events',data);embedAndPatch('character_events',data.id,data.name+' '+data.time_or_keyword+' '+data.content);}toast('已儲存');closeFP('fp-cev-d');closeFP('fp-cev');openCEvs(_cevCid);_charDataCache=null;}
 async function delCEv(){const eid=$('ev-id').value;if(!eid){closeFP('fp-cev-d');return;}if(!await cfm('確定刪除？'))return;await dbDel('character_events',eid);toast('已刪除');closeFP('fp-cev-d');closeFP('fp-cev');openCEvs(_cevCid);_charDataCache=null;}
 // === SETTINGS & API CONFIGS ===
 let _settings={};let _apiCfgs=[];const SETTINGS_ID='_singleton';
@@ -638,6 +638,7 @@ else if(provider==='google')aiText=(data.candidates&&data.candidates[0]&&data.ca
 else aiText=data.choices&&data.choices[0]?data.choices[0].message.content:'';
 appendMsg('ai',_curChat.charName,aiText,_curChat.avatarUrl);touchChatTime();saveChatStore();
 try{if(s.auto_summary){const iv=parseInt(s.summary_interval)||10;const ac=(_curChat.msgs||[]).filter(m=>m.role==='ai').length;if(ac>0&&ac%iv===0&&_curChat.msgs.length>10){toast('自動生成摘要…');await autoGenSummary();}}}catch(e){}
+try{await autoGenMemory(_curChat,_curChatId);}catch(e){}
 }catch(e){hideTyping();_aiAbort=null;if(e.name==='AbortError')return;toast('請求失敗');console.error(e);}}
 async function buildSysPrompt(vecExtras,vecEvents,vecMemories){let sys='';vecExtras=vecExtras||[];vecEvents=vecEvents||[];vecMemories=vecMemories||[];
 const rpId=_curChat.rpId;if(rpId){const p=prompts.find(x=>x.id===rpId);if(p)sys+=p.content+'\n\n';}
@@ -687,6 +688,24 @@ for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.
 const sysPr=getSettings().summary_prompt||'你是對話摘要助手。合併濃縮成簡潔摘要。500 tokens 以內。繁體中文。';
 const text=await callApiSimple(apiCfg,sysPr,'請合併摘要：\n\n'+transcript,500,0.3);
 if(text){_curChat.summary=text;saveChatStore();toast('摘要已更新');}}
+
+// ═══ Auto Memory Generation ═══
+async function autoGenMemory(chat,chatId){if(!chat)return;
+const s=getSettings();const apiCfg=getFeatureApiCfg('mem');
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
+const interval=parseInt(s.mem_rule)||10;
+const aiCount=(chat.msgs||[]).filter(m=>m.role==='ai').length;
+if(aiCount<1||aiCount%interval!==0)return;
+const msgs=chat.msgs||[];const start=Math.max(0,msgs.length-interval*2);
+let transcript='';for(let i=start;i<msgs.length;i++){const m=msgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
+if(!transcript.trim())return;
+const defPrompt='從以下對話中提取重要記憶，包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。每條記憶用一行表示，保持簡潔。使用繁體中文。只輸出記憶條目，不要任何前綴或解釋。';
+const text=await callApiSimple(apiCfg,s.mem_prompt||defPrompt,transcript,500,0.3);
+if(!text||!text.trim())return;
+const lines=text.split('\n').map(l=>l.replace(/^[-•\d.]\s*/,'').trim()).filter(l=>l.length>2);
+let saved=0;const date=new Date().toISOString().slice(0,10);
+for(const line of lines){const nid=uid();await dbPut('memories',{id:nid,chat_id:chatId,content:line,date});embedAndPatch('memories',nid,line);saved++;}
+if(saved)toast('已生成 '+saved+' 條記憶');}
 
 // ═══ Chat List ═══
 async function renameChatInline(){if(!_curChat||!_curChatId)return;const name=await inp('修改視窗名稱',_curChat.windowName||_curChat.charName);if(name===null)return;_curChat.windowName=name.trim()||_curChat.charName;$('c-name').textContent=_curChat.windowName;saveChatStore();renderChatList();}
