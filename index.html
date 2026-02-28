@@ -115,24 +115,30 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .fp-head{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;background:var(--bg2);flex-shrink:0;}.fp-title{font-size:16px;font-weight:600;color:var(--tx3);flex:1;}
 .fp-body{flex:1;overflow-y:auto;padding:16px;}.fp-body.full{padding:16px 0;display:flex;flex-direction:column;}.fp-body.full .f{padding:0 16px;}.fp-body.full .f:last-of-type{flex:1;display:flex;flex-direction:column;}.fp-body.full .f:last-of-type textarea{flex:1;min-height:120px;}
 .drag-h{cursor:grab;color:var(--bd2);font-size:16px;padding:0 4px;user-select:none;touch-action:none;}.drag-h:active{cursor:grabbing;color:var(--ac);}
-.dragging{opacity:.3;}.drag-ghost{border-radius:12px;background:var(--bg2);border:2px solid var(--ac);box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:.92;pointer-events:none;z-index:9999;}
+.drag-placeholder{opacity:.2;}
 .theme-row{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;}.theme-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid var(--bd);transition:all .15s;}.theme-dot:hover{transform:scale(1.1);}.theme-dot.active{border-color:var(--tx3);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--tx3);}
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--tx3);color:var(--bg);padding:10px 20px;border-radius:8px;font-size:14px;z-index:600;opacity:0;transition:opacity .3s;pointer-events:none;}.toast.show{opacity:1;}
 .empty{text-align:center;padding:40px 20px;color:var(--tx2);font-size:15px;}
 .hidden{display:none;}
 .av-editor{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:16px;position:relative;width:180px;margin-left:auto;margin-right:auto;margin-top:8px;}
-.av-ed-wrap{position:relative;width:144px;height:180px;border-radius:12px;overflow:hidden;border:2px solid var(--bd);background:var(--bgi);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:56px;color:var(--ac);font-weight:500;}
+.av-ed-wrap{position:relative;width:160px;height:160px;border-radius:50%;overflow:hidden;border:2px solid var(--bd);background:var(--bgi);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:56px;color:var(--ac);font-weight:500;}
 #pf-av-wrap{width:160px;height:160px;border-radius:50%;}
 .av-ed-wrap img{width:100%;height:100%;object-fit:cover;pointer-events:none;}
-.crop-ov{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+.crop-ov{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:space-between;}
 .crop-ov.show{display:flex;}
-.crop-area{position:relative;touch-action:none;overflow:hidden;background:#000;}
+.crop-area{position:relative;touch-action:none;overflow:hidden;flex:1;display:flex;align-items:center;justify-content:center;width:100%;}
 .crop-area img{position:absolute;user-select:none;-webkit-user-drag:none;}
-.crop-frame{position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none;border-radius:4px;}
+.crop-frame{position:absolute;box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none;
+background:linear-gradient(to right,#fff 2px,transparent 2px,transparent calc(100% - 2px),#fff calc(100% - 2px)) top left/100% 24px no-repeat,
+linear-gradient(to right,#fff 2px,transparent 2px,transparent calc(100% - 2px),#fff calc(100% - 2px)) bottom left/100% 24px no-repeat,
+linear-gradient(to bottom,#fff 2px,transparent 2px,transparent calc(100% - 2px),#fff calc(100% - 2px)) top left/24px 100% no-repeat,
+linear-gradient(to bottom,#fff 2px,transparent 2px,transparent calc(100% - 2px),#fff calc(100% - 2px)) top right/24px 100% no-repeat;
+background-image:linear-gradient(rgba(255,255,255,.25) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.25) 1px,transparent 1px),linear-gradient(to right,#fff 2px,transparent 2px,transparent calc(100% - 2px),#fff calc(100% - 2px)),linear-gradient(to right,#fff 2px,transparent 2px,transparent calc(100% - 2px),#fff calc(100% - 2px)),linear-gradient(to bottom,#fff 2px,transparent 2px,transparent calc(100% - 2px),#fff calc(100% - 2px)),linear-gradient(to bottom,#fff 2px,transparent 2px,transparent calc(100% - 2px),#fff calc(100% - 2px));
+background-size:100% 33.33%,33.33% 100%,100% 24px,100% 24px,24px 100%,24px 100%;
+background-position:0 0,0 0,top left,bottom left,top left,top right;
+background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .crop-circle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border:2px dashed rgba(255,255,255,.7);border-radius:50%;pointer-events:none;}
-.crop-btns{display:flex;gap:12px;}
-.crop-btns button{padding:10px 28px;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;}
-.crop-ok{background:var(--ac);color:#fff;}.crop-cancel{background:rgba(255,255,255,.15);color:#fff;}
+
 .av-ed-badge{position:absolute;bottom:8px;right:8px;width:36px;height:36px;border-radius:50%;background:var(--ac);display:flex;align-items:center;justify-content:center;border:2px solid var(--bg2);cursor:pointer;z-index:99;box-shadow:0 2px 6px rgba(0,0,0,.15);}.av-ed-badge svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .pin-icon{width:22px;height:22px;color:var(--bd2);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;}.pin-icon:hover{color:var(--ac);}
 .pin-icon.pinned{color:var(--ac);}
@@ -209,8 +215,9 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 <input type="file" accept="image/*" class="hidden" id="av-input" onchange="onAvUpload(this)">
 <div class="emb-progress" id="emb-prog"><div style="font-size:14px;color:var(--tx);" id="emb-prog-text">載入 Embedding 模型中...</div><div class="prog-bar"><div class="prog-fill" id="emb-prog-fill" style="width:0%"></div></div></div>
 <div class="crop-ov" id="crop-ov">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;flex-shrink:0;"><span class="bk" onclick="closeCrop()" style="margin:0;font-size:16px;cursor:pointer;"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><span style="background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:4px 14px;font-size:14px;font-weight:500;color:var(--tx);">4:5</span></div>
 <div class="crop-area" id="crop-area"><img id="crop-img"><div class="crop-frame" id="crop-frame"><div class="crop-circle" id="crop-circle"></div></div></div>
-<div class="crop-btns"><button class="crop-cancel" onclick="closeCrop()">取消</button><button class="crop-ok" onclick="confirmCrop()">裁切</button></div>
+<div style="padding:16px 24px;flex-shrink:0;width:100%;box-sizing:border-box;"><button onclick="confirmCrop()" style="width:100%;padding:16px;border-radius:14px;border:none;background:var(--ac);color:#fff;font-size:17px;font-weight:600;cursor:pointer;font-family:inherit;">儲存</button></div>
 </div>
 <div class="confirm-ov" id="cfm-ov"><div class="confirm-box"><div class="confirm-msg" id="cfm-msg"></div><div class="confirm-actions"><button class="btn bs2" onclick="cfmR(false)">取消</button><button class="btn bdel bs2" onclick="cfmR(true)">確定</button></div></div></div>
 <div class="confirm-ov" id="inp-ov"><div class="confirm-box"><div class="confirm-msg" id="inp-msg" style="font-size:16px;"></div><input type="text" id="inp-val" onkeydown="if(event.key==='Enter')inpR(this.value)" style="width:100%;margin:8px 0 12px;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font-size:16px;"><div class="confirm-actions"><button class="btn bs2" onclick="inpR(null)">取消</button><button class="btn bp bs2" onclick="inpR($('inp-val').value)">確定</button></div></div></div>
@@ -284,7 +291,6 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
   <div class="card"><div class="stt">本地儲存狀態</div>
   <div style="font-size:14px;color:var(--tx);line-height:1.8;" id="storage-info">計算中...</div>
   <button class="btn bs2" onclick="calcStorageInfo()" style="margin-top:8px;">重新計算</button>
-  <button class="btn bs2" onclick="debugDump()" style="margin-top:4px;">除錯：傾印資料庫</button>
   </div>
   <div class="card" style="background:transparent;border:none;box-shadow:none;padding:0;"><div style="font-size:13px;color:var(--tx2);line-height:1.6;">所有資料儲存在瀏覽器 IndexedDB 中，無需網路連線。<br>清除瀏覽器資料會清除所有 RP 資料，請定期匯出備份。</div></div>
   <div class="card"><div class="stt">匯出 / 匯入</div>
@@ -371,7 +377,6 @@ async function rebuildAllEmb(){if(!getSettings().emb_local){toast('請先啟用'
 
 // === Storage Info ===
 async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
-async function debugDump(){const c=await dbAll('characters'),ex=await dbAll('character_extras'),ev=await dbAll('character_events');let r='角色: '+c.length+' 筆\n';c.forEach(x=>r+=' · '+x.name+' ('+x.id.substring(0,8)+'…)\n');r+='\n附加資訊: '+ex.length+' 筆\n';ex.forEach(x=>r+=' · ['+x.character_id?.substring(0,8)+'…] '+x.title+'\n');r+='\n事件: '+ev.length+' 筆\n';ev.forEach(x=>r+=' · ['+x.character_id?.substring(0,8)+'…] '+x.name+'\n');if(c.length&&(ex.length||ev.length)){const cid=c[0].id;const mEx=ex.filter(x=>x.character_id===cid).length;const mEv=ev.filter(x=>x.character_id===cid).length;r+='\n第一個角色 '+c[0].name+' ('+cid.substring(0,8)+'…):\n  匹配附加: '+mEx+' / '+ex.length+'\n  匹配事件: '+mEv+' / '+ev.length;if(!mEx&&ex.length)r+='\n⚠️ character_id 不匹配！';if(!mEv&&ev.length)r+='\n⚠️ event character_id 不匹配！';}alert(r);}
 async function clearAllData(){if(!await cfm('⚠️ 清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars'])try{await dbClear(s);}catch(e){}localStorage.removeItem('rp_av_off');toast('已清除');location.reload();}
 // === Core UI ===
 const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){return '<p>'+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
@@ -407,16 +412,34 @@ let _cropFile=null,_cropScale=1,_cropX=0,_cropY=0,_cropDragging=false,_cropStart
 function onAvUpload(inp){if(!inp.files[0]||!_avTarget)return;_cropFile=inp.files[0];inp.value='';openCrop();}
 function openCrop(){const ov=$('crop-ov'),area=$('crop-area'),img=$('crop-img'),frame=$('crop-frame');
 const url=URL.createObjectURL(_cropFile);img.onload=()=>{
-const maxW=Math.min(innerWidth-32,400),maxH=Math.min(innerHeight-120,400);
-const iw=img.naturalWidth,ih=img.naturalHeight;const scale=Math.min(maxW/iw,maxH/ih,1);
-const dw=Math.round(iw*scale),dh=Math.round(ih*scale);
-area.style.width=dw+'px';area.style.height=dh+'px';
-img.style.width=dw+'px';img.style.height=dh+'px';img.style.left='0px';img.style.top='0px';
-const fw=Math.min(dw,dh)*0.7;const fh=Math.round(fw*1.25);frame.style.width=fw+'px';frame.style.height=fh+'px';frame.style.left=Math.round((dw-fw)/2)+'px';frame.style.top=Math.round((dh-fh)/2)+'px';
-const circle=$('crop-circle');circle.style.width=fw+'px';circle.style.height=fw+'px';
-_cropScale=scale;_cropX=0;_cropY=0;
+const iw=img.naturalWidth,ih=img.naturalHeight;
+// Frame: 4:5 ratio, fit to screen
+const maxW=Math.min(innerWidth-32,500),maxH=Math.min(innerHeight-180,600);
+let fw,fh;
+if(maxW/maxH<=4/5){fw=maxW;fh=Math.round(fw*1.25);}
+else{fh=maxH;fw=Math.round(fh*0.8);}
+if(fh>maxH){fh=maxH;fw=Math.round(fh*0.8);}
+if(fw>maxW){fw=maxW;fh=Math.round(fw*1.25);}
+// Scale image to cover the frame (fill it completely)
+const coverScale=Math.max(fw/iw,fh/ih);
+const dw=Math.round(iw*coverScale),dh=Math.round(ih*coverScale);
+// Center image on frame
+const initX=Math.round((fw-dw)/2),initY=Math.round((fh-dh)/2);
+area.style.width=fw+'px';area.style.height=fh+'px';
+img.style.width=dw+'px';img.style.height=dh+'px';
+img.style.left=initX+'px';img.style.top=initY+'px';
+frame.style.width=fw+'px';frame.style.height=fh+'px';frame.style.left='0px';frame.style.top='0px';
+const circle=$('crop-circle');const cd=Math.min(fw,fh);circle.style.width=cd+'px';circle.style.height=cd+'px';
+_cropScale=coverScale;
+// Drag constraints
+const canX=dw>fw,canY=dh>fh;
+const minX=fw-dw,maxXv=0,minY=fh-dh,maxYv=0;
 area.onmousedown=area.ontouchstart=e=>{e.preventDefault();const t=e.touches?e.touches[0]:e;_cropDragging=true;_cropStartX=t.clientX;_cropStartY=t.clientY;_cropOrigX=parseInt(img.style.left);_cropOrigY=parseInt(img.style.top);};
-document.onmousemove=document.ontouchmove=e=>{if(!_cropDragging)return;const t=e.touches?e.touches[0]:e;img.style.left=(_cropOrigX+(t.clientX-_cropStartX))+'px';img.style.top=(_cropOrigY+(t.clientY-_cropStartY))+'px';};
+document.onmousemove=document.ontouchmove=e=>{if(!_cropDragging)return;const t=e.touches?e.touches[0]:e;
+let nx=_cropOrigX,ny=_cropOrigY;
+if(canX)nx=Math.max(minX,Math.min(maxXv,_cropOrigX+(t.clientX-_cropStartX)));
+if(canY)ny=Math.max(minY,Math.min(maxYv,_cropOrigY+(t.clientY-_cropStartY)));
+img.style.left=nx+'px';img.style.top=ny+'px';};
 document.onmouseup=document.ontouchend=()=>{_cropDragging=false;};
 ov.classList.add('show');};img.src=url;}
 function closeCrop(){$('crop-ov').classList.remove('show');_cropFile=null;document.onmousemove=document.ontouchmove=document.onmouseup=document.ontouchend=null;}
@@ -437,7 +460,7 @@ let _avOffCache={};function loadAvOff(){_avOffCache=JSON.parse(localStorage.getI
 function pickGen(el,v){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');$('ce-gen').childNodes[0].textContent=v;closePopup('gen-pop');}
 function pickSel(hid,val,label,el,popId){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');$(hid).value=val;const btn=$(hid+'-btn');if(btn)btn.childNodes[0].textContent=label;closePopup(popId);}
 // ═══ Universal Long-Press Drag System ═══
-let _dragState=null;
+// Drag system
 function initLPDrag(container,selector,onSave){
   let timer=null,dragging=false,dragEl=null,ghost=null,oy=0,startY=0,scrollParent=null;
   function getScrollParent(el){let p=el.parentElement;while(p){if(p.scrollHeight>p.clientHeight&&getComputedStyle(p).overflowY!=='visible')return p;p=p.parentElement;}return null;}
@@ -593,8 +616,7 @@ function pickPfGen(el,v){el.closest('.popup').querySelectorAll('.popup-item').fo
 function dlJson(data,fn){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download=fn;a.click();URL.revokeObjectURL(a.href);}
 async function exportAll(){toast('匯出中...');try{const strip=arr=>(arr||[]).map(x=>{const c={...x};delete c.embedding;return c;});const data={_type:'rp_studio_backup',_version:2,_storage:'local',_date:new Date().toISOString(),characters:strip(await dbAll('characters')),character_extras:strip(await dbAll('character_extras')),character_events:strip(await dbAll('character_events')),profiles:await dbAll('profiles'),prompts:await dbAll('prompts'),api_configs:await dbAll('api_configs'),settings:[_settings],persistent_commands:await dbAll('persistent_commands'),chats:await dbAll('chats'),messages:await dbAll('messages'),chat_events:await dbAll('chat_events'),memories:strip(await dbAll('memories'))};dlJson(data,'rp-backup-'+new Date().toISOString().slice(0,10)+'.json');toast('✅ 已匯出');}catch(e){toast('失敗: '+e.message.substring(0,50));}}
 async function exportChars(){toast('匯出中...');try{dlJson({_type:'rp_studio_characters',_version:2,_date:new Date().toISOString(),characters:await dbAll('characters'),character_extras:await dbAll('character_extras'),character_events:await dbAll('character_events')},'rp-chars-'+new Date().toISOString().slice(0,10)+'.json');toast('✅ 已匯出');}catch(e){toast('失敗');}}
-// exportCardV2 defined above with import functions
-async function exportChats(){toast('下一段交付');}
+async function exportChats(){toast('匯出中...');try{const strip=arr=>(arr||[]).map(x=>{const c={...x};delete c.embedding;return c;});dlJson({_type:'rp_studio_chats',_version:2,_date:new Date().toISOString(),chats:await dbAll('chats'),messages:await dbAll('messages'),chat_events:await dbAll('chat_events'),memories:strip(await dbAll('memories'))},'rp-chats-'+new Date().toISOString().slice(0,10)+'.json');toast('✅ 已匯出');}catch(e){toast('失敗');}}
 async function importFile(inp){if(!inp.files[0])return;try{const file=inp.files[0],name=file.name.toLowerCase();
 // Handle PNG with embedded card data
 if(name.endsWith('.png')){await importCardPng(file);inp.value='';return;}
@@ -641,8 +663,6 @@ const c=chars[0];const id=c.id;const extras=await dbByIndex('character_extras','
 const card={spec:'chara_card_v2',spec_version:'2.0',data:{name:c.name||'',description:c.setting||'',personality:'',scenario:c.greeting_scenario||'',first_mes:c.greeting_message||'',mes_example:extras.find(e=>e.title==='對話範例')?.content||'',creator_notes:extras.find(e=>e.title==='創作者筆記')?.content||'',system_prompt:extras.find(e=>e.title==='系統提示詞')?.content||'',post_history_instructions:extras.find(e=>e.title==='歷史後指令')?.content||'',tags:[],creator:'Reverie RP Studio',character_version:'1.0',extensions:{},character_book:{entries:events.map((ev,i)=>({keys:(ev.time_or_keyword||'').split(',').map(k=>k.trim()).filter(k=>k),content:ev.content||'',comment:ev.name||'',enabled:true,insertion_order:i,position:'after_char'}))}}};
 if(chars.length>1){const sel=await inp('輸入角色名稱匯出',c.name);if(sel===null)return;const tc=chars.find(x=>x.name===sel);if(tc&&tc.id!==id){const tex=await dbByIndex('character_extras','character_id',tc.id);const tev=await dbByIndex('character_events','character_id',tc.id);card.data.name=tc.name;card.data.description=tc.setting||'';card.data.scenario=tc.greeting_scenario||'';card.data.first_mes=tc.greeting_message||'';card.data.mes_example=tex.find(e=>e.title==='對話範例')?.content||'';card.data.character_book.entries=tev.map((ev,i)=>({keys:(ev.time_or_keyword||'').split(',').map(k=>k.trim()).filter(k=>k),content:ev.content||'',comment:ev.name||'',enabled:true,insertion_order:i,position:'after_char'}));}}
 dlJson(card,(card.data.name||'character')+'-card-v2.json');toast('✅ 已匯出');}
-
-// === STUBS (Chat system — next delivery) ===
 
 // === INIT ===
 (async()=>{
