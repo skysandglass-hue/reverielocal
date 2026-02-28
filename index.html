@@ -693,6 +693,7 @@ try{await autoGenMemory(_curChat,_curChatId);}catch(e){}
 async function buildSysPrompt(vecExtras,vecEvents,vecMemories){let sys='';vecExtras=vecExtras||[];vecEvents=vecEvents||[];vecMemories=vecMemories||[];
 const rpId=_curChat.rpId;if(rpId){const p=prompts.find(x=>x.id===rpId);if(p)sys+=p.content+'\n\n';}
 const cd=await getCharData(_curChat.charId);const c=cd.char;
+toast('附加:'+cd.extras.length+' 事件:'+cd.events.length+' v附加:'+vecExtras.length+' v事件:'+vecEvents.length);
 if(c){sys+='[角色卡]\n姓名: '+c.name+'\n';if(c.age)sys+='年齡: '+c.age+'\n';if(c.gender&&c.gender!=='未設置')sys+='性別: '+c.gender+'\n';if(c.job)sys+='職業: '+c.job+'\n';if(c.setting)sys+='設定:\n'+c.setting+'\n';}
 const allExtras=cd.extras;
 if(allExtras&&allExtras.length){const hasAnyEmb=allExtras.some(e=>e.embedding);
