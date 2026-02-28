@@ -901,10 +901,11 @@ if(text){_curChat.summary=text;saveChatStore();toast('摘要已更新');}}
 // ═══ Auto Memory Generation ═══
 async function autoGenMemory(chat,chatId){if(!chat)return;
 const s=getSettings();const apiCfg=getFeatureApiCfg('mem');
-if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('[debug] 記憶: 未設定 API/模型 ('+(apiCfg?'有api cfg, model='+(apiCfg.model||'null'):'無api cfg')+')');return;}
 const interval=parseInt(s.mem_rule)||10;
 const aiCount=(chat.msgs||[]).filter(m=>m.role==='ai').length;
-if(aiCount<1||aiCount%interval!==0)return;
+if(aiCount<1||aiCount%interval!==0){toast('[debug] 記憶: ai='+aiCount+' 每'+interval+'則 (未到)');return;}
+toast('記憶生成中…');
 const msgs=chat.msgs||[];const start=Math.max(0,msgs.length-interval*2);
 let transcript='';for(let i=start;i<msgs.length;i++){const m=msgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
 if(!transcript.trim())return;
