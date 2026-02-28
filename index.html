@@ -51,7 +51,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .bp{background:var(--ac);color:#fff;}.bp:hover{background:var(--ach);}
 .bdel{background:none;color:#c0705a;border:1px solid rgba(192,112,90,.3);}.bdel:hover{background:rgba(192,112,90,.08);}
 .bs2{font-size:13px;padding:7px 14px;}
-.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:16px 0 10px;position:sticky;top:0;z-index:10;background:var(--bg);}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:16px 0 8px;position:sticky;top:0;z-index:10;background:var(--bg);}
 .sht{font-size:24px;font-weight:700;color:var(--tx3);}
 .bk{font-size:15px;color:var(--tx2);cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:6px 0;}.bk:hover{color:var(--ac);}
 .li{display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;cursor:pointer;margin-bottom:10px;box-shadow:0 1px 2px var(--sh);position:relative;flex-wrap:wrap;}
@@ -286,10 +286,8 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div style="margin-top:12px;"><button class="btn bp" onclick="saveMemSettings()">儲存</button></div>
   </div>
 </div></div>
-</div>
 <!-- 儲存管理 -->
-<div class="pnl" id="p-conn"><div class="scr">
-  <div class="sh"><div class="sht">儲存管理</div></div>
+<div class="pnl" id="p-conn"><div class="scr"><div class="sh"><div class="sht">儲存管理</div></div>
   <div class="card"><div class="stt">本地儲存狀態</div>
   <div style="font-size:14px;color:var(--tx);line-height:1.8;" id="storage-info">計算中...</div>
   <button class="btn bs2" onclick="calcStorageInfo()" style="margin-top:8px;">重新計算</button>
@@ -342,6 +340,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="fp" id="fp-cev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveCEv()">儲存</button><button class="btn bdel bs2" onclick="delCEv()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="ev-id"><div class="f"><label>標題</label><input type="text" id="ev-n"></div><div class="f"><label>時間 / 關鍵字</label><input type="text" id="ev-t"></div><div class="f"><label>內容</label><textarea rows="8" id="ev-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div></div></div>
 <div class="fp" id="fp-pcmd-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-pcmd-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯常駐指令</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button><button class="btn bdel bs2" onclick="delPcmd()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="pcmd-id"><div class="f"><label>名稱</label><input type="text" id="pcmd-name" placeholder="例：加強情緒描寫"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)" placeholder="這段文字會隨每次訊息一起傳給 AI..."></textarea><div class="ctr">0 字</div></div></div></div>
 <div class="fp" id="fp-api-cfg"><div class="fp-head"><span class="bk" onclick="closeFP('fp-api-cfg')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯 API</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveApiCfg()">儲存</button><button class="btn bdel bs2" onclick="delApiCfg()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="acfg-id"><div class="f"><label>名稱</label><input type="text" id="acfg-name" placeholder="例：Anthropic 主力"></div><div class="f"><label>供應商</label><div class="rp-sel" id="acfg-provider-btn" onclick="openPopup('provider-pop')">Anthropic</div><input type="hidden" id="acfg-provider" value="anthropic"></div><div class="f"><label>API Key</label><input type="password" id="acfg-key" placeholder="sk-..." style="font-family:monospace;"></div><div style="padding-top:8px;"><button class="btn bs2" onclick="testApiConn()" id="acfg-test-btn" style="width:100%;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);">測試連線</button><div id="acfg-test-result" style="margin-top:8px;font-size:13px;display:none;"></div></div></div></div>
+</div><!-- /main -->
 <!-- Nav -->
 <div class="nav-w" id="navw"><div class="nav-i">
   <div class="nv a" data-p="chat" onclick="nav(this)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>聊天</div>
