@@ -473,7 +473,7 @@ if(s.vec_extras_count)$('set-vec-extras').value=s.vec_extras_count;if(s.vec_even
 ['sum','mem'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});cntF($('sum-prompt'));cntF($('mem-prompt'));}
 
 // API Configs
-async function loadApiCfgs(){_apiCfgs=sortBy(await dbAll('api_configs'),'sort_order');renderApiCfgList();syncPrApiPop();}
+async function loadApiCfgs(){_apiCfgs=sortBy(await dbAll('api_configs'),'sort_order');renderApiCfgList();syncPrApiPop();['sum','mem'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});}
 function renderApiCfgList(){const el=$('api-cfg-list');if(!_apiCfgs.length){el.innerHTML='<div class="empty" style="font-size:13px;">尚未設定 API</div>';return;}el.innerHTML=_apiCfgs.map(a=>'<div class="ev-toggle-item" onclick="openApiCfgEdit(\''+a.id+'\')"><div class="lb"><div class="lt">'+esc(a.name||'未命名')+'</div><div class="ls">'+esc((a.provider||'').charAt(0).toUpperCase()+(a.provider||'').slice(1))+'</div></div><svg style="width:16px;height:16px;color:var(--tx2);stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>').join('');}
 async function addApiCfg(){const r={id:uid(),name:'新 API',provider:'anthropic',api_key:'',sort_order:_apiCfgs.length};await dbPut('api_configs',r);toast('已新增');await loadApiCfgs();openApiCfgEdit(r.id);}
 function openApiCfgEdit(id){const a=_apiCfgs.find(x=>x.id===id);if(!a)return;$('acfg-id').value=a.id;$('acfg-name').value=a.name||'';$('acfg-provider').value=a.provider||'anthropic';$('acfg-provider-btn').childNodes[0].textContent=(a.provider||'anthropic').charAt(0).toUpperCase()+(a.provider||'anthropic').slice(1);$('acfg-key').value=a.api_key||'';$('acfg-test-result').style.display='none';openFP('fp-api-cfg');}
@@ -487,9 +487,9 @@ function syncPrApiPop(){const el=$('pr-api-list'),cur=$('pr-api-id').value;el.in
 function pickPrApi(id,label,el){$('pr-api-id').value=id;$('pr-api-btn').childNodes[0].textContent=label;el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');closePopup('pr-api-pop');$('pr-model-id').value='';$('pr-model-btn').childNodes[0].textContent='未選擇';syncPrModelPop();}
 function syncPrModelPop(){const el=$('pr-model-list'),cur=$('pr-model-id').value,apiId=$('pr-api-id').value,acfg=apiId?_apiCfgs.find(a=>a.id===apiId):_apiCfgs[0],pv=acfg?acfg.provider:'anthropic',ms=_models[pv]||[];el.innerHTML=ms.map(m=>'<div class="popup-item'+(cur===m?' active':'')+'" onclick="pickPrModel(\''+m+'\',this)"><span>'+esc(m)+'</span><span class="check">✓</span></div>').join('')+'<div style="padding:8px 12px;border-top:1px solid var(--bd);"><input type="text" id="pr-model-custom" placeholder="自訂模型..." style="width:100%;padding:6px;border:1px solid var(--bd);border-radius:6px;font-size:13px;font-family:monospace;background:var(--bg);color:var(--tx);" onkeydown="if(event.key===\'Enter\'){pickPrModel(this.value.trim(),null);this.value=\'\';}"></div>';}
 function pickPrModel(m,el){if(!m)return;$('pr-model-id').value=m;$('pr-model-btn').childNodes[0].textContent=m;if(el){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}closePopup('pr-model-pop');}
-function syncFeatureApiPop(pfx){const el=$(pfx+'-api-list');if(!el)return;const cur=$(pfx+'-api-id').value;el.innerHTML=_apiCfgs.map(a=>'<div class="popup-item'+(cur===a.id?' active':'')+'" onclick="pickFeatureApi(\''+pfx+'\',\''+a.id+'\',\''+esc(a.name)+'\',this)"><span>'+esc(a.name)+' ('+(_providerLabels[a.provider]||a.provider)+')</span><span class="check">✓</span></div>').join('');}
-function pickFeatureApi(pfx,id,label,el){$(pfx+'-api-id').value=id;$(pfx+'-api-btn').childNodes[0].textContent=label;el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');closePopup(pfx+'-api-pop');$(pfx+'-model-id').value='';$(pfx+'-model-btn').childNodes[0].textContent='未選擇';syncFeatureModelPop(pfx);}
-function syncFeatureModelPop(pfx){const el=$(pfx+'-model-list');if(!el)return;const cur=$(pfx+'-model-id').value,apiId=$(pfx+'-api-id').value,acfg=apiId?_apiCfgs.find(a=>a.id===apiId):_apiCfgs[0],pv=acfg?acfg.provider:'anthropic',ms=_models[pv]||[];el.innerHTML=ms.map(m=>'<div class="popup-item'+(cur===m?' active':'')+'" onclick="pickFeatureModel(\''+pfx+'\',\''+m+'\',this)"><span>'+esc(m)+'</span><span class="check">✓</span></div>').join('')+'<div style="padding:8px 12px;border-top:1px solid var(--bd);"><input type="text" placeholder="自訂模型..." style="width:100%;padding:6px;border:1px solid var(--bd);border-radius:6px;font-size:13px;font-family:monospace;background:var(--bg);color:var(--tx);" onkeydown="if(event.key===\'Enter\'){pickFeatureModel(\''+pfx+'\',this.value.trim(),null);this.value=\'\';}"></div>';}
+function syncFeatureApiPop(pfx){const el=$(pfx+'-api-list');if(!el)return;const cEl=$(pfx+'-api-id');const cur=cEl?cEl.value:'';el.innerHTML=_apiCfgs.map(a=>'<div class="popup-item'+(cur===a.id?' active':'')+'" onclick="pickFeatureApi(\''+pfx+'\',\''+a.id+'\',\''+esc(a.name)+'\',this)"><span>'+esc(a.name)+' ('+(_providerLabels[a.provider]||a.provider)+')</span><span class="check">✓</span></div>').join('');}
+function pickFeatureApi(pfx,id,label,el){const idEl=$(pfx+'-api-id');if(idEl)idEl.value=id;const btn=$(pfx+'-api-btn');if(btn)btn.childNodes[0].textContent=label;el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');closePopup(pfx+'-api-pop');const mEl=$(pfx+'-model-id');if(mEl)mEl.value='';const mBtn=$(pfx+'-model-btn');if(mBtn)mBtn.childNodes[0].textContent='未選擇';syncFeatureModelPop(pfx);}
+function syncFeatureModelPop(pfx){const el=$(pfx+'-model-list');if(!el)return;const cEl=$(pfx+'-model-id');const cur=cEl?cEl.value:'';const aEl=$(pfx+'-api-id');const apiId=aEl?aEl.value:'';const acfg=apiId?_apiCfgs.find(a=>a.id===apiId):_apiCfgs[0],pv=acfg?acfg.provider:'anthropic',ms=_models[pv]||[];el.innerHTML=ms.map(m=>'<div class="popup-item'+(cur===m?' active':'')+'" onclick="pickFeatureModel(\''+pfx+'\',\''+m+'\',this)"><span>'+esc(m)+'</span><span class="check">✓</span></div>').join('')+'<div style="padding:8px 12px;border-top:1px solid var(--bd);"><input type="text" placeholder="自訂模型..." style="width:100%;padding:6px;border:1px solid var(--bd);border-radius:6px;font-size:13px;font-family:monospace;background:var(--bg);color:var(--tx);" onkeydown="if(event.key===\'Enter\'){pickFeatureModel(\''+pfx+'\',this.value.trim(),null);this.value=\'\';}"></div>';}
 function pickFeatureModel(pfx,m,el){if(!m)return;$(pfx+'-model-id').value=m;$(pfx+'-model-btn').childNodes[0].textContent=m;if(el){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}closePopup(pfx+'-model-pop');}
 function getFeatureApiCfg(pfx){const s=getSettings(),apiId=s[pfx+'_api_id']||'',model=s[pfx+'_model']||'',acfg=apiId?_apiCfgs.find(a=>a.id===apiId):_apiCfgs[0];if(!acfg)return null;return{...acfg,model:model||null};}
 function getApiCfgForPrompt(rpId){let cfgId=null,model=null;if(rpId){const p=prompts.find(x=>x.id===rpId);if(p){cfgId=p.api_config_id||null;model=p.model||null;}}const acfg=cfgId?_apiCfgs.find(x=>x.id===cfgId):_apiCfgs[0];if(!acfg)return null;return{...acfg,model:model||acfg.model||null};}
@@ -535,16 +535,23 @@ toast('✅ '+total+' 筆');await initApp();}catch(e){toast('失敗: '+e.message.
 // === INIT ===
 (async()=>{
   history.replaceState({p:'main'},'');
-  const splashMin=new Promise(r=>setTimeout(r,800));
-  await openDB();await initApp();
-  await splashMin;await new Promise(r=>setTimeout(r,300));
-  const sp=$('splash');sp.classList.add('hide');setTimeout(()=>sp.remove(),400);
+  try{await openDB();await initApp();}catch(e){console.error('Init:',e);}
+  const sp=$('splash');if(sp){sp.classList.add('hide');setTimeout(()=>sp.remove(),400);}
   document.addEventListener('click',hideCtx);
-  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 async function initApp(){
-  try{await loadApiCfgs();await Promise.all([loadSettings(),loadChars(),loadPr(),loadPf(),loadPcmds()]);loadAvOff();loadMemRules();renderChatList();}
-  catch(e){toast('載入失敗');console.error(e);}
+  await loadApiCfgs().catch(e=>console.warn('loadApiCfgs',e));
+  await Promise.all([
+    loadSettings().catch(e=>console.warn('loadSettings',e)),
+    loadChars().catch(e=>console.warn('loadChars',e)),
+    loadPr().catch(e=>console.warn('loadPr',e)),
+    loadPf().catch(e=>console.warn('loadPf',e)),
+    loadPcmds().catch(e=>console.warn('loadPcmds',e))
+  ]);
+  await loadChatIndex().catch(e=>console.warn('loadChatIndex',e));
+  try{loadAvOff();}catch(e){}
+  try{loadMemRules();}catch(e){}
+  try{renderChatList();}catch(e){console.warn('renderChatList',e);}
 }
 // ═══ CHAT SYSTEM (IndexedDB) ═══
 let _chatStore={},_curChatId=null,_curChat=null;
