@@ -275,6 +275,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
   <div class="card"><div class="stt">本地儲存狀態</div>
   <div style="font-size:14px;color:var(--tx);line-height:1.8;" id="storage-info">計算中...</div>
   <button class="btn bs2" onclick="calcStorageInfo()" style="margin-top:8px;">重新計算</button>
+  <button class="btn bs2" onclick="debugDump()" style="margin-top:4px;">除錯：傾印資料庫</button>
   </div>
   <div class="card" style="background:transparent;border:none;box-shadow:none;padding:0;"><div style="font-size:13px;color:var(--tx2);line-height:1.6;">所有資料儲存在瀏覽器 IndexedDB 中，無需網路連線。<br>清除瀏覽器資料會清除所有 RP 資料，請定期匯出備份。</div></div>
   <div class="card"><div class="stt">匯出 / 匯入</div>
@@ -361,6 +362,7 @@ async function rebuildAllEmb(){if(!getSettings().emb_local){toast('請先啟用'
 
 // === Storage Info ===
 async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
+async function debugDump(){const c=await dbAll('characters'),ex=await dbAll('character_extras'),ev=await dbAll('character_events');console.log('=== DEBUG DUMP ===');console.log('Characters:',c.length,c.map(x=>({id:x.id,name:x.name})));console.log('Extras:',ex.length,ex.map(x=>({id:x.id,character_id:x.character_id,title:x.title})));console.log('Events:',ev.length,ev.map(x=>({id:x.id,character_id:x.character_id,name:x.name})));if(c.length&&ex.length){const cid=c[0].id;const match=ex.filter(x=>x.character_id===cid);console.log('Extras matching first char ('+cid+'):',match.length);if(!match.length&&ex.length){console.log('First extra character_id:',ex[0].character_id);console.log('First char id:',cid);console.log('MISMATCH! IDs dont match.');}}toast('已傾印到 Console');}
 async function clearAllData(){if(!await cfm('⚠️ 清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars'])try{await dbClear(s);}catch(e){}localStorage.removeItem('rp_av_off');toast('已清除');location.reload();}
 // === Core UI ===
 const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){return '<p>'+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
@@ -427,39 +429,35 @@ function pickSel(hid,val,label,el,popId){el.closest('.popup').querySelectorAll('
 // ═══ Universal Long-Press Drag System ═══
 let _dragState=null;
 function initLPDrag(container,selector,onSave){
-  let timer=null,ghost=null,dragEl=null,oy=0;
+  let timer=null,dragging=false,dragEl=null,oy=0,startY=0,moved=false;
   function startDrag(el,y){
-    dragEl=el;oy=y-el.getBoundingClientRect().top;
-    ghost=el.cloneNode(true);ghost.className=el.className+' drag-ghost';
-    Object.assign(ghost.style,{position:'fixed',left:el.getBoundingClientRect().left+'px',width:el.offsetWidth+'px',zIndex:'9999',pointerEvents:'none',opacity:'.9',boxShadow:'0 8px 24px rgba(0,0,0,.18)',borderRadius:'12px',background:'var(--bg2)',border:'2px solid var(--ac)',transition:'none'});
-    ghost.style.top=(y-oy)+'px';document.body.appendChild(ghost);
-    el.style.opacity='.3';_dragState={container,dragEl,ghost,oy};
+    dragging=true;dragEl=el;startY=y;oy=y-el.getBoundingClientRect().top;
+    el.style.cssText='opacity:.45;position:relative;z-index:999;transform:scale(1.03);box-shadow:0 8px 24px rgba(0,0,0,.15);transition:none;';
+    if(navigator.vibrate)navigator.vibrate(30);
   }
   function doMove(y){
-    if(!ghost)return;ghost.style.top=(y-oy)+'px';
+    if(!dragEl)return;
     const items=[...container.querySelectorAll(selector)];
     for(const it of items){if(it===dragEl)continue;const r=it.getBoundingClientRect();
       if(y>r.top&&y<r.bottom){if(y<r.top+r.height/2)container.insertBefore(dragEl,it);else container.insertBefore(dragEl,it.nextSibling);break;}}
   }
   function endDrag(){
-    if(ghost){ghost.remove();ghost=null;}
-    if(dragEl){dragEl.style.opacity='';dragEl=null;}
-    _dragState=null;if(onSave)onSave(container);
+    if(dragEl)dragEl.style.cssText='';
+    dragging=false;dragEl=null;timer=null;moved=false;
+    if(onSave)onSave(container);
   }
   container.addEventListener('touchstart',e=>{
-    const el=e.target.closest(selector);if(!el||e.target.closest('.tog'))return;
-    const y=e.touches[0].clientY;timer=setTimeout(()=>{e.preventDefault();startDrag(el,y);},400);
-  },{passive:false});
+    const el=e.target.closest(selector);if(!el||e.target.closest('.tog,.btn'))return;
+    startY=e.touches[0].clientY;moved=false;
+    timer=setTimeout(()=>{startDrag(el,e.touches[0].clientY);},350);
+  },{passive:true});
   container.addEventListener('touchmove',e=>{
-    if(!ghost){if(timer)clearTimeout(timer);timer=null;return;}
-    e.preventDefault();doMove(e.touches[0].clientY);
+    const y=e.touches[0].clientY;
+    if(!dragging){if(Math.abs(y-startY)>8){clearTimeout(timer);timer=null;}return;}
+    e.preventDefault();doMove(y);
   },{passive:false});
-  container.addEventListener('touchend',()=>{if(timer){clearTimeout(timer);timer=null;}if(ghost)endDrag();});
-  container.addEventListener('touchcancel',()=>{if(timer){clearTimeout(timer);timer=null;}if(ghost)endDrag();});
-  // Desktop: dragstart/dragover/dragend
-  container.addEventListener('dragstart',e=>{const c=e.target.closest(selector);if(!c)return;dragEl=c;c.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
-  container.addEventListener('dragover',e=>{e.preventDefault();const c=e.target.closest(selector);if(!c||c===dragEl)return;const r=c.getBoundingClientRect();if(e.clientY<r.top+r.height/2)container.insertBefore(dragEl,c);else container.insertBefore(dragEl,c.nextSibling);});
-  container.addEventListener('dragend',()=>{if(dragEl)dragEl.classList.remove('dragging');dragEl=null;if(onSave)onSave(container);});
+  container.addEventListener('touchend',()=>{if(timer){clearTimeout(timer);timer=null;}if(dragging)endDrag();});
+  container.addEventListener('touchcancel',()=>{if(timer){clearTimeout(timer);timer=null;}if(dragging)endDrag();});
 }
 // Drag-save helpers (IndexedDB)
 async function saveCharOrder(c){const items=c.querySelectorAll('.li[data-charid]');const nc=[];for(let i=0;i<items.length;i++){const id=items[i].dataset.charid,ch=chars.find(x=>x.id===id);if(ch){nc.push(ch);ch.sort_order=i;const o=await dbGet('characters',id);if(o){o.sort_order=i;await dbPut('characters',o);}}}chars=nc;}
