@@ -412,7 +412,7 @@ function setTh(c){document.body.className=c;syncThemeDots();_settings.theme=c||'
 function syncThemeDots(){document.querySelectorAll('.theme-dot').forEach(d=>d.classList.toggle('active',(d.dataset.theme||'')===document.body.className));}
 function showCtx(x,y,items){const m=$('ctx-menu');m.innerHTML=items.map(i=>'<div class="ctx-item" onclick="'+i.action+'">'+i.label+'</div>').join('');m.style.left=Math.min(x,innerWidth-160)+'px';m.style.top=Math.min(y,innerHeight-200)+'px';m.classList.remove('hidden');}
 function hideCtx(){$('ctx-menu').classList.add('hidden');}
-function bindLongPress(el,fn){let t=null,mv=false;el.addEventListener('touchstart',e=>{mv=false;t=setTimeout(()=>{if(!mv){e.preventDefault();fn(e.touches[0].clientX,e.touches[0].clientY);}},500);},{passive:false});el.addEventListener('touchmove',()=>{mv=true;clearTimeout(t);});el.addEventListener('touchend',()=>clearTimeout(t));el.addEventListener('contextmenu',e=>{e.preventDefault();fn(e.clientX,e.clientY);});}
+function bindLongPress(el,fn){let t=null,mv=false,fired=false;el.addEventListener('touchstart',e=>{mv=false;fired=false;t=setTimeout(()=>{if(!mv){fired=true;e.preventDefault();fn(e.touches[0].clientX,e.touches[0].clientY);}},500);},{passive:false});el.addEventListener('touchmove',()=>{mv=true;clearTimeout(t);});el.addEventListener('touchend',()=>{clearTimeout(t);});el.addEventListener('click',e=>{if(fired){e.stopImmediatePropagation();e.preventDefault();fired=false;}},{capture:true});el.addEventListener('contextmenu',e=>{e.preventDefault();fn(e.clientX,e.clientY);});}
 
 // === Avatar Upload ===
 let _avTarget=null,_avUrl=null,_charAvOx=0,_charAvOy=0,_pfAvUrl=null,_pfAvOx=0,_pfAvOy=0;
@@ -851,8 +851,8 @@ const pvImg=document.createElement('img');
 pvImg.src=canvas.toDataURL('image/png');
 pvImg.style.cssText='max-width:100%;max-height:100%;object-fit:contain;';
 const saveBtn=document.createElement('div');
-saveBtn.innerHTML='<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-saveBtn.style.cssText='position:absolute;bottom:32px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--ac);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+saveBtn.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+saveBtn.style.cssText='position:absolute;bottom:24px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);';
 saveBtn.onclick=e=>{e.stopPropagation();canvas.toBlob(blob=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='chat-'+Date.now()+'.png';a.click();URL.revokeObjectURL(a.href);},'image/png');pvOv.remove();cancelScreenshot();toast('已儲存');};
 pvOv.appendChild(pvImg);pvOv.appendChild(saveBtn);
 document.body.appendChild(pvOv);
