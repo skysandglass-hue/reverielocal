@@ -170,6 +170,11 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .msg-del-mode .cm{position:relative;}
 .msg-del-mode .msg-row{cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none;}.msg-del-mode .msg-row.msg-del-sel .msg-bubble{outline:2px solid #c0705a;outline-offset:2px;}.msg-del-mode .msg-bubble{-webkit-user-select:none;user-select:none;pointer-events:none;}
 .msg-del-banner{display:none;padding:8px 16px;background:#c0705a;color:#fff;font-size:14px;text-align:center;flex-shrink:0;}.msg-del-banner.show{display:block;}
+.msg-ss-banner{display:none;padding:8px 16px;background:var(--ac);color:#fff;font-size:14px;text-align:center;flex-shrink:0;}.msg-ss-banner.show{display:block;}
+.msg-ss-bar{display:none;padding:12px 16px;flex-shrink:0;z-index:12;flex-direction:column;gap:8px;background:var(--bg2);border-top:1px solid var(--bd);}.msg-ss-bar.show{display:flex;}
+.msg-ss-bar .mss-main{width:100%;padding:14px;border-radius:12px;border:none;background:var(--ac);color:#fff;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit;}
+.msg-ss-bar .mss-cancel{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);font-size:14px;cursor:pointer;font-family:inherit;}
+.msg-ss-mode .msg-row{cursor:pointer;transition:all .15s;}.msg-ss-mode .msg-row.msg-ss-sel{outline:2px solid var(--ac);outline-offset:2px;border-radius:12px;}
 .msg-del-bar{display:none;padding:12px 16px;flex-shrink:0;z-index:12;flex-direction:column;gap:8px;background:var(--bg2);border-top:1px solid var(--bd);}.msg-del-bar.show{display:flex;}
 .msg-del-bar .mdel-main{width:100%;padding:14px;border-radius:12px;border:none;background:#c0705a;color:#fff;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit;}.msg-del-bar .mdel-main:hover{background:#a85d4a;}
 .msg-del-bar .mdel-cancel{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);font-size:14px;cursor:pointer;font-family:inherit;}
@@ -219,8 +224,10 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
   <div class="cw" id="cv">
     <div class="ch"><span class="bk" onclick="closeChat()" style="margin:0;font-size:16px;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="chn" id="c-name" style="display:none;">對話</div><div style="flex:1;"></div><div class="rp-sel rp-sel-sm" id="rp-btn" onclick="openPopup('rp-popup')">標準 RP</div><div class="ham" onclick="openSide()"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div></div>
     <div class="msg-del-banner" id="msg-del-banner">請選擇要刪除的訊息。</div>
+    <div class="msg-ss-banner" id="msg-ss-banner">請選擇要截圖的訊息。</div>
     <div class="cm" id="c-msgs"></div>
     <div class="msg-del-bar" id="msg-del-bar"><button class="mdel-main" id="msg-del-exec" onclick="execMsgDel()">刪除 (0)</button><button class="mdel-cancel" onclick="cancelMsgDel()">取消選擇</button></div>
+    <div class="msg-ss-bar" id="msg-ss-bar"><button class="mss-main" id="msg-ss-exec" onclick="execScreenshot()">截圖 (0)</button><button class="mss-cancel" onclick="cancelScreenshot()">取消</button></div>
     <div class="pcmd-overlay" id="pcmd-overlay" onclick="closePcmdPanel()"></div>
     <div class="pcmd-panel" id="pcmd-panel"><div class="pcmd-panel-handle" id="pcmd-handle"></div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-size:18px;font-weight:600;color:var(--tx3);">常駐指令</div><div class="ham" onclick="newPcmd()" style="width:32px;height:32px;"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div id="pcmd-list"></div></div>
     <div class="ci" id="ci"><div class="pcmd-plus" id="pcmd-plus-btn" onclick="togglePcmdPanel()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="ci-box"><textarea rows="1" placeholder="輸入..." id="c-inp" onkeydown="handleCInpKey(event)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,200)+'px';"></textarea><div class="ci-send" onclick="sendMsg()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div></div></div>
@@ -432,26 +439,35 @@ function pickSel(hid,val,label,el,popId){el.closest('.popup').querySelectorAll('
 // ═══ Universal Long-Press Drag System ═══
 let _dragState=null;
 function initLPDrag(container,selector,onSave){
-  let timer=null,dragging=false,dragEl=null,oy=0,startY=0,moved=false;
+  let timer=null,dragging=false,dragEl=null,ghost=null,oy=0,startY=0,scrollParent=null;
+  function getScrollParent(el){let p=el.parentElement;while(p){if(p.scrollHeight>p.clientHeight&&getComputedStyle(p).overflowY!=='visible')return p;p=p.parentElement;}return null;}
   function startDrag(el,y){
-    dragging=true;dragEl=el;startY=y;oy=y-el.getBoundingClientRect().top;
-    el.style.cssText='opacity:.45;position:relative;z-index:999;transform:scale(1.03);box-shadow:0 8px 24px rgba(0,0,0,.15);transition:none;';
+    dragging=true;dragEl=el;startY=y;
+    const r=el.getBoundingClientRect();oy=y-r.top;
+    scrollParent=getScrollParent(container);
+    ghost=el.cloneNode(true);ghost.style.cssText='position:fixed;top:'+r.top+'px;left:'+r.left+'px;width:'+r.width+'px;z-index:9999;pointer-events:none;opacity:.85;transform:scale(1.03);box-shadow:0 8px 28px rgba(0,0,0,.2);border-radius:12px;background:var(--bg2);border:2px solid var(--ac);transition:none;';
+    document.body.appendChild(ghost);
+    el.style.cssText='opacity:.2;transition:none;';
     if(navigator.vibrate)navigator.vibrate(30);
   }
   function doMove(y){
-    if(!dragEl)return;
+    if(!dragEl||!ghost)return;
+    ghost.style.top=(y-oy)+'px';
+    // Auto scroll
+    if(scrollParent){const sr=scrollParent.getBoundingClientRect();if(y<sr.top+40)scrollParent.scrollTop-=6;else if(y>sr.bottom-40)scrollParent.scrollTop+=6;}
     const items=[...container.querySelectorAll(selector)];
     for(const it of items){if(it===dragEl)continue;const r=it.getBoundingClientRect();
       if(y>r.top&&y<r.bottom){if(y<r.top+r.height/2)container.insertBefore(dragEl,it);else container.insertBefore(dragEl,it.nextSibling);break;}}
   }
   function endDrag(){
+    if(ghost){ghost.remove();ghost=null;}
     if(dragEl)dragEl.style.cssText='';
-    dragging=false;dragEl=null;timer=null;moved=false;
+    dragging=false;dragEl=null;timer=null;scrollParent=null;
     if(onSave)onSave(container);
   }
   container.addEventListener('touchstart',e=>{
     const el=e.target.closest(selector);if(!el||e.target.closest('.tog,.btn'))return;
-    startY=e.touches[0].clientY;moved=false;
+    startY=e.touches[0].clientY;
     timer=setTimeout(()=>{startDrag(el,e.touches[0].clientY);},350);
   },{passive:true});
   container.addEventListener('touchmove',e=>{
@@ -577,11 +593,54 @@ function pickPfGen(el,v){el.closest('.popup').querySelectorAll('.popup-item').fo
 function dlJson(data,fn){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download=fn;a.click();URL.revokeObjectURL(a.href);}
 async function exportAll(){toast('匯出中...');try{const strip=arr=>(arr||[]).map(x=>{const c={...x};delete c.embedding;return c;});const data={_type:'rp_studio_backup',_version:2,_storage:'local',_date:new Date().toISOString(),characters:strip(await dbAll('characters')),character_extras:strip(await dbAll('character_extras')),character_events:strip(await dbAll('character_events')),profiles:await dbAll('profiles'),prompts:await dbAll('prompts'),api_configs:await dbAll('api_configs'),settings:[_settings],persistent_commands:await dbAll('persistent_commands'),chats:await dbAll('chats'),messages:await dbAll('messages'),chat_events:await dbAll('chat_events'),memories:strip(await dbAll('memories'))};dlJson(data,'rp-backup-'+new Date().toISOString().slice(0,10)+'.json');toast('✅ 已匯出');}catch(e){toast('失敗: '+e.message.substring(0,50));}}
 async function exportChars(){toast('匯出中...');try{dlJson({_type:'rp_studio_characters',_version:2,_date:new Date().toISOString(),characters:await dbAll('characters'),character_extras:await dbAll('character_extras'),character_events:await dbAll('character_events')},'rp-chars-'+new Date().toISOString().slice(0,10)+'.json');toast('✅ 已匯出');}catch(e){toast('失敗');}}
-async function exportCardV2(){toast('下一段交付');}
+// exportCardV2 defined above with import functions
 async function exportChats(){toast('下一段交付');}
-async function importFile(inp){if(!inp.files[0])return;try{const text=await inp.files[0].text();const data=JSON.parse(text);inp.value='';if(!data._type){toast('無法辨識格式');return;}if(!await cfm('確定匯入？相同 ID 會被覆蓋。'))return;toast('匯入中...');let total=0;const up=async(s,rows)=>{if(!rows||!rows.length)return 0;for(const r of rows){const c={...r};delete c.embedding;await dbPut(s,c);}return rows.length;};
+async function importFile(inp){if(!inp.files[0])return;try{const file=inp.files[0],name=file.name.toLowerCase();
+// Handle PNG with embedded card data
+if(name.endsWith('.png')){await importCardPng(file);inp.value='';return;}
+const text=await file.text();const data=JSON.parse(text);inp.value='';
+// Detect format
+if(data._type){if(!await cfm('確定匯入 Reverie 備份？相同 ID 會被覆蓋。'))return;toast('匯入中...');await importReverie(data);}
+else if(data.spec==='chara_card_v2'||data.spec==='chara_card_v3'){if(!await cfm('匯入 Character Card V2？'))return;toast('匯入中...');await importSTCard(data.data||data);}
+else if(data.name&&(data.description||data.first_mes||data.personality)){if(!await cfm('匯入 Character Card V1？'))return;toast('匯入中...');await importSTCard(data);}
+else{toast('無法辨識格式');return;}
+await initApp();}catch(e){toast('失敗: '+e.message.substring(0,60));}}
+
+async function importReverie(data){let total=0;const up=async(s,rows)=>{if(!rows||!rows.length)return 0;for(const r of rows){const c={...r};delete c.embedding;await dbPut(s,c);}return rows.length;};
 if(data.characters)total+=await up('characters',data.characters);if(data.character_extras)total+=await up('character_extras',data.character_extras);if(data.character_events)total+=await up('character_events',data.character_events);if(data.profiles)total+=await up('profiles',data.profiles);if(data.prompts)total+=await up('prompts',data.prompts);if(data.api_configs)total+=await up('api_configs',data.api_configs);if(data.settings&&data.settings[0]){data.settings[0].id=SETTINGS_ID;await dbPut('settings',data.settings[0]);total++;}if(data.persistent_commands)total+=await up('persistent_commands',data.persistent_commands);if(data.chats)total+=await up('chats',data.chats);if(data.messages)total+=await up('messages',data.messages);if(data.chat_events)total+=await up('chat_events',data.chat_events);if(data.memories)total+=await up('memories',data.memories);
-toast('✅ '+total+' 筆');await initApp();}catch(e){toast('失敗: '+e.message.substring(0,50));}}
+toast('✅ '+total+' 筆');}
+
+async function importSTCard(d){const cid=uid();const c={id:cid,name:d.name||'未命名',sort_order:chars.length,created_at:new Date().toISOString()};
+let setting='';if(d.description)setting+=d.description+'\n';if(d.personality)setting+='\n個性: '+d.personality+'\n';
+c.setting=setting.trim();c.greeting_scenario=d.scenario||'';c.greeting_message=d.first_mes||'';
+await dbPut('characters',c);let exCount=0;
+// mes_example → extras
+if(d.mes_example&&d.mes_example.trim()){await dbPut('character_extras',{id:uid(),character_id:cid,title:'對話範例',content:d.mes_example.trim(),sort_order:exCount++});}
+// creator_notes → extras
+if(d.creator_notes&&d.creator_notes.trim()){await dbPut('character_extras',{id:uid(),character_id:cid,title:'創作者筆記',content:d.creator_notes.trim(),sort_order:exCount++});}
+// system_prompt → extras
+if(d.system_prompt&&d.system_prompt.trim()){await dbPut('character_extras',{id:uid(),character_id:cid,title:'系統提示詞',content:d.system_prompt.trim(),sort_order:exCount++});}
+// post_history_instructions → extras
+if(d.post_history_instructions&&d.post_history_instructions.trim()){await dbPut('character_extras',{id:uid(),character_id:cid,title:'歷史後指令',content:d.post_history_instructions.trim(),sort_order:exCount++});}
+// character_book entries → events
+if(d.character_book&&d.character_book.entries){const entries=d.character_book.entries;for(let i=0;i<entries.length;i++){const e=entries[i];await dbPut('character_events',{id:uid(),character_id:cid,name:e.comment||e.name||('世界書 #'+(i+1)),time_or_keyword:(e.keys||[]).join(', '),content:e.content||'',sort_order:i});}}
+// extensions.depth_prompt → extras
+if(d.extensions){if(d.extensions.depth_prompt&&d.extensions.depth_prompt.prompt){await dbPut('character_extras',{id:uid(),character_id:cid,title:'深度提示詞',content:d.extensions.depth_prompt.prompt,sort_order:exCount++});}}
+toast('✅ 已匯入「'+c.name+'」');}
+
+async function importCardPng(file){try{const buf=await file.arrayBuffer();const bytes=new Uint8Array(buf);
+// Read PNG chunks to find tEXt with 'chara'
+let pos=8;while(pos<bytes.length){const len=(bytes[pos]<<24|bytes[pos+1]<<16|bytes[pos+2]<<8|bytes[pos+3])>>>0;const type=String.fromCharCode(bytes[pos+4],bytes[pos+5],bytes[pos+6],bytes[pos+7]);
+if(type==='tEXt'||type==='iTXt'){const chunk=bytes.slice(pos+8,pos+8+len);const sep=chunk.indexOf(0);const key=new TextDecoder().decode(chunk.slice(0,sep));
+if(key==='chara'){let val;if(type==='iTXt'){let o=sep+1;o+=1;o=chunk.indexOf(0,o)+1;o=chunk.indexOf(0,o)+1;val=new TextDecoder().decode(chunk.slice(o));}else{val=new TextDecoder().decode(chunk.slice(sep+1));}
+const json=JSON.parse(atob(val));if(!await cfm('匯入「'+(json.data?.name||json.name||'角色')+'」？'))return;toast('匯入中...');await importSTCard(json.data||json);await initApp();return;}}
+pos+=12+len;}toast('PNG 中未找到角色資料');}catch(e){toast('PNG 解析失敗');}}
+
+async function exportCardV2(){if(!chars.length){toast('沒有角色');return;}
+const c=chars[0];const id=c.id;const extras=await dbByIndex('character_extras','character_id',id);const events=await dbByIndex('character_events','character_id',id);
+const card={spec:'chara_card_v2',spec_version:'2.0',data:{name:c.name||'',description:c.setting||'',personality:'',scenario:c.greeting_scenario||'',first_mes:c.greeting_message||'',mes_example:extras.find(e=>e.title==='對話範例')?.content||'',creator_notes:extras.find(e=>e.title==='創作者筆記')?.content||'',system_prompt:extras.find(e=>e.title==='系統提示詞')?.content||'',post_history_instructions:extras.find(e=>e.title==='歷史後指令')?.content||'',tags:[],creator:'Reverie RP Studio',character_version:'1.0',extensions:{},character_book:{entries:events.map((ev,i)=>({keys:(ev.time_or_keyword||'').split(',').map(k=>k.trim()).filter(k=>k),content:ev.content||'',comment:ev.name||'',enabled:true,insertion_order:i,position:'after_char'}))}}};
+if(chars.length>1){const sel=await inp('輸入角色名稱匯出',c.name);if(sel===null)return;const tc=chars.find(x=>x.name===sel);if(tc&&tc.id!==id){const tex=await dbByIndex('character_extras','character_id',tc.id);const tev=await dbByIndex('character_events','character_id',tc.id);card.data.name=tc.name;card.data.description=tc.setting||'';card.data.scenario=tc.greeting_scenario||'';card.data.first_mes=tc.greeting_message||'';card.data.mes_example=tex.find(e=>e.title==='對話範例')?.content||'';card.data.character_book.entries=tev.map((ev,i)=>({keys:(ev.time_or_keyword||'').split(',').map(k=>k.trim()).filter(k=>k),content:ev.content||'',comment:ev.name||'',enabled:true,insertion_order:i,position:'after_char'}));}}
+dlJson(card,(card.data.name||'character')+'-card-v2.json');toast('✅ 已匯出');}
 
 // === STUBS (Chat system — next delivery) ===
 
@@ -640,8 +699,8 @@ function renderMsgRow(m,idx){const row=document.createElement('div'),t=fmt24(m.t
 if(m.role==='system'){row.className='msg-row ai';row.style.maxWidth='100%';row.innerHTML='<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble" style="background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);font-size:13px;font-style:italic;">'+parsed+'</div></div></div>';}
 else if(m.role==='ai'){row.className='msg-row ai';const liveAv=_curChat?_curChat.avatarUrl:m.avUrl;const ah=liveAv?'<div class="msg-av"><img src="'+liveAv+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((m.name||'?')[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+(t?'<div class="mm">'+t+'</div>':'')+'</div></div>';}
 else{row.className='msg-row user';let uav='';if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){const av=pf.avatar_url;uav=av?'<div class="msg-av"><img src="'+av+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((pf.name||'?')[0])+'</div>';}}row.innerHTML=uav+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+(t?'<div class="mm">'+t+'</div>':'')+'</div></div>';}
-bindLongPress(row,()=>{if(!_msgDelMode)openMsgBs(idx);});row.addEventListener('click',()=>{if(_msgDelMode)toggleMsgDelSel(idx);});return row;}
-function openMsgBs(idx){$('bs-body').innerHTML='<div class="bs-item" onclick="editMsg('+idx+')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>編輯</div><div class="bs-item" onclick="copyMsg('+idx+')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>複製</div><div class="bs-item danger" onclick="closeBs();startMsgDel('+idx+')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>刪除</div>';$('bs-ov').classList.add('show');}
+bindLongPress(row,()=>{if(!_msgDelMode&&!_ssMode)openMsgBs(idx);});row.addEventListener('click',()=>{if(_msgDelMode)toggleMsgDelSel(idx);else if(_ssMode)toggleSS(idx);});return row;}
+function openMsgBs(idx){$('bs-body').innerHTML='<div class="bs-item" onclick="editMsg('+idx+')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>編輯</div><div class="bs-item" onclick="copyMsg('+idx+')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>複製</div><div class="bs-item" onclick="closeBs();startScreenshot('+idx+')"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>截圖</div><div class="bs-item danger" onclick="closeBs();startMsgDel('+idx+')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>刪除</div>';$('bs-ov').classList.add('show');}
 function copyMsg(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;navigator.clipboard.writeText(_curChat.msgs[idx].content).then(()=>toast('已複製')).catch(()=>toast('複製失敗'));}
 function closeBs(){$('bs-ov').classList.remove('show');}
 let _emIdx=null,_emMax=9999;
@@ -719,6 +778,75 @@ if(msgs.length&&msgs[msgs.length-1].role==='assistant')msgs.push({role:'user',co
 if(msgs.length&&msgs[0].role==='assistant')msgs.unshift({role:'user',content:'[對話開始]'});
 const pcmdTxt=getActivePcmds();if(pcmdTxt&&msgs.length){for(let i=msgs.length-1;i>=0;i--){if(msgs[i].role==='user'){msgs[i].content+='\n\n[常駐指令]\n'+pcmdTxt;break;}}}
 return msgs;}
+
+// ═══ Screenshot ═══
+let _ssMode=false,_ssSel=new Set();
+function startScreenshot(initIdx){_ssMode=true;_ssSel.clear();_ssSel.add(initIdx);$('cv').classList.add('msg-ss-mode');$('msg-ss-bar').classList.add('show');$('msg-ss-banner').classList.add('show');$('ci').style.display='none';updateSSUI();}
+function cancelScreenshot(){_ssMode=false;_ssSel.clear();$('cv').classList.remove('msg-ss-mode');$('msg-ss-bar').classList.remove('show');$('msg-ss-banner').classList.remove('show');$('ci').style.display='flex';document.querySelectorAll('.msg-row.msg-ss-sel').forEach(r=>r.classList.remove('msg-ss-sel'));}
+function updateSSUI(){document.querySelectorAll('.msg-row').forEach(r=>{const i=parseInt(r.dataset.msgIdx);r.classList.toggle('msg-ss-sel',_ssSel.has(i));});$('msg-ss-exec').textContent='截圖 ('+_ssSel.size+')';}
+function toggleSS(idx){if(_ssSel.has(idx))_ssSel.delete(idx);else _ssSel.add(idx);updateSSUI();}
+
+async function execScreenshot(){if(!_ssSel.size)return;toast('生成中...');
+const msgs=_curChat.msgs||[];const sorted=[..._ssSel].sort((a,b)=>a-b);
+const cs=getComputedStyle(document.documentElement);
+const bg=cs.getPropertyValue('--bg').trim()||'#fff';
+const bgAi=cs.getPropertyValue('--msg-ai').trim()||'#f0f0f0';
+const bgUser=cs.getPropertyValue('--msg-user').trim()||'#e8f5e9';
+const txColor=cs.getPropertyValue('--tx').trim()||'#333';
+const txSub=cs.getPropertyValue('--tx2').trim()||'#888';
+const acColor=cs.getPropertyValue('--ac').trim()||'#666';
+const bdColor=cs.getPropertyValue('--bd').trim()||'#ddd';
+const W=720,PAD=32,GAP=28,AVSIZE=44,BUBPAD=16,MAXBW=W-PAD*2-AVSIZE-16,FONT='16px -apple-system,BlinkMacSystemFont,sans-serif';
+
+// Pre-calculate height
+const cvs0=document.createElement('canvas');cvs0.width=W;const c0=cvs0.getContext('2d');c0.font=FONT;
+function wrapText(ctx,text,maxW){const lines=[];const rawLines=text.replace(/[*#_`>]+/g,'').split('\n');
+for(const raw of rawLines){const words=raw.split('');let line='';
+for(const ch of words){const test=line+ch;if(ctx.measureText(test).width>maxW&&line){lines.push(line);line=ch;}else line=test;}
+if(line)lines.push(line);if(!raw)lines.push('');}return lines;}
+
+let totalH=PAD;const msgData=[];
+for(const idx of sorted){const m=msgs[idx];if(!m)continue;const plain=m.content.replace(/[*#_`>]+/g,'').trim();const isUser=m.role==='user';const isSys=m.role==='system';
+const lines=wrapText(c0,plain,MAXBW-BUBPAD*2);const nameH=isSys?0:22;const textH=lines.length*24;const bubH=nameH+textH+BUBPAD*2;
+msgData.push({m,idx,isUser,isSys,lines,bubH,nameH});totalH+=bubH+GAP;}
+totalH+=PAD-GAP;
+
+// Draw
+const canvas=document.createElement('canvas');canvas.width=W;canvas.height=Math.max(totalH,100);const ctx=canvas.getContext('2d');
+ctx.fillStyle=bg;ctx.fillRect(0,0,W,canvas.height);
+let y=PAD;
+for(const d of msgData){const {m,isUser,isSys,lines,bubH,nameH}=d;
+const bubW=Math.min(MAXBW,ctx.measureText(lines.reduce((a,b)=>ctx.measureText(a).width>ctx.measureText(b).width?a:b,'')).width+BUBPAD*2+20);
+let bx,ax;
+if(isUser){bx=W-PAD-bubW;ax=W-PAD+8;}
+else{ax=PAD;bx=PAD+AVSIZE+12;}
+
+// Avatar circle
+if(!isSys){ctx.save();ctx.beginPath();ctx.arc(ax+AVSIZE/2,y+AVSIZE/2,AVSIZE/2,0,Math.PI*2);ctx.fillStyle=bdColor;ctx.fill();ctx.clip();
+const avUrl=isUser?null:(_curChat?_curChat.avatarUrl:'');
+if(!isUser&&avUrl){try{const img=await loadImg(avUrl);ctx.drawImage(img,ax,y,AVSIZE,AVSIZE);}catch(e){ctx.fillStyle=acColor;ctx.font='bold 18px sans-serif';ctx.textAlign='center';ctx.fillText((m.name||'?')[0],ax+AVSIZE/2,y+AVSIZE/2+6);}}
+else{ctx.fillStyle=isUser?bgUser:acColor;ctx.fill();ctx.fillStyle=txColor;ctx.font='bold 18px sans-serif';ctx.textAlign='center';ctx.fillText((m.name||'?')[0],ax+AVSIZE/2,y+AVSIZE/2+6);}
+ctx.restore();}
+
+// Bubble
+ctx.beginPath();const br=16;const bxR=bx,byR=y,bwR=bubW,bhR=bubH;
+ctx.moveTo(bxR+br,byR);ctx.lineTo(bxR+bwR-br,byR);ctx.quadraticCurveTo(bxR+bwR,byR,bxR+bwR,byR+br);ctx.lineTo(bxR+bwR,byR+bhR-br);ctx.quadraticCurveTo(bxR+bwR,byR+bhR,bxR+bwR-br,byR+bhR);ctx.lineTo(bxR+br,byR+bhR);ctx.quadraticCurveTo(bxR,byR+bhR,bxR,byR+bhR-br);ctx.lineTo(bxR,byR+br);ctx.quadraticCurveTo(bxR,byR,bxR+br,byR);ctx.closePath();
+ctx.fillStyle=isSys?bg:isUser?bgUser:bgAi;ctx.fill();
+if(!isUser){ctx.strokeStyle=bdColor;ctx.lineWidth=1;ctx.stroke();}
+
+// Name
+ctx.textAlign='left';let ty=y+BUBPAD;
+if(!isSys){ctx.fillStyle=acColor;ctx.font='bold 14px -apple-system,BlinkMacSystemFont,sans-serif';ctx.fillText(m.name||'',bx+BUBPAD,ty+12);ty+=nameH;}
+
+// Text
+ctx.fillStyle=isSys?txSub:txColor;ctx.font=FONT;
+for(const line of lines){ctx.fillText(line,bx+BUBPAD,ty+16);ty+=24;}
+y+=bubH+GAP;}
+
+// Download
+canvas.toBlob(blob=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='chat-screenshot-'+Date.now()+'.png';a.click();URL.revokeObjectURL(a.href);cancelScreenshot();toast('✅ 已儲存');},'image/png');}
+
+function loadImg(src){return new Promise((r,j)=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>r(img);img.onerror=j;img.src=src;});}
 
 // ═══ Summary ═══
 function openSummary(){if(!_curChat)return;$('sum-ta').value=_curChat.summary||'';cntF($('sum-ta'));openFP('fp-sum');}
