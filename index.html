@@ -47,10 +47,10 @@ textarea:focus,input:focus,select:focus{outline:none;border-color:var(--ac);back
 label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weight:400;}
 .f{margin-bottom:12px;}.fr{display:flex;gap:10px;}.fr .f{flex:1;}
 .ctr{text-align:right;font-size:12px;color:var(--tx2);margin-top:3px;}
-.btn{padding:8px 16px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx);font-size:14px;cursor:pointer;font-family:inherit;}.btn:hover{border-color:var(--ac);color:var(--ac);}
-.bp{background:var(--ac);border-color:var(--ac);color:#fff;}.bp:hover{background:var(--ach);}
-.bdel{border-color:#c0705a;color:#c0705a;}.bdel:hover{background:rgba(192,112,90,.08);}
-.bs2{font-size:13px;padding:5px 12px;}
+.btn{padding:10px 18px;border-radius:10px;border:none;background:var(--bg3);color:var(--tx);font-size:14px;cursor:pointer;font-family:inherit;font-weight:500;transition:all .15s;}.btn:hover{opacity:.85;}.btn:active{transform:scale(.97);}
+.bp{background:var(--ac);color:#fff;}.bp:hover{background:var(--ach);}
+.bdel{background:none;color:#c0705a;border:1px solid rgba(192,112,90,.3);}.bdel:hover{background:rgba(192,112,90,.08);}
+.bs2{font-size:13px;padding:7px 14px;}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:16px 0 10px;position:sticky;top:0;z-index:10;background:var(--bg);}
 .sht{font-size:24px;font-weight:700;color:var(--tx3);}
 .bk{font-size:15px;color:var(--tx2);cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:6px 0;}.bk:hover{color:var(--ac);}
@@ -73,14 +73,16 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .cw{display:none;flex-direction:column;height:100%;}.cw.a{display:flex;}
 .ch{padding:10px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;background:var(--bg2);flex-shrink:0;}.chn{font-size:16px;font-weight:500;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40vw;}
 .cm{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:16px;background:var(--bg);}
-.msg-row{display:flex;gap:8px;max-width:92%;align-items:flex-start;}.msg-row.ai{align-self:flex-start;}.msg-row.user{align-self:flex-end;flex-direction:row-reverse;}
-.msg-av{width:44px;height:44px;border-radius:50%;background:var(--bgi);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;color:var(--ac);font-weight:500;overflow:hidden;border:1px solid var(--bd);margin-top:2px;}
-.msg-body{flex:1;min-width:0;}.msg-name{font-size:15px;font-weight:500;color:var(--ac);margin-bottom:3px;}
-.msg-bubble{padding:11px 15px;border-radius:18px;font-size:15px;line-height:1.85;color:var(--tx);}
+.msg-row{display:flex;gap:6px;max-width:93%;align-items:flex-start;}.msg-row.ai{align-self:flex-start;}.msg-row.user{align-self:flex-end;flex-direction:row-reverse;}
+.msg-av{width:32px;height:32px;border-radius:50%;background:var(--bgi);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:var(--ac);font-weight:500;overflow:hidden;border:1px solid var(--bd);margin-top:2px;}
+.msg-body{flex:1;min-width:0;}.msg-name{font-size:13px;font-weight:500;color:var(--ac);margin-bottom:2px;}
+.msg-content-row{display:flex;align-items:flex-end;gap:6px;}
+.msg-row.user .msg-content-row{flex-direction:row-reverse;}
+.msg-bubble{padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.85;color:var(--tx);}
 .msg-row.ai .msg-bubble{background:var(--msg-ai);border:1px solid var(--bd);box-shadow:0 1px 2px var(--sh);}
 .msg-row.user .msg-bubble{background:var(--msg-user);border:1px solid rgba(0,0,0,.04);}
-.msg-row.user .msg-body{padding-top:21px;}
-.mm{font-size:12px;color:var(--tx2);margin-top:4px;}
+.msg-row.user .msg-body{padding-top:0;}
+.mm{font-size:10px;color:var(--tx2);flex-shrink:0;white-space:nowrap;line-height:1;padding-bottom:2px;}
 .msg-bubble p{margin:0 0 .6em;}.msg-bubble p:last-child{margin:0;}.msg-bubble em{font-style:italic;color:var(--tx2);}.msg-bubble strong{font-weight:600;}.msg-bubble blockquote{border-left:3px solid var(--ac);padding-left:10px;margin:.5em 0;color:var(--tx2);}
 .msg-bubble ol,.msg-bubble ul{margin:0 0 .6em;padding-left:1.6em;}.msg-bubble li{margin-bottom:.3em;}
 .ci{padding:10px 16px;display:flex;gap:10px;flex-shrink:0;background:var(--bg);align-items:flex-end;}
@@ -88,6 +90,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .ci-box textarea{flex:1;max-height:200px;min-height:44px;overflow-y:auto;resize:none;padding:10px 6px 10px 16px;line-height:1.5;border:none;background:transparent;font-family:inherit;font-size:15px;color:var(--tx);}
 .ci-box textarea:focus{outline:none;}
 .ci-send{width:38px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;opacity:.5;transition:opacity .15s;}.ci-send:hover{opacity:1;}
+
 .ham{width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--tx2);flex-shrink:0;border-radius:6px;}.ham:hover{color:var(--ac);background:var(--bgi);}
 .ham svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
 .rp-sel{padding:8px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);font-size:14px;color:var(--tx);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;white-space:nowrap;}.rp-sel:hover{border-color:var(--ac);color:var(--ac);}.rp-sel::after{content:'▾';font-size:10px;color:var(--tx2);}
@@ -118,8 +121,16 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .empty{text-align:center;padding:40px 20px;color:var(--tx2);font-size:15px;}
 .hidden{display:none;}
 .av-editor{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:16px;position:relative;width:180px;margin-left:auto;margin-right:auto;margin-top:8px;}
-.av-ed-wrap{position:relative;width:180px;height:180px;border-radius:50%;overflow:hidden;border:2px solid var(--bd);background:var(--bgi);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:56px;color:var(--ac);font-weight:500;touch-action:none;}
+.av-ed-wrap{position:relative;width:144px;height:180px;border-radius:12px;overflow:hidden;border:2px solid var(--bd);background:var(--bgi);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:56px;color:var(--ac);font-weight:500;}
 .av-ed-wrap img{width:100%;height:100%;object-fit:cover;pointer-events:none;}
+.crop-ov{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+.crop-ov.show{display:flex;}
+.crop-area{position:relative;touch-action:none;overflow:hidden;background:#000;}
+.crop-area img{position:absolute;user-select:none;-webkit-user-drag:none;}
+.crop-frame{position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none;border-radius:4px;}
+.crop-btns{display:flex;gap:12px;}
+.crop-btns button{padding:10px 28px;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;}
+.crop-ok{background:var(--ac);color:#fff;}.crop-cancel{background:rgba(255,255,255,.15);color:#fff;}
 .av-ed-badge{position:absolute;bottom:8px;right:8px;width:36px;height:36px;border-radius:50%;background:var(--ac);display:flex;align-items:center;justify-content:center;border:2px solid var(--bg2);cursor:pointer;z-index:99;box-shadow:0 2px 6px rgba(0,0,0,.15);}.av-ed-badge svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .pin-icon{width:22px;height:22px;color:var(--bd2);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;}.pin-icon:hover{color:var(--ac);}
 .pin-icon.pinned{color:var(--ac);}
@@ -131,9 +142,10 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .bs-popup{background:var(--bg2);border-radius:16px;width:min(260px,80vw);padding:8px 0;box-shadow:0 8px 30px rgba(0,0,0,.18);}
 .bs-item{padding:14px 24px;font-size:15px;cursor:pointer;color:var(--tx);display:flex;align-items:center;gap:12px;border-top:1px solid var(--bd);}.bs-item:first-of-type{border-top:none;}.bs-item:hover{background:var(--bgi);}.bs-item.danger{color:#c0705a;}
 .bs-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
-.typing-indicator{display:flex;gap:4px;padding:10px 14px;align-items:center;}.typing-dot{width:6px;height:6px;background:var(--tx2);border-radius:50%;animation:typeBounce .8s infinite;}.typing-dot:nth-child(2){animation-delay:.15s;}.typing-dot:nth-child(3){animation-delay:.3s;}
+.typing-indicator{display:flex;gap:4px;padding:10px 14px;align-items:center;}.typing-dot{width:6px;height:6px;background:var(--tx2);border-radius:50%;animation:typeBounce 1.4s ease-in-out infinite;}.typing-dot:nth-child(2){animation-delay:.25s;}.typing-dot:nth-child(3){animation-delay:.5s;}
 .stop-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd2);background:var(--bg2);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx2);flex-shrink:0;transition:all .15s;}.stop-btn:hover{border-color:#c0705a;color:#c0705a;background:rgba(192,112,90,.08);}.stop-btn svg{width:14px;height:14px;stroke:currentColor;fill:currentColor;}
-@keyframes typeBounce{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-4px);}}
+@keyframes typeBounce{0%,80%,100%{opacity:.25;transform:translateY(0);}35%{opacity:.9;transform:translateY(-3px);}}
+/* Edit message modal - near full screen */
 .edit-modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:500;align-items:center;justify-content:center;padding:16px;}.edit-modal-ov.show{display:flex;}
 .edit-modal{background:var(--bg2);border-radius:16px;width:100%;max-width:500px;height:calc(66dvh);max-height:520px;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.18);display:flex;flex-direction:column;}
 .edit-modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-shrink:0;}.edit-modal-title{font-size:16px;font-weight:600;color:var(--tx3);}
@@ -141,6 +153,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .edit-modal textarea{flex:1;min-height:0;resize:none;}
 .edit-modal .ctr{margin-bottom:12px;}
 .edit-modal-btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--bgi);color:var(--tx3);font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;}.edit-modal-btn:hover{background:var(--bd);}
+/* Drag handle for events */
 .ev-drag{display:none;}
 .ev-toggle-item{display:flex;align-items:center;gap:10px;padding:16px 14px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;margin-bottom:8px;}
 .ev-toggle-item .lb{flex:1;min-width:0;cursor:pointer;}.ev-toggle-item .lt{font-size:16px;}.ev-toggle-item .ls{font-size:13px;color:var(--tx2);margin-top:6px;}
@@ -159,6 +172,8 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .msg-del-bar .mdel-main{width:100%;padding:14px;border-radius:12px;border:none;background:#c0705a;color:#fff;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit;}.msg-del-bar .mdel-main:hover{background:#a85d4a;}
 .msg-del-bar .mdel-cancel{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);font-size:14px;cursor:pointer;font-family:inherit;}
 .pcmd-plus{width:44px;height:44px;border-radius:50%;border:1px solid var(--bd);background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:var(--tx2);flex-shrink:0;}.pcmd-plus:hover{border-color:var(--ac);color:var(--ac);}.pcmd-plus.active{background:var(--ac);border-color:var(--ac);color:#fff;}
+.emb-progress{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:600;min-width:260px;display:none;text-align:center;}.emb-progress.show{display:block;}
+.emb-progress .prog-bar{width:100%;height:6px;background:var(--bgi);border-radius:3px;margin-top:8px;overflow:hidden;}.emb-progress .prog-fill{height:100%;background:var(--ac);border-radius:3px;transition:width .3s;}
 .splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s ease;}.splash.hide{opacity:0;pointer-events:none;}
 .splash-cloud{position:relative;width:220px;height:200px;display:flex;align-items:center;justify-content:center;}
 .splash-cloud .splash-title{position:absolute;z-index:3;top:50px;left:50%;transform:translateX(-50%);font-size:26px;font-weight:700;color:var(--tx3);letter-spacing:1px;white-space:nowrap;}
@@ -171,8 +186,6 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .splash-sub{font-size:14px;color:var(--tx2);margin-top:8px;}
 .splash-dots{display:flex;gap:6px;margin-top:24px;}.splash-dots span{width:6px;height:6px;background:var(--ac);border-radius:50%;animation:sDot 1.2s infinite;opacity:.3;}.splash-dots span:nth-child(2){animation-delay:.2s;}.splash-dots span:nth-child(3){animation-delay:.4s;}
 @keyframes sDot{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.3);}}
-.emb-progress{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:600;min-width:260px;display:none;text-align:center;}.emb-progress.show{display:block;}
-.emb-progress .prog-bar{width:100%;height:6px;background:var(--bgi);border-radius:3px;margin-top:8px;overflow:hidden;}.emb-progress .prog-fill{height:100%;background:var(--ac);border-radius:3px;transition:width .3s;}
 </style>
 </head>
 <body>
@@ -183,10 +196,15 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 </svg>
 <div class="splash-dot d1"></div>
 <div class="splash-dot d2"></div>
+<div id="splash-status" style="position:absolute;bottom:-28px;width:100%;text-align:center;font-size:12px;color:var(--tx2);"></div>
 </div></div>
 <div class="toast" id="toast"></div>
-<div class="emb-progress" id="emb-prog"><div style="font-size:14px;color:var(--tx);" id="emb-prog-text">載入 Embedding 模型中...</div><div class="prog-bar"><div class="prog-fill" id="emb-prog-fill" style="width:0%"></div></div></div>
 <input type="file" accept="image/*" class="hidden" id="av-input" onchange="onAvUpload(this)">
+<div class="emb-progress" id="emb-prog"><div style="font-size:14px;color:var(--tx);" id="emb-prog-text">載入 Embedding 模型中...</div><div class="prog-bar"><div class="prog-fill" id="emb-prog-fill" style="width:0%"></div></div></div>
+<div class="crop-ov" id="crop-ov">
+<div class="crop-area" id="crop-area"><img id="crop-img"><div class="crop-frame" id="crop-frame"></div></div>
+<div class="crop-btns"><button class="crop-cancel" onclick="closeCrop()">取消</button><button class="crop-ok" onclick="confirmCrop()">裁切</button></div>
+</div>
 <div class="confirm-ov" id="cfm-ov"><div class="confirm-box"><div class="confirm-msg" id="cfm-msg"></div><div class="confirm-actions"><button class="btn bs2" onclick="cfmR(false)">取消</button><button class="btn bdel bs2" onclick="cfmR(true)">確定</button></div></div></div>
 <div class="confirm-ov" id="inp-ov"><div class="confirm-box"><div class="confirm-msg" id="inp-msg" style="font-size:16px;"></div><input type="text" id="inp-val" onkeydown="if(event.key==='Enter')inpR(this.value)" style="width:100%;margin:8px 0 12px;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font-size:16px;"><div class="confirm-actions"><button class="btn bs2" onclick="inpR(null)">取消</button><button class="btn bp bs2" onclick="inpR($('inp-val').value)">確定</button></div></div></div>
 <div class="ctx-menu hidden" id="ctx-menu"></div>
@@ -203,7 +221,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
     <div class="msg-del-bar" id="msg-del-bar"><button class="mdel-main" id="msg-del-exec" onclick="execMsgDel()">刪除 (0)</button><button class="mdel-cancel" onclick="cancelMsgDel()">取消選擇</button></div>
     <div class="pcmd-overlay" id="pcmd-overlay" onclick="closePcmdPanel()"></div>
     <div class="pcmd-panel" id="pcmd-panel"><div class="pcmd-panel-handle" id="pcmd-handle"></div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-size:18px;font-weight:600;color:var(--tx3);">常駐指令</div><div class="ham" onclick="newPcmd()" style="width:32px;height:32px;"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div id="pcmd-list"></div></div>
-    <div class="ci"><div class="pcmd-plus" id="pcmd-plus-btn" onclick="togglePcmdPanel()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="ci-box"><textarea rows="1" placeholder="輸入..." id="c-inp" onkeydown="handleCInpKey(event)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,200)+'px';"></textarea><div class="ci-send" onclick="sendMsg()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div></div></div>
+    <div class="ci" id="ci"><div class="pcmd-plus" id="pcmd-plus-btn" onclick="togglePcmdPanel()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="ci-box"><textarea rows="1" placeholder="輸入..." id="c-inp" onkeydown="handleCInpKey(event)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,200)+'px';"></textarea><div class="ci-send" onclick="sendMsg()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div></div></div>
   </div>
 </div>
 <!-- 角色 -->
@@ -239,22 +257,19 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
   <div class="sp a" id="s0">
     <div class="card"><div class="stt">API 設定</div><div id="api-cfg-list"></div><button class="btn bs2" onclick="addApiCfg()" style="margin-top:8px;">+ 新增</button></div>
     <div class="card"><div class="stt">生成參數</div><div class="f"><label>Temperature</label><div class="sr"><input type="range" id="set-temp" min="0" max="100" value="80" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">0.80</span></div></div><div class="fr"><div class="f"><label>Max Input</label><input type="number" id="set-maxin" value="20000"></div><div class="f"><label>Max Output</label><input type="number" id="set-maxout" value="1200"></div></div></div>
+    <div class="card"><div class="stt">本地向量 Embedding</div><div style="font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:12px;">使用 transformers.js 在瀏覽器本地運行（約 23MB）。首次需下載模型，之後快取。</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用本地向量搜尋</label><div class="tog" id="set-emb-local" onclick="this.classList.toggle('on')"></div></div><div class="stt" style="margin-top:10px;">搜尋參數</div><div class="f"><label>相似度門檻（越低撈越多）</label><div class="sr"><input type="range" id="set-vec-threshold" min="0" max="90" value="30" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">0.30</span></div></div><div class="fr"><div class="f"><label>附加資訊筆數</label><input type="number" id="set-vec-extras" value="3" min="1" max="20"></div><div class="f"><label>事件筆數</label><input type="number" id="set-vec-events" value="3" min="1" max="20"></div><div class="f"><label>記憶筆數</label><input type="number" id="set-vec-memories" value="5" min="1" max="30"></div></div><button class="btn bs2" onclick="rebuildAllEmb()" style="width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>重新生成所有向量</button></div>
     <div class="card"><div class="stt">主題顏色</div><div class="theme-row"><div class="theme-dot" data-theme="" style="background:linear-gradient(135deg,#7c9eb2,#e4eef3);" onclick="setTh('',this)"></div><div class="theme-dot" data-theme="theme-warm" style="background:linear-gradient(135deg,#c0705a,#f0ddd6);" onclick="setTh('theme-warm',this)"></div><div class="theme-dot" data-theme="theme-sage" style="background:linear-gradient(135deg,#6b9080,#dce8e2);" onclick="setTh('theme-sage',this)"></div><div class="theme-dot" data-theme="theme-lavender" style="background:linear-gradient(135deg,#8b7fb5,#e2dff0);" onclick="setTh('theme-lavender',this)"></div><div class="theme-dot" data-theme="theme-rose" style="background:linear-gradient(135deg,#b5707e,#f0dde2);" onclick="setTh('theme-rose',this)"></div><div class="theme-dot" data-theme="theme-ocean" style="background:linear-gradient(135deg,#5088a8,#d4e4f0);" onclick="setTh('theme-ocean',this)"></div></div><div class="theme-row" style="margin-top:8px;"><div class="theme-dot" data-theme="theme-dark" style="background:linear-gradient(135deg,#1a1a2e,#7c9eb2);" onclick="setTh('theme-dark',this)"></div><div class="theme-dot" data-theme="theme-dark-warm" style="background:linear-gradient(135deg,#1e1a18,#c0705a);" onclick="setTh('theme-dark-warm',this)"></div><div class="theme-dot" data-theme="theme-dark-green" style="background:linear-gradient(135deg,#161e1a,#6b9080);" onclick="setTh('theme-dark-green',this)"></div><div class="theme-dot" data-theme="theme-midnight" style="background:linear-gradient(135deg,#0f1118,#8b7fb5);" onclick="setTh('theme-midnight',this)"></div><div class="theme-dot" data-theme="theme-black" style="background:linear-gradient(135deg,#000000,#333333);" onclick="setTh('theme-black',this)"></div></div></div>
     <div style="margin-top:12px;"><button class="btn bp" onclick="saveSettings()">儲存</button></div>
   </div>
   <div class="sp" id="s1"><div class="pl" id="pl"></div><button class="btn bs2" onclick="createPr()" style="margin-bottom:12px;">+ 新增</button><div class="card" id="pr-edit" style="display:none;"><input type="hidden" id="pe-id"><div class="f"><label>名稱</label><input type="text" id="pn"></div><div class="f"><label>使用 API</label><div class="rp-sel" id="pr-api-btn" onclick="openPopup('pr-api-pop')">未選擇</div><input type="hidden" id="pr-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="pr-model-btn" onclick="openPopup('pr-model-pop')">未選擇</div><input type="hidden" id="pr-model-id" value=""></div><div class="f"><label>內容</label><textarea rows="10" id="tp2" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="savePr()">儲存</button><button class="btn bdel bs2" onclick="delPr()">刪除</button></div></div></div>
   <div class="sp" id="s2">
   <div class="card"><div class="stt">自動摘要</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用自動摘要</label><div class="tog" id="set-sum-auto" onclick="this.classList.toggle('on')"></div></div><div class="f"><label>每幾次 AI 回覆自動摘要</label><input type="number" id="set-sum-interval" value="10" min="3" placeholder="10"></div><div class="f"><label>使用 API</label><div class="rp-sel" id="sum-api-btn" onclick="openPopup('sum-api-pop')">未選擇</div><input type="hidden" id="sum-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="sum-model-btn" onclick="openPopup('sum-model-pop')">未選擇</div><input type="hidden" id="sum-model-id" value=""></div><div class="f"><label>摘要提示詞</label><textarea rows="4" id="sum-prompt" placeholder="你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div></div>
-  <div class="card"><div class="stt">記憶生成</div><div class="f"><label>使用 API</label><div class="rp-sel" id="mem-api-btn" onclick="openPopup('mem-api-pop')">未選擇</div><input type="hidden" id="mem-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="mem-model-btn" onclick="openPopup('mem-model-pop')">未選擇</div><input type="hidden" id="mem-model-id" value=""></div><div class="f"><label>生成指令</label><textarea rows="4" id="mem-prompt" placeholder="從以下對話中提取重要記憶..." oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發規則（每 N 則對話生成一次）</label><input type="number" id="mem-rule" value="10" min="1" placeholder="例：10"></div></div>
-  <div class="card"><div class="stt">本地向量 Embedding</div>
-  <div style="font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:12px;">使用 transformers.js 在瀏覽器本地運行 Embedding 模型（約 23MB）。首次載入需要下載模型，之後會快取在瀏覽器中。</div>
-  <div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用本地向量搜尋</label><div class="tog" id="set-emb-local" onclick="this.classList.toggle('on')"></div></div>
-  <div class="stt" style="margin-top:10px;">搜尋參數</div><div class="f"><label>相似度門檻（越低撈越多）</label><div class="sr"><input type="range" id="set-vec-threshold" min="0" max="90" value="30" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">0.30</span></div></div><div class="fr"><div class="f"><label>附加資訊筆數</label><input type="number" id="set-vec-extras" value="3" min="1" max="20"></div><div class="f"><label>事件筆數</label><input type="number" id="set-vec-events" value="3" min="1" max="20"></div><div class="f"><label>記憶筆數</label><input type="number" id="set-vec-memories" value="5" min="1" max="30"></div></div><button class="btn bs2" onclick="rebuildAllEmb()" style="width:100%;margin-top:8px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>重新生成所有向量</button></div>
+  <div class="card"><div class="stt">記憶生成</div><div class="f"><label>使用 API</label><div class="rp-sel" id="mem-api-btn" onclick="openPopup('mem-api-pop')">未選擇</div><input type="hidden" id="mem-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="mem-model-btn" onclick="openPopup('mem-model-pop')">未選擇</div><input type="hidden" id="mem-model-id" value=""></div><div class="f"><label>生成指令</label><textarea rows="4" id="mem-prompt" placeholder="從以下對話中提取重要記憶，包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。每條記憶用一行表示，保持簡潔。使用繁體中文。" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發規則（每 N 則對話生成一次）</label><input type="number" id="mem-rule" value="10" min="1" placeholder="例：10"></div></div>
   <div style="margin-top:12px;"><button class="btn bp" onclick="saveMemSettings()">儲存</button></div>
   </div>
 </div></div>
 </div>
-<!-- 連線頁面 → 改為本地儲存管理 -->
+<!-- 儲存管理 -->
 <div class="pnl" id="p-conn"><div class="scr">
   <div class="sh"><div class="sht">儲存管理</div></div>
   <div class="card"><div class="stt">本地儲存狀態</div>
@@ -294,13 +309,17 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 <div class="popup-ov" id="sum-model-pop" onclick="if(event.target===this)closePopup('sum-model-pop')"><div class="popup"><div class="popup-title">摘要模型</div><div id="sum-model-list"></div></div></div>
 <div class="popup-ov" id="mem-api-pop" onclick="if(event.target===this)closePopup('mem-api-pop')"><div class="popup"><div class="popup-title">記憶 API</div><div id="mem-api-list"></div></div></div>
 <div class="popup-ov" id="mem-model-pop" onclick="if(event.target===this)closePopup('mem-model-pop')"><div class="popup"><div class="popup-title">記憶模型</div><div id="mem-model-list"></div></div></div>
+<div class="popup-ov" id="emb-api-pop" onclick="if(event.target===this)closePopup('emb-api-pop')"><div class="popup"><div class="popup-title">Embedding API</div><div id="emb-api-list"></div></div></div>
+<div class="popup-ov" id="emb-model-pop" onclick="if(event.target===this)closePopup('emb-model-pop')"><div class="popup"><div class="popup-title">Embedding 模型</div><div id="emb-model-list"></div></div></div>
 <div class="popup-ov" id="provider-pop" onclick="if(event.target===this)closePopup('provider-pop')"><div class="popup"><div class="popup-title">選擇供應商</div><div class="popup-item active" onclick="pickSel('acfg-provider','anthropic','Anthropic',this,'provider-pop')"><span>Anthropic</span><span class="check">✓</span></div><div class="popup-item" onclick="pickSel('acfg-provider','openai','OpenAI',this,'provider-pop')"><span>OpenAI</span><span class="check">✓</span></div><div class="popup-item" onclick="pickSel('acfg-provider','google','Google',this,'provider-pop')"><span>Google</span><span class="check">✓</span></div><div class="popup-item" onclick="pickSel('acfg-provider','openrouter','OpenRouter',this,'provider-pop')"><span>OpenRouter</span><span class="check">✓</span></div></div></div>
-<!-- Full Pages (same as original) -->
+
+
+<!-- Full Pages -->
 <div class="fp" id="fp-sum"><div class="fp-head"><span class="bk" onclick="closeFP('fp-sum')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">歷史摘要</div><button class="btn bp bs2" onclick="genSummary()">生成</button></div><div class="fp-body full"><div class="f"><label>摘要內容（≤ 500 tokens）</label><textarea rows="30" id="sum-ta" oninput="cntF(this)" style="min-height:50vh;" placeholder="點擊「生成摘要」或手動編輯..."></textarea><div class="ctr">0 字</div></div><div style="padding:0 16px;"><button class="btn bp bs2" onclick="saveSummary()">儲存</button></div></div></div>
 <div class="fp" id="fp-chat-ev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-ev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">事件管理</div></div><div class="fp-body" id="chat-ev-body"></div></div>
 <div class="fp" id="fp-chat-ev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-ev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveChatEv()">儲存</button><button class="btn bdel bs2" onclick="delChatEv()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="cev2-id"><div class="f"><label>名稱</label><input type="text" id="cev2-n"></div><div class="f"><label>觸發關鍵字 / 時間</label><input type="text" id="cev2-t"></div><div class="f"><label>內容</label><textarea rows="30" id="cev2-c" oninput="cntF(this)" style="min-height:280px;"></textarea><div class="ctr">0 字</div></div></div></div>
 <div class="fp" id="fp-chat-mem"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-mem')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">記憶體</div><button class="btn bp bs2" onclick="newChatMem()">+ 新增</button></div><div class="fp-body" id="chat-mem-body"></div></div>
-<div class="fp" id="fp-chat-mem-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-mem-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯記憶</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveChatMem()">儲存</button><button class="btn bdel bs2" onclick="delChatMem()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="cmem-id"><input type="hidden" id="cmem-src" value="db"><div class="f"><label>內容</label><textarea rows="30" id="cmem-c" oninput="cntF(this)" style="min-height:220px;"></textarea><div class="ctr">0 字</div></div></div></div>
+<div class="fp" id="fp-chat-mem-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-mem-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯記憶</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveChatMem()">儲存</button><button class="btn bdel bs2" onclick="delChatMem()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="cmem-id"><input type="hidden" id="cmem-src" value="local"><div class="f"><label>內容</label><textarea rows="30" id="cmem-c" oninput="cntF(this)" style="min-height:220px;"></textarea><div class="ctr">0 字</div></div></div></div>
 <div class="fp" id="fp-cev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title" id="cev-t">預設事件</div><button class="btn bp bs2" onclick="newCEv()">+ 新增</button></div><div class="fp-body" id="cev-body"></div></div>
 <div class="fp" id="fp-cev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveCEv()">儲存</button><button class="btn bdel bs2" onclick="delCEv()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="ev-id"><div class="f"><label>名稱</label><input type="text" id="ev-n"></div><div class="f"><label>時間 / 關鍵字</label><input type="text" id="ev-t"></div><div class="f"><label>內容</label><textarea rows="30" id="ev-c" oninput="cntF(this)" style="min-height:280px;"></textarea><div class="ctr">0 字</div></div></div></div>
 <div class="fp" id="fp-pcmd-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-pcmd-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯常駐指令</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button><button class="btn bdel bs2" onclick="delPcmd()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="pcmd-id"><div class="f"><label>名稱</label><input type="text" id="pcmd-name" placeholder="例：加強情緒描寫"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)" placeholder="這段文字會隨每次訊息一起傳給 AI..."></textarea><div class="ctr">0 字</div></div></div></div>
@@ -311,7 +330,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
   <div class="nv" data-p="chars" onclick="nav(this)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>角色</div>
   <div class="nv" data-p="prof" onclick="nav(this)"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>檔案</div>
   <div class="nv" data-p="sys" onclick="nav(this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>系統</div>
-  <div class="nv" data-p="conn" onclick="nav(this)"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>備份</div>
+  <div class="nv" data-p="conn" onclick="nav(this)"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>資料庫</div>
 </div></div>
 <script>
 // === IndexedDB Data Layer ===
@@ -369,7 +388,34 @@ function bindLongPress(el,fn){let t=null,mv=false;el.addEventListener('touchstar
 // === Avatar Upload ===
 let _avTarget=null,_avUrl=null,_charAvOx=0,_charAvOy=0,_pfAvUrl=null,_pfAvOx=0,_pfAvOy=0;
 function startAvUp(type,id){_avTarget={type,id:id||null};$('av-input').click();}
-async function onAvUpload(inp){if(!inp.files[0]||!_avTarget)return;const f=inp.files[0],id=_avTarget.id||$('ce-id').value,key=_avTarget.type+'_'+id;try{toast('儲存中...');const url=await saveAvatar(key,f);if(_avTarget.type==='char'){const c=await dbGet('characters',id);if(c){c.avatar_url=url;await dbPut('characters',c);}_avUrl=url;renderAvEd('char',url,_charAvOx,_charAvOy);}else{const p=await dbGet('profiles',id);if(p){p.avatar_url=url;await dbPut('profiles',p);}_pfAvUrl=url;renderAvEd('pf',url,_pfAvOx,_pfAvOy);}toast('已儲存');}catch(e){toast('失敗');}inp.value='';}
+let _cropFile=null,_cropScale=1,_cropX=0,_cropY=0,_cropDragging=false,_cropStartX=0,_cropStartY=0,_cropOrigX=0,_cropOrigY=0;
+function onAvUpload(inp){if(!inp.files[0]||!_avTarget)return;_cropFile=inp.files[0];inp.value='';openCrop();}
+function openCrop(){const ov=$('crop-ov'),area=$('crop-area'),img=$('crop-img'),frame=$('crop-frame');
+const url=URL.createObjectURL(_cropFile);img.onload=()=>{
+const maxW=Math.min(innerWidth-32,400),maxH=Math.min(innerHeight-120,400);
+const iw=img.naturalWidth,ih=img.naturalHeight;const scale=Math.min(maxW/iw,maxH/ih,1);
+const dw=Math.round(iw*scale),dh=Math.round(ih*scale);
+area.style.width=dw+'px';area.style.height=dh+'px';
+img.style.width=dw+'px';img.style.height=dh+'px';img.style.left='0px';img.style.top='0px';
+const fw=Math.min(dw,dh)*0.7;frame.style.width=fw+'px';frame.style.height=Math.round(fw*1.25)+'px';frame.style.left=Math.round((dw-fw)/2)+'px';frame.style.top=Math.round((dh-fw*1.25)/2)+'px';
+_cropScale=scale;_cropX=0;_cropY=0;
+area.onmousedown=area.ontouchstart=e=>{e.preventDefault();const t=e.touches?e.touches[0]:e;_cropDragging=true;_cropStartX=t.clientX;_cropStartY=t.clientY;_cropOrigX=parseInt(img.style.left);_cropOrigY=parseInt(img.style.top);};
+document.onmousemove=document.ontouchmove=e=>{if(!_cropDragging)return;const t=e.touches?e.touches[0]:e;img.style.left=(_cropOrigX+(t.clientX-_cropStartX))+'px';img.style.top=(_cropOrigY+(t.clientY-_cropStartY))+'px';};
+document.onmouseup=document.ontouchend=()=>{_cropDragging=false;};
+ov.classList.add('show');};img.src=url;}
+function closeCrop(){$('crop-ov').classList.remove('show');_cropFile=null;document.onmousemove=document.ontouchmove=document.onmouseup=document.ontouchend=null;}
+async function confirmCrop(){const img=$('crop-img'),frame=$('crop-frame'),area=$('crop-area');
+const fx=parseInt(frame.style.left),fy=parseInt(frame.style.top),fw=parseInt(frame.style.width),fh=parseInt(frame.style.height);
+const ix=parseInt(img.style.left),iy=parseInt(img.style.top);
+const sx=(fx-ix)/_cropScale,sy=(fy-iy)/_cropScale,sw=fw/_cropScale,sh=fh/_cropScale;
+const canvas=document.createElement('canvas');canvas.width=360;canvas.height=Math.round(360*(fh/fw));
+const ctx=canvas.getContext('2d');const srcImg=new Image();srcImg.onload=async()=>{ctx.drawImage(srcImg,sx,sy,sw,sh,0,0,canvas.width,canvas.height);
+const dataUrl=canvas.toDataURL('image/webp',0.85);
+const id=_avTarget.id||$('ce-id').value,key=_avTarget.type+'_'+id;
+await dbPut('avatars',{id:key,blob:dataUrl,type:'image/webp',ts:Date.now()});
+if(_avTarget.type==='char'){const c=await dbGet('characters',id);if(c){c.avatar_url=dataUrl;await dbPut('characters',c);}_avUrl=dataUrl;renderAvEd('char',dataUrl,0,0);}
+else{const p=await dbGet('profiles',id);if(p){p.avatar_url=dataUrl;await dbPut('profiles',p);}_pfAvUrl=dataUrl;renderAvEd('pf',dataUrl,0,0);}
+toast('已儲存');closeCrop();loadChars();};srcImg.src=URL.createObjectURL(_cropFile);}
 function renderAvEd(type,url,ox,oy){const wrap=$(type==='char'?'ce-av-wrap':'pf-av-wrap');if(url)wrap.innerHTML='<img src="'+url+'" style="object-position:'+(50+(ox||0))+'% '+(50+(oy||0))+'%">';else wrap.innerHTML=esc('?');}
 let _avOffCache={};function loadAvOff(){_avOffCache=JSON.parse(localStorage.getItem('rp_av_off')||'{}');}function saveAvOff(key,ox,oy){_avOffCache[key]={ox,oy};localStorage.setItem('rp_av_off',JSON.stringify(_avOffCache));}function getAvOff(key){return _avOffCache[key]||{ox:0,oy:0};}
 function pickGen(el,v){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');$('ce-gen').childNodes[0].textContent=v;closePopup('gen-pop');}
@@ -427,7 +473,7 @@ if(s.vec_extras_count)$('set-vec-extras').value=s.vec_extras_count;if(s.vec_even
 ['sum','mem'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});cntF($('sum-prompt'));cntF($('mem-prompt'));}
 
 // API Configs
-async function loadApiCfgs(){_apiCfgs=sortBy(await dbAll('api_configs'),'sort_order');renderApiCfgList();syncPrApiPop();['sum','mem'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});}
+async function loadApiCfgs(){_apiCfgs=sortBy(await dbAll('api_configs'),'sort_order');renderApiCfgList();syncPrApiPop();}
 function renderApiCfgList(){const el=$('api-cfg-list');if(!_apiCfgs.length){el.innerHTML='<div class="empty" style="font-size:13px;">尚未設定 API</div>';return;}el.innerHTML=_apiCfgs.map(a=>'<div class="ev-toggle-item" onclick="openApiCfgEdit(\''+a.id+'\')"><div class="lb"><div class="lt">'+esc(a.name||'未命名')+'</div><div class="ls">'+esc((a.provider||'').charAt(0).toUpperCase()+(a.provider||'').slice(1))+'</div></div><svg style="width:16px;height:16px;color:var(--tx2);stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>').join('');}
 async function addApiCfg(){const r={id:uid(),name:'新 API',provider:'anthropic',api_key:'',sort_order:_apiCfgs.length};await dbPut('api_configs',r);toast('已新增');await loadApiCfgs();openApiCfgEdit(r.id);}
 function openApiCfgEdit(id){const a=_apiCfgs.find(x=>x.id===id);if(!a)return;$('acfg-id').value=a.id;$('acfg-name').value=a.name||'';$('acfg-provider').value=a.provider||'anthropic';$('acfg-provider-btn').childNodes[0].textContent=(a.provider||'anthropic').charAt(0).toUpperCase()+(a.provider||'anthropic').slice(1);$('acfg-key').value=a.api_key||'';$('acfg-test-result').style.display='none';openFP('fp-api-cfg');}
@@ -489,23 +535,16 @@ toast('✅ '+total+' 筆');await initApp();}catch(e){toast('失敗: '+e.message.
 // === INIT ===
 (async()=>{
   history.replaceState({p:'main'},'');
-  try{await openDB();await initApp();}catch(e){console.error('Init error:',e);}
-  const sp=$('splash');if(sp){sp.classList.add('hide');setTimeout(()=>sp.remove(),400);}
+  const splashMin=new Promise(r=>setTimeout(r,800));
+  await openDB();await initApp();
+  await splashMin;await new Promise(r=>setTimeout(r,300));
+  const sp=$('splash');sp.classList.add('hide');setTimeout(()=>sp.remove(),400);
   document.addEventListener('click',hideCtx);
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 async function initApp(){
-  await loadApiCfgs().catch(e=>console.warn('loadApiCfgs',e));
-  await Promise.all([
-    loadSettings().catch(e=>console.warn('loadSettings',e)),
-    loadChars().catch(e=>console.warn('loadChars',e)),
-    loadPr().catch(e=>console.warn('loadPr',e)),
-    loadPf().catch(e=>console.warn('loadPf',e)),
-    loadPcmds().catch(e=>console.warn('loadPcmds',e))
-  ]);
-  await loadChatIndex().catch(e=>console.warn('loadChatIndex',e));
-  try{loadAvOff();}catch(e){console.warn('loadAvOff',e);}
-  try{loadMemRules();}catch(e){console.warn('loadMemRules',e);}
-  try{renderChatList();}catch(e){console.warn('renderChatList',e);}
+  try{await loadApiCfgs();await Promise.all([loadSettings(),loadChars(),loadPr(),loadPf(),loadPcmds()]);loadAvOff();loadMemRules();renderChatList();}
+  catch(e){toast('載入失敗');console.error(e);}
 }
 // ═══ CHAT SYSTEM (IndexedDB) ═══
 let _chatStore={},_curChatId=null,_curChat=null;
@@ -536,10 +575,11 @@ if(c.greeting_message)await appendMsgAwait('ai',c.name,c.greeting_message,c.avat
 if(!c.greeting_scenario&&!c.greeting_message)await appendMsgAwait('system','系統','對話已開始');
 renderChatList();_pendingChatCharId=null;}
 function tplReplace(text){if(!text||!_curChat)return text||'';let s=text;const cn=_curChat.charName||'';let un='';if(_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf)un=pf.name||'';}return s.replace(/\{\{user\}\}/gi,un||'玩家').replace(/\{\{char\}\}/gi,cn);}
-function renderMsgRow(m,idx){const row=document.createElement('div'),t=m.time||'',mc=tplReplace(m.content||''),parsed=marked.parse(mc);row.dataset.msgIdx=idx;
-if(m.role==='system'){row.className='msg-row ai';row.style.maxWidth='100%';row.innerHTML='<div class="msg-body"><div class="msg-bubble" style="background:var(--acl);border:1px dashed var(--ac);color:var(--tx);">'+parsed+'</div><div class="mm">'+t+'</div></div>';}
-else if(m.role==='ai'){row.className='msg-row ai';const ao=_curChat?getAvOff('char_'+_curChat.charId):{ox:0,oy:0};const op='object-position:'+(50+(ao.ox||0))+'% '+(50+(ao.oy||0))+'%';const liveAv=_curChat?_curChat.avatarUrl:m.avUrl;const ah=liveAv?'<div class="msg-av"><img src="'+liveAv+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;'+op+'"></div>':'<div class="msg-av">'+esc((m.name||'?')[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-name">'+esc(m.name)+'</div><div class="msg-bubble">'+parsed+'</div><div class="mm">'+t+'</div></div>';}
-else{row.className='msg-row user';let uav='';if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){const pao=getAvOff('pf_'+pf.id);const pop='object-position:'+(50+(pao.ox||0))+'% '+(50+(pao.oy||0))+'%';uav=pf.avatar_url?'<div class="msg-av"><img src="'+pf.avatar_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;'+pop+'"></div>':'<div class="msg-av">'+esc((pf.name||'?')[0])+'</div>';}}row.innerHTML=uav+'<div class="msg-body"><div class="msg-bubble">'+parsed+'</div><div class="mm">'+t+'</div></div>';}
+function fmt24(t){if(!t)return '';const m=t.match(/^(上午|下午)\s*(\d{1,2}):(\d{2})$/);if(!m)return t;let h=parseInt(m[2]);if(m[1]==='下午'&&h<12)h+=12;if(m[1]==='上午'&&h===12)h=0;return String(h).padStart(2,'0')+':'+m[3];}
+function renderMsgRow(m,idx){const row=document.createElement('div'),t=fmt24(m.time||''),mc=tplReplace(m.content||''),parsed=marked.parse(mc);row.dataset.msgIdx=idx;
+if(m.role==='system'){row.className='msg-row ai';row.style.maxWidth='100%';row.innerHTML='<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble" style="background:var(--acl);border:1px dashed var(--ac);color:var(--tx);">'+parsed+'</div></div></div>';}
+else if(m.role==='ai'){row.className='msg-row ai';const liveAv=_curChat?_curChat.avatarUrl:m.avUrl;const ah=liveAv?'<div class="msg-av"><img src="'+liveAv+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((m.name||'?')[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+(t?'<div class="mm">'+t+'</div>':'')+'</div></div>';}
+else{row.className='msg-row user';let uav='';if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){const av=pf.avatar_url;uav=av?'<div class="msg-av"><img src="'+av+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((pf.name||'?')[0])+'</div>';}}row.innerHTML=uav+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+(t?'<div class="mm">'+t+'</div>':'')+'</div></div>';}
 bindLongPress(row,()=>{if(!_msgDelMode)openMsgBs(idx);});row.addEventListener('click',()=>{if(_msgDelMode)toggleMsgDelSel(idx);});return row;}
 function openMsgBs(idx){$('bs-body').innerHTML='<div class="bs-item" onclick="editMsg('+idx+')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>編輯</div><div class="bs-item" onclick="copyMsg('+idx+')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>複製</div><div class="bs-item danger" onclick="closeBs();startMsgDel('+idx+')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>刪除</div>';$('bs-ov').classList.add('show');}
 function copyMsg(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;navigator.clipboard.writeText(_curChat.msgs[idx].content).then(()=>toast('已複製')).catch(()=>toast('複製失敗'));}
@@ -566,7 +606,7 @@ async function appendMsgAwait(role,name,content,avUrl){const t=new Date().toLoca
 const _isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 function handleCInpKey(e){if(e.key==='Enter'&&!e.shiftKey&&!_isMobile){e.preventDefault();sendMsg();}}
 function sendMsg(){const inp=$('c-inp'),txt=inp.value.trim();if(!txt)return;appendMsg('user','你',txt);inp.value='';inp.style.height='auto';inp.style.height='44px';touchChatTime();saveChatStore();callAI(txt);}
-function showTyping(){const cm=$('c-msgs'),row=document.createElement('div');row.className='msg-row ai';row.id='typing-row';const avUrl=_curChat?_curChat.avatarUrl:'';const name=_curChat?_curChat.charName:'?';const ao=_curChat?getAvOff('char_'+_curChat.charId):{ox:0,oy:0};const op='object-position:'+(50+(ao.ox||0))+'% '+(50+(ao.oy||0))+'%';const ah=avUrl?'<div class="msg-av"><img src="'+avUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;'+op+'"></div>':'<div class="msg-av">'+esc(name[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-name">'+esc(name)+'</div><div style="display:flex;align-items:center;gap:6px;"><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div><div class="stop-btn" onclick="abortAI()"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></div></div></div>';cm.appendChild(row);cm.scrollTop=cm.scrollHeight;}
+function showTyping(){const cm=$('c-msgs'),row=document.createElement('div');row.className='msg-row ai';row.id='typing-row';const name=_curChat?_curChat.charName:'?';const avUrl=_curChat?_curChat.avatarUrl:'';const ah=avUrl?'<div class="msg-av"><img src="'+avUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc(name[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-name">'+esc(name)+'</div><div style="display:flex;align-items:center;gap:6px;"><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div><div class="stop-btn" onclick="abortAI()"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></div></div></div>';cm.appendChild(row);cm.scrollTop=cm.scrollHeight;}
 function hideTyping(){const r=$('typing-row');if(r)r.remove();}
 let _aiAbort=null;
 function abortAI(){if(_aiAbort){_aiAbort.abort();_aiAbort=null;hideTyping();toast('已停止');}}
