@@ -85,7 +85,7 @@ label{display:block;font-size:13px;color:var(--tx2);margin-bottom:4px;font-weigh
 .msg-row.user .msg-bubble{background:var(--msg-user);border:1px solid var(--bd);}
 .msg-row.user .msg-body{padding-top:0;}
 .mm{font-size:10px;color:var(--tx2);flex-shrink:0;white-space:nowrap;line-height:1;padding-bottom:2px;}
-.msg-bmk{flex-shrink:0;padding-bottom:2px;}
+.msg-bmk{flex-shrink:0;align-self:flex-start;margin-top:4px;}
 .hbtn{padding:4px;cursor:pointer;color:var(--tx2);display:flex;align-items:center;}
 .msg-bubble p{margin:0 0 .6em;}.msg-bubble p:last-child{margin:0;}.msg-bubble em{font-style:italic;color:var(--tx2);}.msg-bubble strong{font-weight:600;}.msg-bubble blockquote{border-left:3px solid var(--ac);padding-left:10px;margin:.5em 0;color:var(--tx2);}
 .msg-bubble ol,.msg-bubble ul{margin:0 0 .6em;padding-left:1.6em;}.msg-bubble li{margin-bottom:.3em;}
@@ -279,8 +279,8 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   </div>
   <div class="sp" id="s1"><div class="pl" id="pl"></div><button class="btn bs2" onclick="createPr()" style="margin-bottom:12px;">+ 新增</button><div class="card" id="pr-edit" style="display:none;"><input type="hidden" id="pe-id"><div class="f"><label>名稱</label><input type="text" id="pn"></div><div class="f"><label>使用 API</label><div class="rp-sel" id="pr-api-btn" onclick="openPopup('pr-api-pop')">未選擇</div><input type="hidden" id="pr-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="pr-model-btn" onclick="openPopup('pr-model-pop')">未選擇</div><input type="hidden" id="pr-model-id" value=""></div><div class="f"><label>內容</label><textarea rows="10" id="tp2" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="savePr()">儲存</button><button class="btn bdel bs2" onclick="delPr()">刪除</button></div></div></div>
   <div class="sp" id="s2">
-  <div class="card"><div class="stt">自動摘要</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用自動摘要</label><div class="tog" id="set-sum-auto" onclick="this.classList.toggle('on')"></div></div><div class="f"><label>每幾次 AI 回覆自動摘要</label><input type="number" id="set-sum-interval" value="10" min="3" placeholder="10"></div><div class="f"><label>使用 API</label><div class="rp-sel" id="sum-api-btn" onclick="openPopup('sum-api-pop')">未選擇</div><input type="hidden" id="sum-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="sum-model-btn" onclick="openPopup('sum-model-pop')">未選擇</div><input type="hidden" id="sum-model-id" value=""></div><div class="f"><label>摘要提示詞</label><textarea rows="4" id="sum-prompt" placeholder="你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div></div>
-  <div class="card"><div class="stt">記憶生成</div><div class="f"><label>使用 API</label><div class="rp-sel" id="mem-api-btn" onclick="openPopup('mem-api-pop')">未選擇</div><input type="hidden" id="mem-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="mem-model-btn" onclick="openPopup('mem-model-pop')">未選擇</div><input type="hidden" id="mem-model-id" value=""></div><div class="f"><label>生成指令</label><textarea rows="10" id="mem-prompt" placeholder="從以下對話中提取重要記憶，包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。每條記憶用一行表示，保持簡潔。使用繁體中文。" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發規則（每 N 則訊息生成一次）</label><input type="number" id="mem-rule" value="10" min="1" placeholder="例：10"></div></div>
+  <div class="card"><div class="stt">自動摘要</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用自動摘要</label><div class="tog" id="set-sum-auto" onclick="this.classList.toggle('on')"></div></div><div class="f"><label>使用 API</label><div class="rp-sel" id="sum-api-btn" onclick="openPopup('sum-api-pop')">未選擇</div><input type="hidden" id="sum-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="sum-model-btn" onclick="openPopup('sum-model-pop')">未選擇</div><input type="hidden" id="sum-model-id" value=""></div><div class="f"><label>摘要提示詞</label><textarea rows="10" id="sum-prompt" oninput="cntF(this)">你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。</textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發間隔（每 N 次 AI 回覆）</label><div class="sr"><input type="range" id="set-sum-interval" min="3" max="50" value="10" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">10</span></div></div><div class="f"><label>Max Tokens</label><div class="sr"><input type="range" id="set-sum-tokens" min="100" max="2000" step="50" value="500" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">500</span></div></div></div>
+  <div class="card"><div class="stt">記憶生成</div><div class="f"><label>使用 API</label><div class="rp-sel" id="mem-api-btn" onclick="openPopup('mem-api-pop')">未選擇</div><input type="hidden" id="mem-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="mem-model-btn" onclick="openPopup('mem-model-pop')">未選擇</div><input type="hidden" id="mem-model-id" value=""></div><div class="f"><label>生成指令</label><textarea rows="10" id="mem-prompt" oninput="cntF(this)">從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。</textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發間隔（每 N 則訊息）</label><div class="sr"><input type="range" id="mem-rule" min="5" max="50" value="10" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">10</span></div></div><div class="f"><label>Max Tokens</label><div class="sr"><input type="range" id="set-mem-tokens" min="100" max="2000" step="50" value="500" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">500</span></div></div></div>
   <div style="margin-top:12px;"><button class="btn bp" onclick="saveMemSettings()">儲存</button></div>
   </div>
 </div></div>
@@ -557,16 +557,18 @@ async function loadSettings(){const s=await dbGet('settings',SETTINGS_ID);if(s){
 function getSettings(){return _settings;}
 async function saveSettings(){await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,theme:document.body.className||'default',emb_local:$('set-emb-local').classList.contains('on'),vec_threshold:parseFloat((parseInt($('set-vec-threshold').value)/100).toFixed(2)),vec_extras_count:parseInt($('set-vec-extras').value)||3,vec_events_count:parseInt($('set-vec-events').value)||3,vec_memories_count:parseInt($('set-vec-memories').value)||5});toast('已儲存');}
 async function saveMemSettings(){await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,
-mem_prompt:$('mem-prompt').value,mem_rule:parseInt($('mem-rule').value)||10,
-auto_summary:$('set-sum-auto').classList.contains('on'),summary_interval:parseInt($('set-sum-interval').value)||10,summary_prompt:$('sum-prompt').value,
+mem_prompt:$('mem-prompt').value,mem_rule:parseInt($('mem-rule').value)||10,mem_tokens:parseInt($('set-mem-tokens').value)||500,
+auto_summary:$('set-sum-auto').classList.contains('on'),summary_interval:parseInt($('set-sum-interval').value)||10,summary_prompt:$('sum-prompt').value,sum_tokens:parseInt($('set-sum-tokens').value)||500,
 sum_api_id:$('sum-api-id').value||null,sum_model:$('sum-model-id').value||null,
 mem_api_id:$('mem-api-id').value||null,mem_model:$('mem-model-id').value||null,
 emb_local:$('set-emb-local').classList.contains('on'),
 vec_threshold:parseFloat((parseInt($('set-vec-threshold').value)/100).toFixed(2)),
 vec_extras_count:parseInt($('set-vec-extras').value)||3,vec_events_count:parseInt($('set-vec-events').value)||3,vec_memories_count:parseInt($('set-vec-memories').value)||5});toast('已儲存');}
 async function loadMemRules(){const s=_settings;if(!s)return;
-if(s.mem_prompt)$('mem-prompt').value=s.mem_prompt;if(s.mem_rule)$('mem-rule').value=s.mem_rule;
-if(s.summary_prompt)$('sum-prompt').value=s.summary_prompt;if(s.auto_summary)$('set-sum-auto').classList.add('on');if(s.summary_interval)$('set-sum-interval').value=s.summary_interval;
+if(s.mem_prompt)$('mem-prompt').value=s.mem_prompt;if(s.mem_rule){$('mem-rule').value=s.mem_rule;$('mem-rule').nextElementSibling.textContent=s.mem_rule;}
+if(s.mem_tokens){$('set-mem-tokens').value=s.mem_tokens;$('set-mem-tokens').nextElementSibling.textContent=s.mem_tokens;}
+if(s.summary_prompt)$('sum-prompt').value=s.summary_prompt;if(s.auto_summary)$('set-sum-auto').classList.add('on');if(s.summary_interval){$('set-sum-interval').value=s.summary_interval;$('set-sum-interval').nextElementSibling.textContent=s.summary_interval;}
+if(s.sum_tokens){$('set-sum-tokens').value=s.sum_tokens;$('set-sum-tokens').nextElementSibling.textContent=s.sum_tokens;}
 if(s.emb_local)$('set-emb-local').classList.add('on');
 if(s.sum_api_id){$('sum-api-id').value=s.sum_api_id;const a=_apiCfgs.find(x=>x.id===s.sum_api_id);$('sum-api-btn').childNodes[0].textContent=a?a.name:'未選擇';}
 if(s.sum_model){$('sum-model-id').value=s.sum_model;$('sum-model-btn').childNodes[0].textContent=s.sum_model;}
@@ -730,10 +732,10 @@ renderChatList();_pendingChatCharId=null;}
 function tplReplace(text){if(!text||!_curChat)return text||'';let s=text;const cn=_curChat.charName||'';let un='';if(_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf)un=pf.name||'';}return s.replace(/\{\{user\}\}/gi,un||'玩家').replace(/\{\{char\}\}/gi,cn);}
 function fmt24(t){if(!t)return '';const m=t.match(/^(上午|下午)\s*(\d{1,2}):(\d{2})$/);if(!m)return t;let h=parseInt(m[2]);if(m[1]==='下午'&&h<12)h+=12;if(m[1]==='上午'&&h===12)h=0;return String(h).padStart(2,'0')+':'+m[3];}
 function renderMsgRow(m,idx){const row=document.createElement('div'),t=m.date?fmtMsgTime(m.date):fmt24(m.time||''),mc=tplReplace(m.content||''),parsed=marked.parse(mc);row.dataset.msgIdx=idx;
-const bmk=m.bookmarked?'<svg class="msg-bmk" viewBox="0 0 24 24" width="13" height="13" fill="var(--ac)" stroke="var(--ac)" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>':'';
+const bmk=m.bookmarked?'<div class="msg-bmk"><svg viewBox="0 0 24 24" width="18" height="18" fill="var(--ac)" stroke="var(--ac)" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>':'';
 if(m.role==='system'){row.className='msg-row ai';row.style.maxWidth='100%';row.innerHTML='<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble" style="background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);font-size:13px;font-style:italic;">'+parsed+'</div></div></div>';}
-else if(m.role==='ai'){row.className='msg-row ai';const liveAv=_curChat?_curChat.avatarUrl:m.avUrl;const ah=liveAv?'<div class="msg-av"><img src="'+liveAv+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((m.name||'?')[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+bmk+(t?'<div class="mm">'+t+'</div>':'')+'</div></div>';}
-else{row.className='msg-row user';let uav='';if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){const av=pf.avatar_url;uav=av?'<div class="msg-av"><img src="'+av+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((pf.name||'?')[0])+'</div>';}}row.innerHTML=uav+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+bmk+(t?'<div class="mm">'+t+'</div>':'')+'</div></div>';}
+else if(m.role==='ai'){row.className='msg-row ai';const liveAv=_curChat?_curChat.avatarUrl:m.avUrl;const ah=liveAv?'<div class="msg-av"><img src="'+liveAv+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((m.name||'?')[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+(t?'<div class="mm">'+t+'</div>':'')+'</div></div>'+bmk;}
+else{row.className='msg-row user';let uav='';if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){const av=pf.avatar_url;uav=av?'<div class="msg-av"><img src="'+av+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((pf.name||'?')[0])+'</div>';}}row.innerHTML=bmk+uav+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+(t?'<div class="mm">'+t+'</div>':'')+'</div></div>';}
 bindLongPress(row,()=>{if(_ssMode)toggleSSMode();else if(!_msgDelMode)openMsgBs(idx);});row.addEventListener('click',()=>{if(_longPressBlock)return;if(_msgDelMode)toggleMsgDelSel(idx);else if(_ssMode)toggleSS(idx);});return row;}
 function openMsgBs(idx){const m=_curChat&&_curChat.msgs[idx];const isBm=m&&m.bookmarked;$('bs-body').innerHTML='<div class="bs-item" onclick="editMsg('+idx+')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>編輯</div><div class="bs-item" onclick="toggleBookmark('+idx+')"><svg viewBox="0 0 24 24"'+(isBm?' fill="var(--ac)"':'')+'><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>'+(isBm?'取消書籤':'加入書籤')+'</div><div class="bs-item" onclick="copyMsg('+idx+')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>複製</div><div class="bs-item" onclick="closeBs();startScreenshot('+idx+')"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>截圖</div><div class="bs-item danger" onclick="closeBs();startMsgDel('+idx+')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>刪除</div>';$('bs-ov').classList.add('show');}
 function copyMsg(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;navigator.clipboard.writeText(_curChat.msgs[idx].content).then(()=>toast('已複製')).catch(()=>toast('複製失敗'));}
@@ -749,9 +751,11 @@ let _msgDelMode=false,_msgDelSel=new Set();
 async function toggleBookmark(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;
 _curChat.msgs[idx].bookmarked=!_curChat.msgs[idx].bookmarked;
 if(_curChatId){const rows=sortBy(await dbByIndex('messages','chat_id',_curChatId),'sort_order');if(rows[idx])await dbPut('messages',{...rows[idx],bookmarked:_curChat.msgs[idx].bookmarked});}
-toast(_curChat.msgs[idx].bookmarked?'已加入書籤':'已取消書籤');refreshMsgs();}
+toast(_curChat.msgs[idx].bookmarked?'已加入書籤':'已取消書籤');
+const oldRow=document.querySelector('.msg-row[data-msg-idx="'+idx+'"]');if(oldRow){const newRow=renderMsgRow(_curChat.msgs[idx],idx);oldRow.replaceWith(newRow);}}
 function openBookmarks(){if(!_curChat)return;const bms=[];(_curChat.msgs||[]).forEach((m,i)=>{if(m.bookmarked)bms.push({idx:i,m});});
-$('bs-body').innerHTML=bms.length?bms.map(b=>{const pv=b.m.content.replace(/[*#_`>\n]+/g,' ').substring(0,60);const who=b.m.role==='ai'?(_curChat.charName||'AI'):'玩家';return '<div class="bs-item" onclick="closeBs();scrollToMsg('+b.idx+')"><svg viewBox="0 0 24 24" fill="var(--ac)" stroke="var(--ac)" stroke-width="2" style="flex-shrink:0;"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;">'+esc(who)+'</div><div style="font-size:12px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(pv)+'</div></div></div>';}).join(''):'<div style="padding:20px;text-align:center;color:var(--tx2);font-size:14px;">尚無書籤</div>';
+let playerName='玩家';if(_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf)playerName=pf.name||'玩家';}
+$('bs-body').innerHTML=bms.length?bms.map(b=>{const pv=b.m.content.replace(/[*#_`>\n]+/g,' ').substring(0,60);const who=b.m.role==='ai'?(_curChat.charName||'AI'):playerName;return '<div class="bs-item" onclick="closeBs();scrollToMsg('+b.idx+')"><svg viewBox="0 0 24 24" fill="var(--ac)" stroke="var(--ac)" stroke-width="2" style="flex-shrink:0;width:18px;height:18px;"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;">'+esc(who)+'</div><div style="font-size:12px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(pv)+'</div></div></div>';}).join(''):'<div style="padding:20px;text-align:center;color:var(--tx2);font-size:14px;">尚無書籤</div>';
 $('bs-ov').classList.add('show');}
 function scrollToMsg(idx){const row=document.querySelector('.msg-row[data-msg-idx="'+idx+'"]');if(row){row.scrollIntoView({behavior:'smooth',block:'center'});row.style.transition='background .3s';row.style.background='var(--ac-bg)';setTimeout(()=>{row.style.background='';},1500);}}
 function startMsgDel(initIdx){_msgDelMode=true;_msgDelSel.clear();_msgDelSel.add(initIdx);$('cv').classList.add('msg-del-mode');$('msg-del-bar').classList.add('show');$('msg-del-banner').classList.add('show');$('ci').style.display='none';updateMsgDelUI();}
@@ -896,15 +900,15 @@ return data.choices&&data.choices[0]?data.choices[0].message.content:'';}
 async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定摘要 API/模型');return;}
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-10);if(endIdx<1){toast('對話太短');return;}
 let transcript='';for(let i=0;i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
-toast('生成摘要…');const sysPr=getSettings().summary_prompt||'你是對話摘要助手。將以下 RP 對話濃縮成簡潔摘要，保留重要劇情、角色關係和關鍵事件。500 tokens 以內。繁體中文。';
-const text=await callApiSimple(apiCfg,sysPr,'請摘要以下對話：\n\n'+transcript,500,0.3);
+toast('生成摘要…');const sysPr=getSettings().summary_prompt||'你是對話摘要助手。將以下 RP 對話濃縮成簡潔摘要，保留重要劇情、角色關係和關鍵事件。500 tokens 以內。繁體中文。';const sumTok=parseInt(getSettings().sum_tokens)||500;
+const text=await callApiSimple(apiCfg,sysPr,'請摘要以下對話：\n\n'+transcript,sumTok,0.3);
 if(text){$('sum-ta').value=text;cntF($('sum-ta'));_curChat.summary=text;saveChatStore();toast('已生成');}else toast('生成失敗');}
 async function autoGenSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-10);if(endIdx<1)return;
 let transcript=(_curChat.summary?'[上次摘要]\n'+_curChat.summary+'\n\n[新對話]\n':'');
 for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
-const sysPr=getSettings().summary_prompt||'你是對話摘要助手。合併濃縮成簡潔摘要。500 tokens 以內。繁體中文。';
-const text=await callApiSimple(apiCfg,sysPr,'請合併摘要：\n\n'+transcript,500,0.3);
+const sysPr=getSettings().summary_prompt||'你是對話摘要助手。合併濃縮成簡潔摘要。500 tokens 以內。繁體中文。';const sumTok2=parseInt(getSettings().sum_tokens)||500;
+const text=await callApiSimple(apiCfg,sysPr,'請合併摘要：\n\n'+transcript,sumTok2,0.3);
 if(text){_curChat.summary=text;saveChatStore();toast('摘要已更新');}}
 
 // ═══ Auto Memory Generation ═══
@@ -915,12 +919,12 @@ const interval=parseInt(s.mem_rule)||10;
 const msgCount=(chat.msgs||[]).filter(m=>m.role==='ai'||m.role==='user').length;
 if(msgCount<1||msgCount%interval!==0)return;
 toast('記憶生成中…');
-toast('記憶生成中…');
 const msgs=chat.msgs||[];const start=Math.max(0,msgs.length-interval*2);
 let transcript='';for(let i=start;i<msgs.length;i++){const m=msgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
 if(!transcript.trim())return;
 const defPrompt='從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。';
-const text=await callApiSimple(apiCfg,s.mem_prompt||defPrompt,transcript,500,0.3);
+const memTok=parseInt(s.mem_tokens)||500;
+const text=await callApiSimple(apiCfg,s.mem_prompt||defPrompt,transcript,memTok,0.3);
 if(!text||!text.trim())return;
 const date=new Date().toISOString().slice(0,10);const nid=uid();
 await dbPut('memories',{id:nid,chat_id:chatId,content:text.trim(),date});embedAndPatch('memories',nid,text.trim());
