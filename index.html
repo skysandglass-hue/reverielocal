@@ -282,7 +282,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div class="sp" id="s1"><div class="pl" id="pl"></div><button class="btn bs2" onclick="createPr()" style="margin-bottom:12px;">+ 新增</button><div class="card" id="pr-edit" style="display:none;"><input type="hidden" id="pe-id"><div class="f"><label>名稱</label><input type="text" id="pn"></div><div class="f"><label>使用 API</label><div class="rp-sel" id="pr-api-btn" onclick="openPopup('pr-api-pop')">未選擇</div><input type="hidden" id="pr-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="pr-model-btn" onclick="openPopup('pr-model-pop')">未選擇</div><input type="hidden" id="pr-model-id" value=""></div><div class="f"><label>內容</label><textarea rows="10" id="tp2" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="savePr()">儲存</button><button class="btn bdel bs2" onclick="delPr()">刪除</button></div></div></div>
   <div class="sp" id="s2">
   <div class="card"><div class="stt">自動摘要</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用自動摘要</label><div class="tog" id="set-sum-auto" onclick="this.classList.toggle('on')"></div></div><div class="f"><label>每幾次 AI 回覆自動摘要</label><input type="number" id="set-sum-interval" value="10" min="3" placeholder="10"></div><div class="f"><label>使用 API</label><div class="rp-sel" id="sum-api-btn" onclick="openPopup('sum-api-pop')">未選擇</div><input type="hidden" id="sum-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="sum-model-btn" onclick="openPopup('sum-model-pop')">未選擇</div><input type="hidden" id="sum-model-id" value=""></div><div class="f"><label>摘要提示詞</label><textarea rows="4" id="sum-prompt" placeholder="你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div></div>
-  <div class="card"><div class="stt">記憶生成</div><div class="f"><label>使用 API</label><div class="rp-sel" id="mem-api-btn" onclick="openPopup('mem-api-pop')">未選擇</div><input type="hidden" id="mem-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="mem-model-btn" onclick="openPopup('mem-model-pop')">未選擇</div><input type="hidden" id="mem-model-id" value=""></div><div class="f"><label>生成指令</label><textarea rows="10" id="mem-prompt" placeholder="從以下對話中提取重要記憶，包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。每條記憶用一行表示，保持簡潔。使用繁體中文。" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發規則（每 N 則對話生成一次）</label><input type="number" id="mem-rule" value="10" min="1" placeholder="例：10"></div></div>
+  <div class="card"><div class="stt">記憶生成</div><div class="f"><label>使用 API</label><div class="rp-sel" id="mem-api-btn" onclick="openPopup('mem-api-pop')">未選擇</div><input type="hidden" id="mem-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="mem-model-btn" onclick="openPopup('mem-model-pop')">未選擇</div><input type="hidden" id="mem-model-id" value=""></div><div class="f"><label>生成指令</label><textarea rows="10" id="mem-prompt" placeholder="從以下對話中提取重要記憶，包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。每條記憶用一行表示，保持簡潔。使用繁體中文。" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發規則（每 N 則訊息生成一次）</label><input type="number" id="mem-rule" value="10" min="1" placeholder="例：10"></div></div>
   <div style="margin-top:12px;"><button class="btn bp" onclick="saveMemSettings()">儲存</button></div>
   </div>
 </div></div>
@@ -557,7 +557,7 @@ let _settings={};let _apiCfgs=[];const SETTINGS_ID='_singleton';
 async function saveSettingsObj(obj){obj.id=SETTINGS_ID;_settings=obj;await dbPut('settings',obj);}
 async function loadSettings(){const s=await dbGet('settings',SETTINGS_ID);if(s){_settings=s;if(s.temperature!=null){$('set-temp').value=Math.round(s.temperature*100);$('set-temp').nextElementSibling.textContent=s.temperature.toFixed(2);}if(s.max_input_tokens)$('set-maxin').value=s.max_input_tokens;if(s.max_output_tokens)$('set-maxout').value=s.max_output_tokens;if(s.theme&&s.theme!=='default')document.body.className=s.theme;syncThemeDots();}}
 function getSettings(){return _settings;}
-async function saveSettings(){await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,temperature:parseFloat((parseInt($('set-temp').value)/100).toFixed(2)),max_input_tokens:parseInt($('set-maxin').value)||128000,max_output_tokens:parseInt($('set-maxout').value)||4096,theme:document.body.className||'default'});toast('已儲存');}
+async function saveSettings(){await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,temperature:parseFloat((parseInt($('set-temp').value)/100).toFixed(2)),max_input_tokens:parseInt($('set-maxin').value)||128000,max_output_tokens:parseInt($('set-maxout').value)||4096,theme:document.body.className||'default',emb_local:$('set-emb-local').classList.contains('on'),vec_threshold:parseFloat((parseInt($('set-vec-threshold').value)/100).toFixed(2)),vec_extras_count:parseInt($('set-vec-extras').value)||3,vec_events_count:parseInt($('set-vec-events').value)||3,vec_memories_count:parseInt($('set-vec-memories').value)||5});toast('已儲存');}
 async function saveMemSettings(){await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,
 mem_prompt:$('mem-prompt').value,mem_rule:parseInt($('mem-rule').value)||10,
 auto_summary:$('set-sum-auto').classList.contains('on'),summary_interval:parseInt($('set-sum-interval').value)||10,summary_prompt:$('sum-prompt').value,
@@ -703,9 +703,9 @@ async function initApp(){
 // ═══ CHAT SYSTEM (IndexedDB) ═══
 let _chatStore={},_curChatId=null,_curChat=null;
 async function loadChatIndex(){const rows=sortBy(await dbAll('chats'),'updated_at','desc');_chatStore={};rows.forEach(r=>{_chatStore[r.id]={charId:r.char_id,charName:r.char_name||'',windowName:r.window_name||'',avatarUrl:r.avatar_url||'',rpId:r.rp_id,playerId:r.player_id,pinned:r.pinned||false,draft:r.draft||'',summary:r.summary||'',pcmdToggles:r.pcmd_toggles||{},updated:r.updated_at||0,msgs:null};});}
-async function loadChatMsgs(chatId){const rows=sortBy(await dbByIndex('messages','chat_id',chatId),'sort_order');return rows.map(r=>({role:r.role,name:r.name||'',content:r.content||'',time:r.time||'',avUrl:r.av_url||''}));}
+async function loadChatMsgs(chatId){const rows=sortBy(await dbByIndex('messages','chat_id',chatId),'sort_order');return rows.map(r=>({role:r.role,name:r.name||'',content:r.content||'',time:r.time||'',date:r.date||'',avUrl:r.av_url||''}));}
 async function saveChatMeta(){if(!_curChatId||!_curChat)return;_chatStore[_curChatId]=_curChat;await dbPut('chats',{id:_curChatId,char_id:_curChat.charId,char_name:_curChat.charName,window_name:_curChat.windowName||'',avatar_url:_curChat.avatarUrl||'',rp_id:_curChat.rpId||null,player_id:_curChat.playerId||null,pinned:_curChat.pinned||false,draft:_curChat.draft||'',summary:_curChat.summary||'',pcmd_toggles:_curChat.pcmdToggles||{},updated_at:new Date(_curChat.updated||Date.now()).toISOString()});}
-async function saveMsg(chatId,msg,idx){await dbPut('messages',{id:uid(),chat_id:chatId,role:msg.role,name:msg.name||'',content:msg.content||'',time:msg.time||'',av_url:msg.avUrl||'',sort_order:idx});}
+async function saveMsg(chatId,msg,idx){await dbPut('messages',{id:uid(),chat_id:chatId,role:msg.role,name:msg.name||'',content:msg.content||'',time:msg.time||'',date:msg.date||'',av_url:msg.avUrl||'',sort_order:idx});}
 function saveChatStore(){saveChatMeta().catch(e=>console.error(e));}
 function touchChatTime(){if(_curChat)_curChat.updated=Date.now();}
 function openNewChatPicker(){if(!chars||!chars.length){toast('請先建立角色');return;}$('newchat-list').innerHTML=chars.map(c=>{const ao=getAvOff('char_'+c.id);return '<div class="popup-item" onclick="startNewChat(\''+c.id+'\')" style="gap:10px;">'+avH(c.avatar_url,c.name,36,ao.ox,ao.oy)+'<span style="flex:1">'+esc(c.name)+'</span></div>';}).join('');openPopup('newchat-pop');}
@@ -901,21 +901,21 @@ if(text){_curChat.summary=text;saveChatStore();toast('摘要已更新');}}
 // ═══ Auto Memory Generation ═══
 async function autoGenMemory(chat,chatId){if(!chat)return;
 const s=getSettings();const apiCfg=getFeatureApiCfg('mem');
-if(!apiCfg||!apiCfg.api_key||!apiCfg.model){alert('[debug] 記憶未設定\napiCfg:'+(apiCfg?'有':'無')+'\nkey:'+(apiCfg&&apiCfg.api_key?'有':'無')+'\nmodel:'+(apiCfg?apiCfg.model:'null'));return;}
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const interval=parseInt(s.mem_rule)||10;
-const aiCount=(chat.msgs||[]).filter(m=>m.role==='ai').length;
-if(aiCount<1||aiCount%interval!==0){alert('[debug] 記憶未到\nAI回覆數:'+aiCount+'\n間隔:'+interval+'\n餘數:'+aiCount%interval);return;}
+const msgCount=(chat.msgs||[]).filter(m=>m.role==='ai'||m.role==='user').length;
+if(msgCount<1||msgCount%interval!==0)return;
+toast('記憶生成中…');
 toast('記憶生成中…');
 const msgs=chat.msgs||[];const start=Math.max(0,msgs.length-interval*2);
 let transcript='';for(let i=start;i<msgs.length;i++){const m=msgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
 if(!transcript.trim())return;
-const defPrompt='從以下對話中提取重要記憶，包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。每條記憶用一行表示，保持簡潔。使用繁體中文。只輸出記憶條目，不要任何前綴或解釋。';
+const defPrompt='從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。';
 const text=await callApiSimple(apiCfg,s.mem_prompt||defPrompt,transcript,500,0.3);
 if(!text||!text.trim())return;
-const lines=text.split('\n').map(l=>l.replace(/^[-•\d.]\s*/,'').trim()).filter(l=>l.length>2);
-let saved=0;const date=new Date().toISOString().slice(0,10);
-for(const line of lines){const nid=uid();await dbPut('memories',{id:nid,chat_id:chatId,content:line,date});embedAndPatch('memories',nid,line);saved++;}
-if(saved)toast('已生成 '+saved+' 條記憶');}
+const date=new Date().toISOString().slice(0,10);const nid=uid();
+await dbPut('memories',{id:nid,chat_id:chatId,content:text.trim(),date});embedAndPatch('memories',nid,text.trim());
+toast('已生成記憶');}
 
 // ═══ Chat List ═══
 async function renameChatInline(){if(!_curChat||!_curChatId)return;const name=await inp('修改視窗名稱',_curChat.windowName||_curChat.charName);if(name===null)return;_curChat.windowName=name.trim()||_curChat.charName;$('c-name').textContent=_curChat.windowName;saveChatStore();renderChatList();toast('已儲存');}
@@ -974,7 +974,9 @@ let dbMems=sortBy(await dbByIndex('memories','chat_id',_curChatId),'sort_order',
 const localMems=(_curChat.memories||[]).map((m,i)=>({_local:true,_idx:i,content:typeof m==='string'?m:(m.content||''),date:typeof m==='object'?m.date:''}));
 const allMems=[...dbMems.map(m=>({...m,_local:false})),...localMems];
 if(!allMems.length){b.innerHTML='<div class="empty">尚未建立記憶</div>';}else{
+let lastMemDate='';
 allMems.forEach(m=>{const isDb=!m._local;const mid=isDb?m.id:('l'+m._idx);const src=isDb?'db':'local';
+const memDate=m.date||'';if(memDate&&memDate!==lastMemDate){const sep=document.createElement('div');sep.style.cssText='text-align:center;font-size:12px;color:var(--tx2);padding:8px 0 4px;';sep.textContent=memDate;b.appendChild(sep);lastMemDate=memDate;}
 const card=document.createElement('div');card.className='card';card.style.marginBottom='12px';
 card.innerHTML='<div style="display:flex;align-items:flex-start;gap:8px;"><div style="flex:1;font-size:13px;line-height:1.7;color:var(--tx);cursor:pointer;" onclick="'+(isDb?"openDbMemD('"+mid+"')":"openChatMemD("+m._idx+")")+'">'+esc(m.content)+'</div><div class="mem-dots" style="flex-shrink:0;padding:4px;cursor:pointer;color:var(--tx2);" onclick="event.stopPropagation();showMemDots(this,\''+src+'\',\''+mid+'\')"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></div></div>';
 b.appendChild(card);});}
