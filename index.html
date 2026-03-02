@@ -545,7 +545,7 @@ function initLPDrag(container,selector,onSave){
 // Drag-save helpers (IndexedDB)
 async function saveCharOrder(c){const items=c.querySelectorAll('.li[data-charid]');const nc=[];for(let i=0;i<items.length;i++){const id=items[i].dataset.charid,ch=chars.find(x=>x.id===id);if(ch){nc.push(ch);ch.sort_order=i;const o=await dbGet('characters',id);if(o){o.sort_order=i;await dbPut('characters',o);}}}chars=nc;}
 async function savePfOrder(c){const items=c.querySelectorAll('.li[data-pfid]');const np=[];for(let i=0;i<items.length;i++){const id=items[i].dataset.pfid,p=profiles.find(x=>x.id===id);if(p){np.push(p);const o=await dbGet('profiles',id);if(o){o.sort_order=i;await dbPut('profiles',o);}}}profiles=np;}
-async function savePromptOrder(c){const items=c.querySelectorAll('.pi[data-prid]');const np=[];for(let i=0;i<items.length;i++){const id=items[i].getAttribute('data-prid'),p=prompts.find(x=>x.id===id);if(p){np.push(p);const o=await dbGet('prompts',id);if(o){o.sort_order=i;await dbPut('prompts',o);}}}prompts=np;}
+async function savePromptOrder(c){const items=c.querySelectorAll('.pi[data-prid]');const np=[];for(let i=0;i<items.length;i++){const id=items[i].getAttribute('data-prid'),p=prompts.find(x=>x.id===id);if(p){np.push(p);const o=await dbGet('prompts',id);if(o){o.sort_order=i;await dbPut('prompts',o);}}}prompts=np;renderPr();}
 async function saveEvOrder(c,store,attr){const items=c.querySelectorAll('.ev-toggle-item['+attr+']');for(let i=0;i<items.length;i++){const id=items[i].getAttribute(attr);const o=await dbGet(store,id);if(o){o.sort_order=i;await dbPut(store,o);}}}
 async function savePcmdOrder(c){const items=c.querySelectorAll('.ev-toggle-item[data-pcid]');const np=[];for(let i=0;i<items.length;i++){const id=items[i].getAttribute('data-pcid'),p=_pcmds.find(x=>x.id===id);if(p){np.push(p);const o=await dbGet('persistent_commands',id);if(o){o.sort_order=i;await dbPut('persistent_commands',o);}}}_pcmds=np;}
 // Convenience wrappers
@@ -588,6 +588,8 @@ let _settings={};let _apiCfgs=[];const SETTINGS_ID='_singleton';
 async function saveSettingsObj(obj){obj.id=SETTINGS_ID;_settings=obj;await dbPut('settings',obj);}
 async function loadSettings(){const s=await dbGet('settings',SETTINGS_ID);if(s){_settings=s;if(s.theme&&s.theme!=='default')document.body.className=s.theme;syncThemeDots();}}
 function getSettings(){return _settings;}
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&_curChat){_curChat.draft=$('c-inp').value||'';saveChatStore();}});
+window.addEventListener('beforeunload',()=>{if(_curChat){_curChat.draft=$('c-inp').value||'';}});
 async function saveSettings(){await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,theme:document.body.className||'default',emb_local:$('set-emb-local').classList.contains('on'),vec_threshold:parseFloat((parseInt($('set-vec-threshold').value)/100).toFixed(2)),vec_extras_count:parseInt($('set-vec-extras').value)||3,vec_events_count:parseInt($('set-vec-events').value)||3,vec_memories_count:parseInt($('set-vec-memories').value)||5});toast('已儲存');}
 async function saveMemSettings(){await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,
 mem_prompt:$('mem-prompt').value,mem_rule:parseInt($('mem-rule').value)||10,mem_tokens:parseInt($('set-mem-tokens').value)||500,
@@ -867,8 +869,8 @@ const pcmdTxt=getActivePcmds();if(pcmdTxt&&msgs.length){for(let i=msgs.length-1;
 return msgs;}
 
 // ═══ Screenshot ═══
-let _ssMode=false,_ssSel=new Set(),_ssStart=-1,_ssEnd=-1,_ssFree=false,_ssLongFired=false;
-function startScreenshot(initIdx){_ssMode=true;_ssFree=false;_ssLongFired=false;_ssSel.clear();_ssStart=initIdx;_ssEnd=initIdx;_ssSel.add(initIdx);$('cv').classList.add('msg-ss-mode');$('msg-ss-bar').classList.add('show');$('msg-ss-banner').classList.add('show');$('ci').style.display='none';updateSSBanner();updateSSVisual();}
+let _ssMode=false,_ssSel=new Set(),_ssStart=-1,_ssEnd=-1,_ssFree=false;
+function startScreenshot(initIdx){_ssMode=true;_ssFree=false;_ssSel.clear();_ssStart=initIdx;_ssEnd=initIdx;_ssSel.add(initIdx);$('cv').classList.add('msg-ss-mode');$('msg-ss-bar').classList.add('show');$('msg-ss-banner').classList.add('show');$('ci').style.display='none';updateSSBanner();updateSSVisual();}
 function cancelScreenshot(){_ssMode=false;_ssFree=false;_ssSel.clear();_ssStart=-1;_ssEnd=-1;$('cv').classList.remove('msg-ss-mode');$('msg-ss-bar').classList.remove('show');$('msg-ss-banner').classList.remove('show');$('ci').style.display='flex';document.querySelectorAll('.msg-row').forEach(r=>r.classList.remove('msg-ss-sel'));}
 function toggleSSMode(){_ssFree=!_ssFree;if(!_ssFree&&_ssSel.size){const arr=[..._ssSel].sort((a,b)=>a-b);_ssStart=arr[0];_ssEnd=arr[arr.length-1];_ssSel.clear();for(let i=_ssStart;i<=_ssEnd;i++)_ssSel.add(i);}updateSSBanner();updateSSVisual();}
 function updateSSBanner(){$('msg-ss-banner').innerHTML=_ssFree?'自由模式：點選個別訊息 <span style="opacity:.7;font-size:12px;">（長按切換範圍模式）</span>':'範圍模式：點選起點與終點 <span style="opacity:.7;font-size:12px;">（長按切換自由模式）</span>';}
@@ -909,7 +911,7 @@ const canvas=await h2c(wrap,{backgroundColor:bgColor||'#000000',scale:2,useCORS:
 document.body.removeChild(wrap);
 const pvOv=document.createElement('div');
 pvOv.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:99999;display:flex;align-items:center;justify-content:center;padding:0;box-sizing:border-box;';
-pvOv.onclick=e=>{if(e.target===pvOv)pvOv.remove();};
+pvOv.onclick=e=>{if(e.target===pvOv){pvOv.remove();cancelScreenshot();}};
 const pvImg=document.createElement('img');
 pvImg.src=canvas.toDataURL('image/png');
 pvImg.style.cssText='max-width:100%;max-height:100%;object-fit:contain;';
@@ -948,11 +950,12 @@ if(text){_curChat.summary=text;saveChatStore();toast('摘要已更新');}}
 
 // ═══ Auto Memory Generation ═══
 async function autoGenMemory(chat,chatId){if(!chat)return;
-const s=getSettings();const apiCfg=getFeatureApiCfg('mem');
+const s=getSettings();let apiCfg=getFeatureApiCfg('mem');
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model){apiCfg=getApiCfgForPrompt(chat.rpId);}
 if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const interval=parseInt(s.mem_rule)||10;
 const msgCount=(chat.msgs||[]).filter(m=>m.role==='ai'||m.role==='user').length;
-if(msgCount<1||msgCount%interval!==0)return;
+if(msgCount<interval||msgCount%interval!==0)return;
 toast('記憶生成中…');
 const msgs=chat.msgs||[];const start=Math.max(0,msgs.length-interval*2);
 let transcript='';for(let i=start;i<msgs.length;i++){const m=msgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
@@ -997,7 +1000,7 @@ _curChat.msgs=await loadChatMsgs(id);cm.innerHTML='';
 const total=_curChat.msgs.length;const startIdx=Math.max(0,total-_lazyBatch);_lazyRendered=startIdx;
 if(startIdx>0)cm.appendChild(makeLazyHint(startIdx));
 let _lastDate='';for(let i=startIdx;i<total;i++){try{const m=_curChat.msgs[i];const d=fmtDate(m.date||'');if(d&&d!==_lastDate){cm.appendChild(makeDateSep(d));_lastDate=d;}cm.appendChild(renderMsgRow(m,i));}catch(e){}}
-cm.scrollTop=cm.scrollHeight;cm.addEventListener('scroll',onChatScroll);}
+cm.scrollTop=cm.scrollHeight;cm.removeEventListener('scroll',onChatScroll);cm.addEventListener('scroll',onChatScroll);}
 function makeLazyHint(remaining){const d=document.createElement('div');d.id='lazy-hint';d.style.cssText='text-align:center;padding:12px;font-size:13px;color:var(--tx2);cursor:pointer;';d.textContent='↑ 載入更多訊息（剩 '+remaining+' 則）';d.onclick=()=>loadMoreMsgs();return d;}
 function onChatScroll(){const cm=$('c-msgs');if(cm.scrollTop<60&&_lazyRendered>0&&!_lazyLoading)loadMoreMsgs();}
 function loadMoreMsgs(){if(_lazyRendered<=0||_lazyLoading)return;_lazyLoading=true;
