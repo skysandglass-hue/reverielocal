@@ -176,7 +176,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .batch-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--bd2);background:transparent;flex-shrink:0;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}.batch-dot.sel{border-color:var(--ac);background:var(--ac);}
 .batch-dot.sel::after{content:'✓';color:#fff;font-size:12px;font-weight:700;}
 .msg-del-mode .cm{position:relative;}
-.msg-del-mode .msg-row{cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none;}.msg-del-mode .msg-row.msg-del-sel .msg-bubble{outline:2px solid #c0705a;outline-offset:2px;}.msg-del-mode .msg-bubble{-webkit-user-select:none;user-select:none;pointer-events:none;}
+.msg-del-mode .msg-row{cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none;}.msg-del-mode .msg-row.msg-del-sel .msg-bubble{outline:2px solid #c0705a;outline-offset:2px;}.msg-del-mode .msg-bubble{-webkit-user-select:none;user-select:none;}
 .msg-del-banner{display:none;padding:8px 16px;background:#c0705a;color:#fff;font-size:14px;text-align:center;flex-shrink:0;}.msg-del-banner.show{display:block;}
 .msg-ss-banner{display:none;padding:8px 16px;background:var(--ac);color:#fff;font-size:14px;text-align:center;flex-shrink:0;}.msg-ss-banner.show{display:block;}
 .msg-ss-bar{display:none;padding:12px 16px;flex-shrink:0;z-index:12;flex-direction:column;gap:8px;background:var(--bg2);border-top:1px solid var(--bd);}.msg-ss-bar.show{display:flex;}
@@ -313,8 +313,13 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div style="font-size:13px;color:var(--tx2);margin-top:4px;">RP Studio · Local Edition</div>
   <div style="font-size:12px;color:var(--tx2);margin-top:2px;">v1.0</div>
   </div>
+  <div class="card"><div class="stt">版本紀錄</div>
+  <div style="font-size:14px;color:var(--tx2);line-height:1.8;">
+  <p style="font-weight:600;">v1.0 — 初始版本</p>
+  <p>多供應商 API 支援（Anthropic / OpenAI / Google / OpenRouter）、角色卡管理與 V2 匯出入、玩家多檔案系統、提示詞模式管理、本地向量搜尋引擎（Transformers.js）、自動摘要與記憶生成、書籤與訊息搜尋、截圖匯出、常駐指令面板、懶載入對話、四色主題系統。</p>
+  </div></div>
   <div class="card"><div class="stt">使用者協議與免責聲明</div>
-  <div style="font-size:13px;color:var(--tx2);line-height:1.8;">
+  <div style="font-size:14px;color:var(--tx2);line-height:1.8;max-height:280px;overflow-y:auto;padding-right:4px;">
   <p>歡迎使用 Reverie。在開始使用前，請詳閱以下條款。使用 Reverie 即表示您同意本協議內容。</p>
   <p style="font-weight:600;margin-top:14px;">1. 隱私權與資料儲存</p>
   <p><strong>純本地運作</strong><br>Reverie 為純用戶端（Client-side）工具。您的 API 金鑰、角色卡、對話紀錄及設定資料均儲存在您當前瀏覽器之本地資料庫（IndexedDB）中。Reverie 未設計任何伺服器端資料儲存或同步機制，開發者不會主動蒐集或存取您的資料。</p>
@@ -335,7 +340,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <p>使用者應遵守所在地區法律及第三方 AI 供應商之使用政策。若 Reverie 可能涉及成人或敏感內容，使用者應確認已達所在地區法定年齡。禁止將 Reverie 用於任何違法用途。</p>
   </div></div>
   <div class="card"><div class="stt">開源授權</div>
-  <div style="font-size:13px;color:var(--tx2);line-height:1.8;">
+  <div style="font-size:14px;color:var(--tx2);line-height:1.8;">
   本專案使用以下開源程式庫：<br>
   • Marked.js — MIT License<br>
   • Transformers.js — Apache 2.0 License
@@ -445,7 +450,7 @@ function syncThemeDots(){document.querySelectorAll('.theme-dot').forEach(d=>d.cl
 function showCtx(x,y,items){const m=$('ctx-menu');m.innerHTML=items.map(i=>'<div class="ctx-item" onclick="'+i.action+'">'+i.label+'</div>').join('');m.style.left=Math.min(x,innerWidth-160)+'px';m.style.top=Math.min(y,innerHeight-200)+'px';m.classList.remove('hidden');}
 function hideCtx(){$('ctx-menu').classList.add('hidden');}
 let _longPressBlock=false;
-function bindLongPress(el,fn){let t=null,mv=false;el.addEventListener('touchstart',e=>{mv=false;if(_ssMode||_msgDelMode)e.preventDefault();t=setTimeout(()=>{if(!mv){_longPressBlock=true;e.preventDefault();fn(e.touches[0].clientX,e.touches[0].clientY);setTimeout(()=>{_longPressBlock=false;},300);}},500);},{passive:false});el.addEventListener('touchmove',()=>{mv=true;clearTimeout(t);});el.addEventListener('touchend',()=>{clearTimeout(t);});el.addEventListener('contextmenu',e=>{e.preventDefault();_longPressBlock=true;fn(e.clientX,e.clientY);setTimeout(()=>{_longPressBlock=false;},300);});}
+function bindLongPress(el,fn){let t=null,mv=false;el.addEventListener('touchstart',e=>{mv=false;t=setTimeout(()=>{if(!mv){_longPressBlock=true;e.preventDefault();fn(e.touches[0].clientX,e.touches[0].clientY);setTimeout(()=>{_longPressBlock=false;},300);}},500);},{passive:false});el.addEventListener('touchmove',()=>{mv=true;clearTimeout(t);});el.addEventListener('touchend',()=>{clearTimeout(t);});el.addEventListener('contextmenu',e=>{e.preventDefault();_longPressBlock=true;fn(e.clientX,e.clientY);setTimeout(()=>{_longPressBlock=false;},300);});}
 
 // === Avatar Upload ===
 let _avTarget=null,_avUrl=null,_charAvOx=0,_charAvOy=0,_pfAvUrl=null,_pfAvOx=0,_pfAvOy=0;
