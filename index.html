@@ -973,14 +973,16 @@ return data.choices&&data.choices[0]?data.choices[0].message.content:'';}
 async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定摘要 API/模型');return;}
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-10);if(endIdx<1){toast('對話太短');return;}
 let transcript='';for(let i=0;i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
-toast('生成摘要…');const sysPr=getSettings().summary_prompt||'你是對話摘要助手。將以下 RP 對話濃縮成簡潔摘要，保留重要劇情、角色關係和關鍵事件。500 tokens 以內。繁體中文。';const sumTok=parseInt(getSettings().sum_tokens)||500;
+try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
+toast('生成摘要…');const sysPr=getSettings().summary_prompt||'你是對話摘要助手。將以下 RP 對話濃縮成簡潔摘要，保留重要劇情、角色關係和關鍵事件，並結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'請摘要以下對話：\n\n'+transcript,sumTok,0.3);
 if(text){$('sum-ta').value=text;cntF($('sum-ta'));_curChat.summary=text;saveChatStore();toast('已生成');}else toast('生成失敗');}
 async function autoGenSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-10);if(endIdx<1)return;
 let transcript=(_curChat.summary?'[上次摘要]\n'+_curChat.summary+'\n\n[新對話]\n':'');
 for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
-const sysPr=getSettings().summary_prompt||'你是對話摘要助手。合併濃縮成簡潔摘要。500 tokens 以內。繁體中文。';const sumTok2=parseInt(getSettings().sum_tokens)||500;
+try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
+const sysPr=getSettings().summary_prompt||'你是對話摘要助手。合併濃縮成簡潔摘要，結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok2=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'請合併摘要：\n\n'+transcript,sumTok2,0.3);
 if(text){_curChat.summary=text;saveChatStore();toast('摘要已更新');}}
 
