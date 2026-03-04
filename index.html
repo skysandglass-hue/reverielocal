@@ -868,7 +868,7 @@ if(provider==='anthropic')aiText=data.content.map(b=>b.text||'').join('');
 else if(provider==='google')aiText=(data.candidates&&data.candidates[0]&&data.candidates[0].content)?data.candidates[0].content.parts.map(p=>p.text||'').join(''):''
 else aiText=data.choices&&data.choices[0]?data.choices[0].message.content:'';
 appendMsg('ai',_curChat.charName,aiText,_curChat.avatarUrl);touchChatTime();saveChatStore();
-try{if(s.auto_summary){const iv=parseInt(s.summary_interval)||10;const ac=(_curChat.msgs||[]).filter(m=>m.role==='ai').length;const lastSumAt=_curChat.lastSumGenAt||0;if(ac-lastSumAt>=iv){_curChat.lastSumGenAt=ac;saveChatStore();toast('自動生成摘要…');await autoGenSummary();}}}catch(e){}
+try{if(s.auto_summary){const iv=parseInt(s.summary_interval)||10;const ac=(_curChat.msgs||[]).filter(m=>m.role==='ai').length;const lastSumAt=_curChat.lastSumGenAt||0;if(ac-lastSumAt>=iv){_curChat.lastSumGenAt=ac;saveChatStore();toast('自動生成摘要…');await autoGenSummary(vecEvents);}}}catch(e){}
 try{await autoGenMemory(_curChat,_curChatId);}catch(e){}
 }catch(e){hideTyping();_aiAbort=null;if(e.name==='AbortError')return;toast('請求失敗');console.error(e);}}
 async function buildSysPrompt(vecExtras,vecEvents,vecMemories){let sys='';vecExtras=vecExtras||[];vecEvents=vecEvents||[];vecMemories=vecMemories||[];
@@ -897,6 +897,12 @@ const hasAnyEvEmb=cEvs.some(e=>e.embedding);
 const activeCreator=cEvs.filter(ev=>{if(creatorToggles[ev.id]===false)return false;if(vecEvIds.has(ev.id))return true;if(!ev.embedding)return true;if(!hasAnyEvEmb)return creatorToggles[ev.id]!==false;return false;});
 if(activeCreator.length){s+='\n[創作者事件]\n';activeCreator.forEach(ev=>{s+='- '+ev.name;if(ev.time_or_keyword)s+=' ('+ev.time_or_keyword+')';s+=':\n'+ev.content+'\n\n';});}
 if(playerEvs.length){s+='\n[玩家事件]\n';playerEvs.forEach(ev=>{s+='- '+ev.name;if(ev.keyword)s+=' ('+ev.keyword+')';s+=':\n'+ev.content+'\n\n';});}return s;}
+async function buildAllEventsText(){let s='';try{const cd=await getCharData(_curChat.charId);const cEvs=cd.events||[];let creatorToggles={},playerEvs=[];
+const toggleRows=await dbByIndex('chat_creator_event_toggles','chat_id',_curChatId);toggleRows.forEach(r=>{creatorToggles[r.event_id]=r.enabled;});
+const plEvRows=(await dbByIndex('chat_events','chat_id',_curChatId)).filter(e=>e.enabled!==false);playerEvs=sortBy(plEvRows,'sort_order');
+const activeCreator=cEvs.filter(ev=>creatorToggles[ev.id]!==false);
+if(activeCreator.length){s+='\n[事件]\n';activeCreator.forEach(ev=>{s+='- '+ev.name;if(ev.time_or_keyword)s+=' ('+ev.time_or_keyword+')';s+=':\n'+ev.content+'\n\n';});}
+if(playerEvs.length){s+='\n[玩家事件]\n';playerEvs.forEach(ev=>{s+='- '+ev.name;if(ev.keyword)s+=' ('+ev.keyword+')';s+=':\n'+ev.content+'\n\n';});}}catch(e){}return s;}
 function buildApiMsgs(){const allMsgs=_curChat.msgs||[];const total=allMsgs.length;const maxCtx=parseInt(getSettings().max_context_msgs)||10;const recentStart=Math.max(0,total-maxCtx);const msgs=[];
 for(let i=recentStart;i<total;i++){const m=allMsgs[i];if(m.role==='system')msgs.push({role:'user',content:'[場景] '+m.content});else if(m.role==='ai')msgs.push({role:'assistant',content:m.content});else msgs.push({role:'user',content:m.content});}
 if(msgs.length&&msgs[msgs.length-1].role==='assistant')msgs.push({role:'user',content:'[繼續]'});
@@ -973,15 +979,15 @@ return data.choices&&data.choices[0]?data.choices[0].message.content:'';}
 async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定摘要 API/模型');return;}
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-10);if(endIdx<1){toast('對話太短');return;}
 let transcript='';for(let i=0;i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
-try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
+try{const evText=await buildAllEventsText();if(evText.trim())transcript+='\n'+evText;}catch(e){}
 toast('生成摘要…');const sysPr=getSettings().summary_prompt||'你是對話摘要助手。將以下 RP 對話濃縮成簡潔摘要，保留重要劇情、角色關係和關鍵事件，並結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'請摘要以下對話：\n\n'+transcript,sumTok,0.3);
 if(text){$('sum-ta').value=text;cntF($('sum-ta'));_curChat.summary=text;saveChatStore();toast('已生成');}else toast('生成失敗');}
-async function autoGenSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
+async function autoGenSummary(vecEvents){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-10);if(endIdx<1)return;
 let transcript=(_curChat.summary?'[上次摘要]\n'+_curChat.summary+'\n\n[新對話]\n':'');
 for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
-try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
+try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,vecEvents||[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
 const sysPr=getSettings().summary_prompt||'你是對話摘要助手。合併濃縮成簡潔摘要，結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok2=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'請合併摘要：\n\n'+transcript,sumTok2,0.3);
 if(text){_curChat.summary=text;saveChatStore();toast('摘要已更新');}}
