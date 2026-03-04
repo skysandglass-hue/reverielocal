@@ -432,6 +432,7 @@ function tok(s){if(!s)return 0;let t=0;for(let i=0;i<s.length;i++){const c=s.cha
 function cntF(ta){const l=ta.value.length,t=tok(ta.value);const c=ta.parentElement.querySelector('.ctr');if(c)c.textContent=l+' 字 · ≈ '+t+' tokens';}
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+function localDateStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function avH(url,name,sz,ox,oy){sz=sz||40;ox=ox||0;oy=oy||0;const st='width:'+sz+'px;height:'+sz+'px;font-size:'+Math.round(sz*.38)+'px;';if(url){const p=ox||oy?'object-position:'+(50+ox)+'% '+(50+oy)+'%':'';return '<div class="av" style="'+st+'"><img src="'+url+'" style="'+p+'"></div>';}return '<div class="av" style="'+st+'">'+esc((name||'?')[0])+'</div>';}
 let _cfm=null;function cfm(msg){return new Promise(r=>{_cfm=r;$('cfm-msg').innerHTML=esc(msg).replace(/\n/g,'<br>');$('cfm-ov').classList.add('show');});}function cfmR(v){$('cfm-ov').classList.remove('show');if(_cfm)_cfm(v);_cfm=null;}
 let _inp=null;function inp(msg,def){return new Promise(r=>{_inp=r;$('inp-msg').textContent=msg;$('inp-val').value=def||'';$('inp-ov').classList.add('show');setTimeout(()=>$('inp-val').focus(),100);});}function inpR(v){$('inp-ov').classList.remove('show');if(_inp)_inp(v);_inp=null;}
@@ -447,7 +448,10 @@ hs.pop();const p=hs[hs.length-1]||'main';
 const fps=document.querySelectorAll('.fp.show');if(fps.length>0){fps[fps.length-1].classList.remove('show');return;}
 document.querySelectorAll('.popup-ov.show').forEach(x=>x.classList.remove('show'));$('cfm-ov').classList.remove('show');$('inp-ov').classList.remove('show');closeSideQ();hideCtx();closeBs();$('em-ov').classList.remove('show');
 if(p==='main'){saveChatStore();closeChat(1);doCloseCharEdit(1);doClosePfEdit();showNav();}
-else if(p==='chat')hideNav();});
+else if(p==='chat'){hideNav();}
+else if(p==='charDetail'){doCloseCharEdit(1);showNav();}
+else if(p==='pfDetail'){doClosePfEdit();showNav();}
+});
 function nav(el){document.querySelectorAll('.nv').forEach(n=>n.classList.remove('a'));el.classList.add('a');document.querySelectorAll('.pnl').forEach(x=>x.classList.remove('a'));$('p-'+el.dataset.p).classList.add('a');showNav();hs=['main'];history.replaceState({p:'main'},'');if($('cl'))$('cl').style.display='block';if($('cv'))$('cv').classList.remove('a');if($('vl')){$('vl').style.display='block';$('vd').style.display='none';}if(el.dataset.p==='chars')loadChars();if(el.dataset.p==='prof'){loadPf();closePfEdit();}if(el.dataset.p==='sys'){loadPr();syncThemeDots();}if(el.dataset.p==='chat')renderChatList();if(el.dataset.p==='sys'){loadPr();syncThemeDots();if(_sysTab===3)calcStorageInfo();}}
 function openChat(n){$('cl').style.display='none';$('cv').classList.add('a');$('c-name').textContent=n;hideNav();pushH('chat');closePcmdPanel();}
 function closeChat(q){if(_curChat)_curChat.draft=$('c-inp').value||'';$('cl').style.display='block';$('cv').classList.remove('a');saveChatStore();if(!q){showNav();renderChatList();}}
@@ -577,7 +581,7 @@ async function getCharData(cid){if(_charDataCache&&_charDataCache.charId===cid)r
 async function loadChars(){chars=sortBy(await dbAll('characters'),'sort_order');renderCL();}
 function renderCL(){const el=$('char-list');if(!chars.length){el.innerHTML='<div class="empty">尚未建立角色</div>';return;}el.innerHTML=chars.map(c=>{const ao=getAvOff('char_'+c.id);return '<div class="li" data-charid="'+c.id+'">'+avH(c.avatar_url,c.name,72,ao.ox,ao.oy).replace('class="av"','class="av av-list"')+'<div class="lb"><div class="lt">'+esc(c.name)+'</div></div><div class="li-actions"><div class="li-act" onclick="event.stopPropagation();editChar(\''+c.id+'\')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>編輯</div><div class="li-act" onclick="event.stopPropagation();openCEvs(\''+c.id+'\',\''+esc(c.name)+'\')"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>事件</div></div></div>';}).join('');initCharDrag(el);}
 async function createChar(){const c={id:uid(),name:'新角色',sort_order:chars.length,created_at:new Date().toISOString()};await dbPut('characters',c);toast('已新增');await loadChars();openCEditUI(c,[]);}
-async function editChar(id){const c=await dbGet('characters',id);let extras=[];try{extras=await dbByIndex('character_extras','character_id',id);console.log('editChar extras for',id,':',extras.length,'items',extras);}catch(e){console.error('dbByIndex extras failed, falling back to scan:',e);const all=await dbAll('character_extras');extras=all.filter(x=>x.character_id===id);console.log('Fallback found:',extras.length);}openCEditUI(c,sortBy(extras,'sort_order'));}
+async function editChar(id){const c=await dbGet('characters',id);let extras=[];try{extras=await dbByIndex('character_extras','character_id',id);}catch(e){const all=await dbAll('character_extras');extras=all.filter(x=>x.character_id===id);}openCEditUI(c,sortBy(extras,'sort_order'));}
 function openCEditUI(c,extras){_avUrl=c.avatar_url||null;const ao=getAvOff('char_'+c.id);_charAvOx=ao.ox;_charAvOy=ao.oy;$('vl').style.display='none';$('vd').style.display='block';hideNav();pushH('charDetail');$('ce-id').value=c.id;$('ce-name').value=c.name||'';$('ce-age').value=c.age||'';$('ce-job').value=c.job||'';$('ce-gen').childNodes[0].textContent=c.gender||'未設置';$('ce-set').value=c.setting||'';let grt=c.greeting_message||'';if(c.greeting_scenario&&!grt.includes(c.greeting_scenario))grt=(c.greeting_scenario+'\n\n'+grt).trim();$('ce-grt').value=grt;renderAvEd('char',_avUrl,_charAvOx,_charAvOy);$('ce-av-wrap').onclick=()=>startAvUp('char',c.id);cntF($('ce-set'));cntF($('ce-grt'));const el=$('ce-ex');el.innerHTML='';extras.forEach(ex=>addExUI(ex));initDrag(el);}
 function addExUI(ex){ex=ex||{};const el=$('ce-ex'),n=el.children.length+1,d=document.createElement('div');d.className='card';d.style.marginBottom='8px';d.dataset.exId=ex.id||'';d.innerHTML='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span class="drag-h">⠿</span><div class="f" style="margin:0;flex:1;"><label>#'+n+'</label><input type="text" value="'+esc(ex.title||'')+'" placeholder="標題"></div><button class="btn bs2" style="color:var(--del);border:0;" onclick="rmEx(this)">✕</button></div><div class="f" style="margin:0;"><textarea rows="10" oninput="cntF(this)" placeholder="內容">'+esc(ex.content||'')+'</textarea><div class="ctr">0 字 · ≈ 0 tokens</div></div>';el.appendChild(d);const ta=d.querySelector('textarea');if(ta&&ta.value)cntF(ta);}
 async function rmEx(btn){const c=btn.closest('.card'),eid=c.dataset.exId;if(!await cfm('確定刪除？'))return;if(eid)await dbDel('character_extras',eid);c.remove();}
@@ -668,7 +672,7 @@ let profiles=[],_pfEditId=null;
 async function loadPf(){profiles=sortBy(await dbAll('profiles'),'sort_order');renderPf();}
 function renderPf(){const el=$('pf-list');if(!profiles.length){el.innerHTML='<div class="empty">尚未建立</div>';return;}el.innerHTML=profiles.map(p=>'<div class="li" data-pfid="'+p.id+'" onclick="openPfEdit(\''+p.id+'\')">'+avH(p.avatar_url,p.name,72,getAvOff('pf_'+p.id).ox,getAvOff('pf_'+p.id).oy).replace('class="av"','class="av av-list"')+'<div class="lb"><div class="lt">'+esc(p.name)+'</div></div></div>').join('');initPfDrag(el);renderPpPop();}
 async function createPf(){const p={id:uid(),name:'新檔案',sort_order:profiles.length};await dbPut('profiles',p);toast('已新增');await loadPf();openPfEdit(p.id);}
-function openPfEdit(id){_pfEditId=id;const p=profiles.find(x=>x.id===id);if(!p)return;_pfAvUrl=p.avatar_url||null;const ao=getAvOff('pf_'+id);_pfAvOx=ao.ox;_pfAvOy=ao.oy;$('pf-vl').style.display='none';$('pf-vd').style.display='block';$('pf-edit-id').value=id;$('pf-edit-name').value=p.name||'';$('pf-edit-age').value=p.age||'';$('pf-edit-job').value=p.job||'';$('pf-gen').childNodes[0].textContent=p.gender||'未設置';$('pf-edit-setting').value=p.setting||'';renderAvEd('pf',_pfAvUrl,_pfAvOx,_pfAvOy);$('pf-av-wrap').onclick=()=>startAvUp('profile',id);cntF($('pf-edit-setting'));}
+function openPfEdit(id){_pfEditId=id;const p=profiles.find(x=>x.id===id);if(!p)return;_pfAvUrl=p.avatar_url||null;const ao=getAvOff('pf_'+id);_pfAvOx=ao.ox;_pfAvOy=ao.oy;$('pf-vl').style.display='none';$('pf-vd').style.display='block';hideNav();pushH('pfDetail');$('pf-edit-id').value=id;$('pf-edit-name').value=p.name||'';$('pf-edit-age').value=p.age||'';$('pf-edit-job').value=p.job||'';$('pf-gen').childNodes[0].textContent=p.gender||'未設置';$('pf-edit-setting').value=p.setting||'';renderAvEd('pf',_pfAvUrl,_pfAvOx,_pfAvOy);$('pf-av-wrap').onclick=()=>startAvUp('profile',id);cntF($('pf-edit-setting'));}
 function closePfEdit(){if(_dirty){checkDirty().then(ok=>{if(ok){_dirty=false;doClosePfEdit();}});return;}doClosePfEdit();}
 function doClosePfEdit(){if($('pf-vl'))$('pf-vl').style.display='block';if($('pf-vd'))$('pf-vd').style.display='none';_pfEditId=null;_dirty=false;}
 async function savePfDetail(){const id=$('pf-edit-id').value,p=await dbGet('profiles',id)||{id};Object.assign(p,{name:$('pf-edit-name').value.trim()||'未命名',age:$('pf-edit-age').value.trim()||null,gender:$('pf-gen').textContent.trim()||null,job:$('pf-edit-job').value.trim()||null,setting:$('pf-edit-setting').value});await dbPut('profiles',p);saveAvOff('pf_'+id,_pfAvOx,_pfAvOy);_dirty=false;toast('已儲存');await loadPf();}
@@ -831,7 +835,6 @@ if(_curChatId){const dbRows=sortBy(await dbByIndex('messages','chat_id',_curChat
 const remaining=sortBy(await dbByIndex('messages','chat_id',_curChatId),'sort_order');for(let i=0;i<remaining.length;i++){if(remaining[i].sort_order!==i){remaining[i].sort_order=i;await dbPut('messages',remaining[i]);}}}
 cancelMsgDel();refreshMsgs();toast('已刪除');}
 function fmtDate(d){if(!d)return '';const dt=new Date(d);const now=new Date();const y=dt.getFullYear(),m=dt.getMonth(),day=dt.getDate();if(y===now.getFullYear()&&m===now.getMonth()&&day===now.getDate())return '今天';const yd=new Date(now);yd.setDate(yd.getDate()-1);if(y===yd.getFullYear()&&m===yd.getMonth()&&day===yd.getDate())return '昨天';if(y===now.getFullYear())return(m+1)+'/'+day;return y+'/'+(m+1)+'/'+day;}
-function localDateStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function fmtChatTime(d){if(!d)return '';const dt=new Date(d);const now=new Date();const y=dt.getFullYear(),m=dt.getMonth(),day=dt.getDate();if(y===now.getFullYear()&&m===now.getMonth()&&day===now.getDate())return String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0');const yd=new Date(now);yd.setDate(yd.getDate()-1);if(y===yd.getFullYear()&&m===yd.getMonth()&&day===yd.getDate())return '昨天';if(y===now.getFullYear())return(m+1)+'/'+day;return y+'/'+(m+1)+'/'+day;}
 function fmtMsgTime(d){if(!d)return '';const dt=new Date(d);return String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0');}
 function makeDateSep(dateStr){const div=document.createElement('div');div.className='date-sep';div.textContent=dateStr;return div;}
@@ -870,25 +873,31 @@ try{await autoGenMemory(_curChat,_curChatId);}catch(e){}
 }catch(e){hideTyping();_aiAbort=null;if(e.name==='AbortError')return;toast('請求失敗');console.error(e);}}
 async function buildSysPrompt(vecExtras,vecEvents,vecMemories){let sys='';vecExtras=vecExtras||[];vecEvents=vecEvents||[];vecMemories=vecMemories||[];
 const rpId=_curChat.rpId;if(rpId){const p=prompts.find(x=>x.id===rpId);if(p)sys+=p.content+'\n\n';}
-const cd=await getCharData(_curChat.charId);const c=cd.char;
-if(c){sys+='[角色卡]\n姓名: '+c.name+'\n';if(c.age)sys+='年齡: '+c.age+'\n';if(c.gender&&c.gender!=='未設置')sys+='性別: '+c.gender+'\n';if(c.job)sys+='職業: '+c.job+'\n';if(c.setting)sys+='設定:\n'+c.setting+'\n';}
-if(_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){sys+='\n[玩家角色]\n姓名: '+pf.name+'\n';if(pf.age)sys+='年齡: '+pf.age+'\n';if(pf.gender&&pf.gender!=='未設置')sys+='性別: '+pf.gender+'\n';if(pf.job)sys+='職業: '+pf.job+'\n';if(pf.setting)sys+='設定:\n'+pf.setting+'\n';}}
-if(_curChat.summary&&_curChat.summary.trim())sys+='\n[歷史摘要]\n'+_curChat.summary+'\n';
-const allExtras=cd.extras;
-if(allExtras&&allExtras.length){const hasAnyEmb=allExtras.some(e=>e.embedding);
-if(vecExtras.length){sys+='\n[附加設定]\n';vecExtras.forEach(v=>{const ex=allExtras.find(e=>e.id===v.id);if(ex){if(ex.title)sys+='## '+ex.title+'\n';if(ex.content)sys+=ex.content+'\n\n';}});const vecIds=new Set(vecExtras.map(v=>v.id));allExtras.filter(e=>!e.embedding&&!vecIds.has(e.id)).forEach(ex=>{if(ex.title)sys+='## '+ex.title+'\n';if(ex.content)sys+=ex.content+'\n\n';});}
-else if(!hasAnyEmb){sys+='\n[附加設定]\n';allExtras.forEach(ex=>{if(ex.title)sys+='## '+ex.title+'\n';if(ex.content)sys+=ex.content+'\n\n';});}}
-if(vecMemories.length){sys+='\n[相關記憶]\n';vecMemories.forEach(m=>{sys+='- '+(m.important?'⭐ ':'')+m.content+'\n';});}
-if(_curChat.memories&&_curChat.memories.length){sys+='\n[記憶體]\n';_curChat.memories.forEach(m=>{sys+='- '+(typeof m==='string'?m:(m.content||''))+'\n';});}
-const cEvs=cd.events;let creatorToggles={},playerEvs=[];
+sys+=await buildCharSection();
+sys+=buildPlayerSection();
+sys+=buildSummarySection();
+const cd=await getCharData(_curChat.charId);
+sys+=buildExtrasSection(cd.extras,vecExtras);
+sys+=buildMemorySection(vecMemories);
+sys+=await buildEventSection(cd.events,vecEvents);
+return tplReplace(sys.trim());}
+async function buildCharSection(){let s='';const cd=await getCharData(_curChat.charId);const c=cd.char;
+if(c){s+='[角色卡]\n姓名: '+c.name+'\n';if(c.age)s+='年齡: '+c.age+'\n';if(c.gender&&c.gender!=='未設置')s+='性別: '+c.gender+'\n';if(c.job)s+='職業: '+c.job+'\n';if(c.setting)s+='設定:\n'+c.setting+'\n';}return s;}
+function buildPlayerSection(){let s='';if(_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){s+='\n[玩家角色]\n姓名: '+pf.name+'\n';if(pf.age)s+='年齡: '+pf.age+'\n';if(pf.gender&&pf.gender!=='未設置')s+='性別: '+pf.gender+'\n';if(pf.job)s+='職業: '+pf.job+'\n';if(pf.setting)s+='設定:\n'+pf.setting+'\n';}}return s;}
+function buildSummarySection(){let s='';if(_curChat.summary&&_curChat.summary.trim())s+='\n[歷史摘要]\n'+_curChat.summary+'\n';return s;}
+function buildExtrasSection(allExtras,vecExtras){let s='';if(!allExtras||!allExtras.length)return s;const hasAnyEmb=allExtras.some(e=>e.embedding);
+if(vecExtras.length){s+='\n[附加設定]\n';vecExtras.forEach(v=>{const ex=allExtras.find(e=>e.id===v.id);if(ex){if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';}});const vecIds=new Set(vecExtras.map(v=>v.id));allExtras.filter(e=>!e.embedding&&!vecIds.has(e.id)).forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}
+else if(!hasAnyEmb){s+='\n[附加設定]\n';allExtras.forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}return s;}
+function buildMemorySection(vecMemories){let s='';if(vecMemories&&vecMemories.length){s+='\n[相關記憶]\n';vecMemories.forEach(m=>{s+='- '+(m.important?'⭐ ':'')+m.content+'\n';});}
+if(_curChat.memories&&_curChat.memories.length){s+='\n[記憶體]\n';_curChat.memories.forEach(m=>{s+='- '+(typeof m==='string'?m:(m.content||''))+'\n';});}return s;}
+async function buildEventSection(cEvs,vecEvents){let s='';let creatorToggles={},playerEvs=[];
 try{const toggleRows=await dbByIndex('chat_creator_event_toggles','chat_id',_curChatId);toggleRows.forEach(r=>{creatorToggles[r.event_id]=r.enabled;});const plEvRows=(await dbByIndex('chat_events','chat_id',_curChatId)).filter(e=>e.enabled!==false);playerEvs=sortBy(plEvRows,'sort_order');}catch(e){}
 const vecEvIds=new Set(vecEvents.map(v=>v.id));
 const hasAnyEvEmb=cEvs.some(e=>e.embedding);
 const activeCreator=cEvs.filter(ev=>{if(creatorToggles[ev.id]===false)return false;if(vecEvIds.has(ev.id))return true;if(!ev.embedding)return true;if(!hasAnyEvEmb)return creatorToggles[ev.id]!==false;return false;});
-if(activeCreator.length){sys+='\n[創作者事件]\n';activeCreator.forEach(ev=>{sys+='- '+ev.name;if(ev.time_or_keyword)sys+=' ('+ev.time_or_keyword+')';sys+=':\n'+ev.content+'\n\n';});}
-if(playerEvs.length){sys+='\n[玩家事件]\n';playerEvs.forEach(ev=>{sys+='- '+ev.name;if(ev.keyword)sys+=' ('+ev.keyword+')';sys+=':\n'+ev.content+'\n\n';});}
-return tplReplace(sys.trim());}
-function buildApiMsgs(){const allMsgs=_curChat.msgs||[];const total=allMsgs.length;const recentStart=Math.max(0,total-10);const msgs=[];
+if(activeCreator.length){s+='\n[創作者事件]\n';activeCreator.forEach(ev=>{s+='- '+ev.name;if(ev.time_or_keyword)s+=' ('+ev.time_or_keyword+')';s+=':\n'+ev.content+'\n\n';});}
+if(playerEvs.length){s+='\n[玩家事件]\n';playerEvs.forEach(ev=>{s+='- '+ev.name;if(ev.keyword)s+=' ('+ev.keyword+')';s+=':\n'+ev.content+'\n\n';});}return s;}
+function buildApiMsgs(){const allMsgs=_curChat.msgs||[];const total=allMsgs.length;const maxCtx=parseInt(getSettings().max_context_msgs)||10;const recentStart=Math.max(0,total-maxCtx);const msgs=[];
 for(let i=recentStart;i<total;i++){const m=allMsgs[i];if(m.role==='system')msgs.push({role:'user',content:'[場景] '+m.content});else if(m.role==='ai')msgs.push({role:'assistant',content:m.content});else msgs.push({role:'user',content:m.content});}
 if(msgs.length&&msgs[msgs.length-1].role==='assistant')msgs.push({role:'user',content:'[繼續]'});
 if(msgs.length&&msgs[0].role==='assistant')msgs.unshift({role:'user',content:'[對話開始]'});
@@ -1106,7 +1115,7 @@ function togglePcmdPanel(){const p=$('pcmd-panel');if(p.classList.contains('show
 function closePcmdPanel(){$('pcmd-panel').classList.remove('show');$('pcmd-overlay').classList.remove('show');$('pcmd-plus-btn').classList.remove('active');}
 function renderPcmdList(){const el=$('pcmd-list');if(!_pcmds.length){el.innerHTML='<div style="color:var(--tx2);font-size:15px;padding:8px;">尚未建立常駐指令</div>';return;}
 const t=(_curChat&&_curChat.pcmdToggles)||{};
-el.innerHTML=_pcmds.map((p,i)=>{const isOn=t[p.id]!==undefined?t[p.id]!==false:p.enabled!==false;return '<div class="ev-toggle-item" data-pcid="'+p.id+'"><div style="flex:1;min-width:0;cursor:pointer;" onclick="editPcmd(\''+p.id+'\')"><div class="lt">'+esc(p.name||'未命名')+'</div><div class="ls">'+esc((p.content||'').substring(0,80))+'</div></div><div class="tog'+(isOn?' on':'')+'" onclick="event.stopPropagation();togglePcmdEnabled('+i+',this)"></div></div>';}).join('');initPcmdDrag(el);}
+el.innerHTML=_pcmds.map((p,i)=>{const isOn=t[p.id]!==undefined?t[p.id]!==false:p.enabled===true;return '<div class="ev-toggle-item" data-pcid="'+p.id+'"><div style="flex:1;min-width:0;cursor:pointer;" onclick="editPcmd(\''+p.id+'\')"><div class="lt">'+esc(p.name||'未命名')+'</div><div class="ls">'+esc((p.content||'').substring(0,80))+'</div></div><div class="tog'+(isOn?' on':'')+'" onclick="event.stopPropagation();togglePcmdEnabled('+i+',this)"></div></div>';}).join('');initPcmdDrag(el);}
 function togglePcmdEnabled(i,el){if(!_pcmds[i]||!_curChat)return;if(!_curChat.pcmdToggles)_curChat.pcmdToggles={};const pid=_pcmds[i].id;_curChat.pcmdToggles[pid]=!(_curChat.pcmdToggles[pid]!==false);el.classList.toggle('on');saveChatStore();}
 function newPcmd(){closePcmdPanel();$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">新增常駐指令</div><input type="hidden" id="pcmd-id" value=""><div class="f"><label>名稱</label><input type="text" id="pcmd-name" placeholder="例：加強情緒描寫"></div><div class="f"><label>指令內容</label><textarea rows="6" id="pcmd-content" oninput="cntF(this)" placeholder="這段文字會隨每次訊息一起傳給 AI..."></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button></div></div>';$('bs-ov').classList.add('show');}
 function editPcmd(id){closePcmdPanel();const p=_pcmds.find(x=>x.id===id);if(!p)return;$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">編輯常駐指令</div><input type="hidden" id="pcmd-id" value="'+id+'"><div class="f"><label>名稱</label><input type="text" id="pcmd-name" value="'+esc(p.name||'')+'"></div><div class="f"><label>指令內容</label><textarea rows="6" id="pcmd-content" oninput="cntF(this)">'+esc(p.content||'')+'</textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button><button class="btn bdel bs2" onclick="delPcmd()">刪除</button></div></div>';cntF($('pcmd-content'));$('bs-ov').classList.add('show');}
@@ -1115,7 +1124,7 @@ if(id){const p=await dbGet('persistent_commands',id)||{id};Object.assign(p,{name
 else await dbPut('persistent_commands',{id:uid(),name,content,enabled:true,sort_order:_pcmds.length});
 await loadPcmds();renderPcmdList();toast('已儲存');closeBs();togglePcmdPanel();}
 async function delPcmd(){const id=$('pcmd-id').value;if(!id)return;if(!await cfm('確定刪除？'))return;await dbDel('persistent_commands',id);await loadPcmds();renderPcmdList();toast('已刪除');closeBs();togglePcmdPanel();}
-function getActivePcmds(){const t=(_curChat&&_curChat.pcmdToggles)||{};return _pcmds.filter(p=>{const v=t[p.id];return v!==false&&(v===true||p.enabled!==false);}).map(p=>p.content).join('\n');}
+function getActivePcmds(){const t=(_curChat&&_curChat.pcmdToggles)||{};return _pcmds.filter(p=>{const v=t[p.id];return v===true||(v===undefined&&p.enabled===true);}).map(p=>p.content).join('\n');}
 
 // ═══ Batch Delete ═══
 let _batchMode=false,_batchSel=new Set();
