@@ -867,6 +867,7 @@ if(provider==='anthropic')aiText=data.content.map(b=>b.text||'').join('');
 else if(provider==='google')aiText=(data.candidates&&data.candidates[0]&&data.candidates[0].content)?data.candidates[0].content.parts.map(p=>p.text||'').join(''):''
 else aiText=data.choices&&data.choices[0]?data.choices[0].message.content:'';
 appendMsg('ai',_curChat.charName,aiText,_curChat.avatarUrl);touchChatTime();saveChatStore();
+try{const li=document.getElementById('cli-'+_curChatId);if(li){const ls=li.querySelector('.ls');if(ls)ls.textContent=aiText.replace(/[*#_`>\n]+/g,' ').substring(0,80);const ct=document.getElementById('ct-'+_curChatId);if(ct)ct.textContent=fmtChatTime(new Date().toISOString());}}catch(e){}
 try{console.log('[摘要debug]','auto_summary:',s.auto_summary,'interval:',s.summary_interval,'ai_count:',(_curChat.msgs||[]).filter(m=>m.role==='ai').length,'lastSumAt:',_curChat.lastSumGenAt||0);if(s.auto_summary){const iv=parseInt(s.summary_interval)||10;const ac=(_curChat.msgs||[]).filter(m=>m.role==='ai').length;const lastSumAt=_curChat.lastSumGenAt||0;if(ac-lastSumAt>=iv){_curChat.lastSumGenAt=ac;saveChatStore();toast('自動生成摘要…');await autoGenSummary(vecEvents);}}}catch(e){console.error('autoSummary error:',e);}
 try{await autoGenMemory(_curChat,_curChatId);}catch(e){}
 }catch(e){hideTyping();_aiAbort=null;if(e.name==='AbortError')return;toast('請求失敗');console.error(e);}}
@@ -976,14 +977,14 @@ if(pv==='anthropic')return data.content.map(b=>b.text||'').join('');
 if(pv==='google')return(data.candidates&&data.candidates[0]&&data.candidates[0].content)?data.candidates[0].content.parts.map(p=>p.text||'').join(''):''
 return data.choices&&data.choices[0]?data.choices[0].message.content:'';}
 async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定摘要 API/模型');return;}
-const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-10);if(endIdx<1){toast('對話太短');return;}
+const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1){toast('對話太短');return;}
 let transcript='';for(let i=0;i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
 try{const evText=await buildAllEventsText();if(evText.trim())transcript+='\n'+evText;}catch(e){}
 toast('生成摘要…');const sysPr=getSettings().summary_prompt||'你是對話摘要助手。將以下 RP 對話濃縮成簡潔摘要，保留重要劇情、角色關係和關鍵事件，並結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'[Transcript]\n\n'+transcript,sumTok,0.3);
 if(text){$('sum-ta').value=text;cntF($('sum-ta'));_curChat.summary=text;saveChatStore();toast('已生成');}else toast('生成失敗');}
 async function autoGenSummary(vecEvents){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
-const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-10);if(endIdx<1)return;
+const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1)return;
 let transcript=(_curChat.summary?'[上次摘要]\n'+_curChat.summary+'\n\n[新對話]\n':'');
 for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
 try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,vecEvents||[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
