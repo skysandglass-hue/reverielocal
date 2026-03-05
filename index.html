@@ -873,9 +873,9 @@ try{await autoGenMemory(_curChat,_curChatId);}catch(e){}
 }catch(e){hideTyping();_aiAbort=null;if(e.name==='AbortError')return;toast('請求失敗');console.error(e);}}
 async function buildSysPrompt(vecExtras,vecEvents,vecMemories){let sys='';vecExtras=vecExtras||[];vecEvents=vecEvents||[];vecMemories=vecMemories||[];
 const rpId=_curChat.rpId;if(rpId){const p=prompts.find(x=>x.id===rpId);if(p)sys+=p.content+'\n\n';}
+sys+=buildSummarySection();
 sys+=await buildCharSection();
 sys+=buildPlayerSection();
-sys+=buildSummarySection();
 const cd=await getCharData(_curChat.charId);
 sys+=buildExtrasSection(cd.extras,vecExtras);
 sys+=buildMemorySection(vecMemories);
