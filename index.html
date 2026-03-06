@@ -980,6 +980,7 @@ async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('s
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1){toast('對話太短');return;}
 let transcript='';for(let i=0;i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
 try{const evText=await buildAllEventsText();if(evText.trim())transcript+='\n'+evText;}catch(e){}
+const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[常駐指令]\n'+pcmdTxt+'\n';
 toast('生成摘要…');const sysPr=getSettings().summary_prompt||'你是對話摘要助手。將以下 RP 對話濃縮成簡潔摘要，保留重要劇情、角色關係和關鍵事件，並結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'[Transcript]\n\n'+transcript,sumTok,0.3);
 if(text){$('sum-ta').value=text;cntF($('sum-ta'));_curChat.summary=text;saveChatStore();toast('已生成');}else toast('生成失敗');}
@@ -988,6 +989,7 @@ const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(end
 let transcript=(_curChat.summary?'[上次摘要]\n'+_curChat.summary+'\n\n[新對話]\n':'');
 for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
 try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,vecEvents||[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
+const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[常駐指令]\n'+pcmdTxt+'\n';
 const sysPr=getSettings().summary_prompt||'你是對話摘要助手。合併濃縮成簡潔摘要，結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok2=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'[Transcript]\n\n'+transcript,sumTok2,0.3);
 if(text&&text.trim()){_curChat.summary=text;saveChatStore();toast('摘要已更新');}else{toast('摘要生成失敗');}}
