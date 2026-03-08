@@ -1190,9 +1190,11 @@ async function delChatEv(){const id=$('cev2-id').value;if(!id){closeFP('fp-chat-
 
 // ═══ Chat Memory ═══
 async function openChatMemory(){if(!_curChat)return;const b=$('chat-mem-body');b.innerHTML='';
-let dbMems=sortBy(await dbByIndex('memories','chat_id',_curChatId),'date','desc');
+let dbMems=await dbByIndex('memories','chat_id',_curChatId);
 const localMems=(_curChat.memories||[]).map((m,i)=>({_local:true,_idx:i,content:typeof m==='string'?m:(m.content||''),date:typeof m==='object'?m.date:'',important:typeof m==='object'?m.important:false}));
 const allMems=[...dbMems.map(m=>({...m,_local:false})),...localMems];
+// Sort all by date descending (newest first), then by created_at if available
+allMems.sort((a,b)=>{const da=a.date||a.created_at||'';const db2=b.date||b.created_at||'';if(da&&db2)return db2.localeCompare(da);if(db2)return 1;if(da)return -1;return 0;});
 if(!allMems.length){b.innerHTML='<div class="empty">尚未建立記憶</div>';}else{
 let lastMemDate='';
 allMems.forEach(m=>{const isDb=!m._local;const mid=isDb?m.id:('l'+m._idx);const src=isDb?'db':'local';
