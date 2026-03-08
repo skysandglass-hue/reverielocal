@@ -95,7 +95,7 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:4px;font-weigh
 .msg-bubble p{margin:0 0 .6em;}.msg-bubble p:last-child{margin:0;}.msg-bubble em{font-style:italic;color:var(--tx2);}.msg-bubble strong{font-weight:600;}.msg-bubble blockquote{border-left:3px solid var(--ac);padding-left:10px;margin:.5em 0;color:var(--tx2);}
 .cev-view-content p{margin:0 0 .8em;}.cev-view-content p:last-child{margin:0;}.cev-view-content em{font-style:italic;color:var(--tx2);}.cev-view-content strong{font-weight:600;}.cev-view-content blockquote{border-left:3px solid var(--ac);padding-left:10px;margin:.5em 0;color:var(--tx2);}
 .msg-bubble ol,.msg-bubble ul{margin:0 0 .6em;padding-left:1.6em;}.msg-bubble li{margin-bottom:.3em;}
-.ci{padding:10px 16px;display:flex;gap:10px;flex-shrink:0;background:var(--bg);align-items:flex-end;}
+.ci{padding:10px 16px;display:flex;gap:10px;flex-shrink:0;background:var(--bg);align-items:flex-end;border-top:1px solid transparent;border-image:linear-gradient(to right,transparent,var(--bd),transparent) 1;}
 .ci-box{flex:1;display:flex;align-items:flex-end;background:var(--bg3);border:1px solid var(--bd);border-radius:22px;overflow:hidden;min-height:44px;}
 .ci-box textarea{flex:1;max-height:200px;min-height:44px;overflow-y:auto;resize:none;padding:10px 6px 10px 16px;line-height:1.5;border:none;background:transparent;font-family:inherit;font-size:16px;color:var(--tx);}
 .ci-box textarea:focus{outline:none;}
@@ -1227,7 +1227,11 @@ toast('已刪除');closePopup('mem-edit-pop');openChatMemory();}
 let _pcmds=[];
 async function loadPcmds(){_pcmds=sortBy(await dbAll('persistent_commands'),'sort_order');}
 function togglePcmdPanel(){const p=$('pcmd-panel');if(p.classList.contains('show')){closePcmdPanel();}else{renderPcmdList();p.classList.add('show');$('pcmd-overlay').classList.add('show');$('pcmd-plus-btn').classList.add('active');}}
-function closePcmdPanel(){$('pcmd-panel').classList.remove('show');$('pcmd-overlay').classList.remove('show');$('pcmd-plus-btn').classList.remove('active');}
+function closePcmdPanel(){$('pcmd-panel').classList.remove('show');$('pcmd-panel').style.transform='';$('pcmd-overlay').classList.remove('show');$('pcmd-plus-btn').classList.remove('active');}
+(function(){let startY=0,curY=0,dragging=false;const handle=$('pcmd-handle');const panel=$('pcmd-panel');if(!handle||!panel)return;
+handle.addEventListener('touchstart',e=>{startY=e.touches[0].clientY;curY=startY;dragging=true;panel.style.transition='none';},{passive:true});
+document.addEventListener('touchmove',e=>{if(!dragging)return;curY=e.touches[0].clientY;const dy=curY-startY;if(dy>0)panel.style.transform='translateY('+dy+'px)';},{passive:true});
+document.addEventListener('touchend',()=>{if(!dragging)return;dragging=false;panel.style.transition='transform .25s ease';if(curY-startY>80){closePcmdPanel();}else{panel.style.transform='';}});})();
 function renderPcmdList(){const el=$('pcmd-list');if(!_pcmds.length){el.innerHTML='<div style="color:var(--tx2);font-size:15px;padding:8px;">尚未建立常駐指令</div>';return;}
 const t=(_curChat&&_curChat.pcmdToggles)||{};
 el.innerHTML=_pcmds.map((p,i)=>{const isOn=t[p.id]!==undefined?t[p.id]!==false:p.enabled===true;return '<div class="ev-toggle-item" data-pcid="'+p.id+'"><div style="flex:1;min-width:0;cursor:pointer;" onclick="editPcmd(\''+p.id+'\')"><div class="lt">'+esc(p.name||'未命名')+'</div><div class="ls">'+esc((p.content||'').substring(0,80))+'</div></div><div class="tog'+(isOn?' on':'')+'" onclick="event.stopPropagation();togglePcmdEnabled('+i+',this)"></div></div>';}).join('');initPcmdDrag(el);}
