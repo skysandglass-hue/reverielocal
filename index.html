@@ -986,31 +986,31 @@ sys+=await buildEventSection(cd.events,vecEvents);
 sys+=await buildWorldBookSection(vecWB);
 return tplReplace(sys.trim());}
 async function buildCharSection(){let s='';const cd=await getCharData(_curChat.charId);const c=cd.char;
-if(c){s+='[角色卡]\n姓名: '+c.name+'\n';if(c.age)s+='年齡: '+c.age+'\n';if(c.gender&&c.gender!=='未設置')s+='性別: '+c.gender+'\n';if(c.job)s+='職業: '+c.job+'\n';if(c.setting)s+='設定:\n'+c.setting+'\n';}return s;}
-function buildPlayerSection(){let s='';if(_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){s+='\n[玩家角色]\n姓名: '+pf.name+'\n';if(pf.age)s+='年齡: '+pf.age+'\n';if(pf.gender&&pf.gender!=='未設置')s+='性別: '+pf.gender+'\n';if(pf.job)s+='職業: '+pf.job+'\n';if(pf.setting)s+='設定:\n'+pf.setting+'\n';}}return s;}
-function buildSummarySection(){let s='';if(_curChat.summary&&_curChat.summary.trim())s+='\n[歷史摘要]\n'+_curChat.summary+'\n';return s;}
+if(c){s+='[Character]\nName: '+c.name+'\n';if(c.age)s+='Age: '+c.age+'\n';if(c.gender&&c.gender!=='未設置')s+='Gender: '+c.gender+'\n';if(c.job)s+='Occupation: '+c.job+'\n';if(c.setting)s+='Setting:\n'+c.setting+'\n';}return s;}
+function buildPlayerSection(){let s='';if(_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){s+='\n[Player Character]\nName: '+pf.name+'\n';if(pf.age)s+='Age: '+pf.age+'\n';if(pf.gender&&pf.gender!=='未設置')s+='Gender: '+pf.gender+'\n';if(pf.job)s+='Occupation: '+pf.job+'\n';if(pf.setting)s+='Setting:\n'+pf.setting+'\n';}}return s;}
+function buildSummarySection(){let s='';if(_curChat.summary&&_curChat.summary.trim())s+='\n[Story Summary]\n'+_curChat.summary+'\n';return s;}
 function buildExtrasSection(allExtras,vecExtras){let s='';if(!allExtras||!allExtras.length)return s;const hasAnyEmb=allExtras.some(e=>e.embedding);
-if(vecExtras.length){s+='\n[附加設定]\n';vecExtras.forEach(v=>{const ex=allExtras.find(e=>e.id===v.id);if(ex){if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';}});const vecIds=new Set(vecExtras.map(v=>v.id));allExtras.filter(e=>!e.embedding&&!vecIds.has(e.id)).forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}
-else if(!hasAnyEmb){s+='\n[附加設定]\n';allExtras.forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}return s;}
-function buildMemorySection(vecMemories){let s='';if(vecMemories&&vecMemories.length){s+='\n[相關記憶]\n(Timestamps below are real-world system timestamps, NOT in-universe dates. Never use these dates during roleplay. Only reference them if the player explicitly asks out-of-character.)\n';vecMemories.forEach(m=>{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';});}
-if(_curChat.memories&&_curChat.memories.length){s+='\n[記憶體]\n';_curChat.memories.forEach(m=>{if(typeof m==='string'){s+='- '+m+'\n';}else{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';}});}return s;}
+if(vecExtras.length){s+='\n[Additional Info]\n';vecExtras.forEach(v=>{const ex=allExtras.find(e=>e.id===v.id);if(ex){if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';}});const vecIds=new Set(vecExtras.map(v=>v.id));allExtras.filter(e=>!e.embedding&&!vecIds.has(e.id)).forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}
+else if(!hasAnyEmb){s+='\n[Additional Info]\n';allExtras.forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}return s;}
+function buildMemorySection(vecMemories){let s='';if(vecMemories&&vecMemories.length){s+='\n[Relevant Memories]\n(Timestamps below are real-world system timestamps, NOT in-universe dates. Never use these dates during roleplay. Only reference them if the player explicitly asks out-of-character.)\n';vecMemories.forEach(m=>{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';});}
+if(_curChat.memories&&_curChat.memories.length){s+='\n[Local Memories]\n';_curChat.memories.forEach(m=>{if(typeof m==='string'){s+='- '+m+'\n';}else{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';}});}return s;}
 function buildMemoSection(vecMemos){const s2=getSettings();let sec='';
-if(vecMemos&&vecMemos.length){sec+='\n[玩家備忘]\n以下是你從對話中記錄的玩家個人資訊，請自然地運用這些資訊（不要直接引用標記）：\n';vecMemos.forEach(m=>{sec+='- '+m.content+'\n';});}
-if(s2.memo_on){const memoInstr=s2.memo_prompt||'When {{user}} reveals personal preferences, values, habits, important people or events, or private information during conversation, append a [MEMO] block on a new line after your roleplay response has completely ended. Never write [MEMO] inside the roleplay text. Format strictly: one entry per line, each beginning with "[MEMO] ". If there is nothing worth recording this turn, output no [MEMO] at all.';sec+='\n[MEMO 指令]\n'+memoInstr+'\n';}
+if(vecMemos&&vecMemos.length){sec+='\n[Player Memos]\nThe following are personal details about the player recorded from conversations. Use this information naturally without directly referencing the tags:\n';vecMemos.forEach(m=>{sec+='- '+m.content+'\n';});}
+if(s2.memo_on){const memoInstr=s2.memo_prompt||'When {{user}} reveals personal preferences, values, habits, important people or events, or private information during conversation, append a [MEMO] block on a new line after your roleplay response has completely ended. Never write [MEMO] inside the roleplay text. Format strictly: one entry per line, each beginning with "[MEMO] ". If there is nothing worth recording this turn, output no [MEMO] at all.';sec+='\n[MEMO Instructions]\n'+memoInstr+'\n';}
 return sec;}
 async function buildEventSection(cEvs,vecEvents){let s='';let creatorToggles={},playerEvs=[];
 try{const toggleRows=await dbByIndex('chat_creator_event_toggles','chat_id',_curChatId);toggleRows.forEach(r=>{creatorToggles[r.event_id]=r.enabled;});const plEvRows=(await dbByIndex('chat_events','chat_id',_curChatId)).filter(e=>e.enabled!==false);playerEvs=sortBy(plEvRows,'sort_order');}catch(e){}
 const vecEvIds=new Set(vecEvents.map(v=>v.id));
 const hasAnyEvEmb=cEvs.some(e=>e.embedding);
 const activeCreator=cEvs.filter(ev=>{if(creatorToggles[ev.id]===false)return false;if(vecEvIds.has(ev.id))return true;if(!ev.embedding)return true;if(!hasAnyEvEmb)return creatorToggles[ev.id]!==false;return false;});
-if(activeCreator.length){s+='\n[創作者事件]\n';activeCreator.forEach(ev=>{s+='- '+ev.name;if(ev.time_or_keyword)s+=' ('+ev.time_or_keyword+')';s+=':\n'+ev.content+'\n\n';});}
-if(playerEvs.length){s+='\n[玩家事件]\n';playerEvs.forEach(ev=>{s+='- '+ev.name;if(ev.keyword)s+=' ('+ev.keyword+')';s+=':\n'+ev.content+'\n\n';});}return s;}
+if(activeCreator.length){s+='\n[Creator Events]\n';activeCreator.forEach(ev=>{s+='- '+ev.name;if(ev.time_or_keyword)s+=' ('+ev.time_or_keyword+')';s+=':\n'+ev.content+'\n\n';});}
+if(playerEvs.length){s+='\n[Player Events]\n';playerEvs.forEach(ev=>{s+='- '+ev.name;if(ev.keyword)s+=' ('+ev.keyword+')';s+=':\n'+ev.content+'\n\n';});}return s;}
 async function buildAllEventsText(){let s='';try{const cd=await getCharData(_curChat.charId);const cEvs=cd.events||[];let creatorToggles={},playerEvs=[];
 const toggleRows=await dbByIndex('chat_creator_event_toggles','chat_id',_curChatId);toggleRows.forEach(r=>{creatorToggles[r.event_id]=r.enabled;});
 const plEvRows=(await dbByIndex('chat_events','chat_id',_curChatId)).filter(e=>e.enabled!==false);playerEvs=sortBy(plEvRows,'sort_order');
 const activeCreator=cEvs.filter(ev=>creatorToggles[ev.id]!==false);
-if(activeCreator.length){s+='\n[事件]\n';activeCreator.forEach(ev=>{s+='- '+ev.name;if(ev.time_or_keyword)s+=' ('+ev.time_or_keyword+')';s+=':\n'+ev.content+'\n\n';});}
-if(playerEvs.length){s+='\n[玩家事件]\n';playerEvs.forEach(ev=>{s+='- '+ev.name;if(ev.keyword)s+=' ('+ev.keyword+')';s+=':\n'+ev.content+'\n\n';});}}catch(e){}return s;}
+if(activeCreator.length){s+='\n[Events]\n';activeCreator.forEach(ev=>{s+='- '+ev.name;if(ev.time_or_keyword)s+=' ('+ev.time_or_keyword+')';s+=':\n'+ev.content+'\n\n';});}
+if(playerEvs.length){s+='\n[Player Events]\n';playerEvs.forEach(ev=>{s+='- '+ev.name;if(ev.keyword)s+=' ('+ev.keyword+')';s+=':\n'+ev.content+'\n\n';});}}catch(e){}return s;}
 // --- World Book Prompt Injection ---
 async function buildWorldBookSection(vecWB){let s='';const wbIds=(_curChat&&_curChat.worldbook_ids)||[];if(!wbIds.length)return s;
 // Gather all constant entries + vector-matched entries
@@ -1018,16 +1018,16 @@ let constantEntries=[],vecIds=new Set((vecWB||[]).map(v=>v.id));
 for(const wid of wbIds){let entries=[];try{entries=await dbByIndex('worldbook_entries','worldbook_id',wid);}catch(e){entries=(await dbAll('worldbook_entries')).filter(x=>x.worldbook_id===wid);}
 entries.filter(e=>e.constant).forEach(e=>{if(!vecIds.has(e.id))constantEntries.push(e);});}
 const allActive=[...constantEntries,...(vecWB||[])];
-if(allActive.length){s+='\n[世界書]\n';allActive.forEach(en=>{s+='## '+en.name+'\n';if(en.content)s+=en.content+'\n\n';});}
+if(allActive.length){s+='\n[World Book]\n';allActive.forEach(en=>{s+='## '+en.name+'\n';if(en.content)s+=en.content+'\n\n';});}
 // If no vector enabled, inject all non-constant entries too (fallback when no embedding)
 if(!vecWB||!vecWB.length){let hasAnyEmb=false;const allNonConst=[];
 for(const wid of wbIds){let entries=[];try{entries=await dbByIndex('worldbook_entries','worldbook_id',wid);}catch(e){entries=(await dbAll('worldbook_entries')).filter(x=>x.worldbook_id===wid);}
 entries.forEach(e=>{if(e.embedding)hasAnyEmb=true;if(!e.constant)allNonConst.push(e);});}
-if(!hasAnyEmb&&allNonConst.length){if(!s)s+='\n[世界書]\n';allNonConst.forEach(en=>{s+='## '+en.name+'\n';if(en.content)s+=en.content+'\n\n';});}}
+if(!hasAnyEmb&&allNonConst.length){if(!s)s+='\n[World Book]\n';allNonConst.forEach(en=>{s+='## '+en.name+'\n';if(en.content)s+=en.content+'\n\n';});}}
 return s;}
 function buildApiMsgs(){const allMsgs=_curChat.msgs||[];const total=allMsgs.length;const maxCtx=parseInt(getSettings().max_context_msgs)||10;const recentStart=Math.max(0,total-maxCtx);const msgs=[];
-for(let i=recentStart;i<total;i++){const m=allMsgs[i];if(m.role==='system')msgs.push({role:'user',content:'[場景] '+m.content});else if(m.role==='ai')msgs.push({role:'assistant',content:m.content});else msgs.push({role:'user',content:m.content});}
-if(msgs.length&&msgs[msgs.length-1].role==='assistant')msgs.push({role:'user',content:'[繼續]'});
+for(let i=recentStart;i<total;i++){const m=allMsgs[i];if(m.role==='system')msgs.push({role:'user',content:'[Scene] '+m.content});else if(m.role==='ai')msgs.push({role:'assistant',content:m.content});else msgs.push({role:'user',content:m.content});}
+if(msgs.length&&msgs[msgs.length-1].role==='assistant')msgs.push({role:'user',content:'[Continue]'});
 if(msgs.length&&msgs[0].role==='assistant')msgs.unshift({role:'user',content:'[對話開始]'});
 const pcmdTxt=getActivePcmds();if(pcmdTxt&&msgs.length){for(let i=msgs.length-1;i>=0;i--){if(msgs[i].role==='user'){msgs[i].content+='\n\n[常駐指令]\n'+pcmdTxt;break;}}}
 return msgs;}
@@ -1100,7 +1100,7 @@ if(pv==='google')return(data.candidates&&data.candidates[0]&&data.candidates[0].
 return data.choices&&data.choices[0]?data.choices[0].message.content:'';}
 async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定摘要 API/模型');return;}
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1){toast('對話太短');return;}
-let transcript='';for(let i=0;i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
+let transcript='';for(let i=0;i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'Character'):(m.role==='system'?'System':'Player'))+': '+m.content+'\n\n';}
 try{const evText=await buildAllEventsText();if(evText.trim())transcript+='\n'+evText;}catch(e){}
 const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[常駐指令]\n'+pcmdTxt+'\n';
 toast('生成摘要…');const sysPr=getSettings().summary_prompt||'你是對話摘要助手。將以下 RP 對話濃縮成簡潔摘要，保留重要劇情、角色關係和關鍵事件，並結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok=parseInt(getSettings().sum_tokens)||500;
@@ -1109,7 +1109,7 @@ if(text){$('sum-ta').value=text;cntF($('sum-ta'));_curChat.summary=text;saveChat
 async function autoGenSummary(vecEvents){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1)return;
 let transcript=(_curChat.summary?'[上次摘要]\n'+_curChat.summary+'\n\n[新對話]\n':'');
-for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'角色'):(m.role==='system'?'系統':'玩家'))+': '+m.content+'\n\n';}
+for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'Character'):(m.role==='system'?'System':'Player'))+': '+m.content+'\n\n';}
 try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,vecEvents||[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
 const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[常駐指令]\n'+pcmdTxt+'\n';
 const sysPr=getSettings().summary_prompt||'你是對話摘要助手。合併濃縮成簡潔摘要，結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok2=parseInt(getSettings().sum_tokens)||500;
@@ -1130,7 +1130,7 @@ _memGenRunning=true;
 chat.lastMemGenAt=msgCount;saveChatStore();
 toast('記憶生成中…');
 const msgs=chat.msgs||[];const readCount=interval*2;const startIdx=Math.max(0,msgs.length-readCount);
-let transcript='';for(let i=startIdx;i<msgs.length;i++){const m=msgs[i];if(m.role==='system')continue;transcript+=(m.role==='ai'?(m.name||'角色'):'玩家')+': '+m.content+'\n\n';}
+let transcript='';for(let i=startIdx;i<msgs.length;i++){const m=msgs[i];if(m.role==='system')continue;transcript+=(m.role==='ai'?(m.name||'Character'):'Player')+': '+m.content+'\n\n';}
 if(!transcript.trim()){_memGenRunning=false;return;}
 const defPrompt='從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。';
 const memTok=parseInt(s.mem_tokens)||500;
