@@ -1028,8 +1028,8 @@ return s;}
 function buildApiMsgs(){const allMsgs=_curChat.msgs||[];const total=allMsgs.length;const maxCtx=parseInt(getSettings().max_context_msgs)||10;const recentStart=Math.max(0,total-maxCtx);const msgs=[];
 for(let i=recentStart;i<total;i++){const m=allMsgs[i];if(m.role==='system')msgs.push({role:'user',content:'[Scene] '+m.content});else if(m.role==='ai')msgs.push({role:'assistant',content:m.content});else msgs.push({role:'user',content:m.content});}
 if(msgs.length&&msgs[msgs.length-1].role==='assistant')msgs.push({role:'user',content:'[Continue]'});
-if(msgs.length&&msgs[0].role==='assistant')msgs.unshift({role:'user',content:'[對話開始]'});
-const pcmdTxt=getActivePcmds();if(pcmdTxt&&msgs.length){for(let i=msgs.length-1;i>=0;i--){if(msgs[i].role==='user'){msgs[i].content+='\n\n[常駐指令]\n'+pcmdTxt;break;}}}
+if(msgs.length&&msgs[0].role==='assistant')msgs.unshift({role:'user',content:'[Start]'});
+const pcmdTxt=getActivePcmds();if(pcmdTxt&&msgs.length){for(let i=msgs.length-1;i>=0;i--){if(msgs[i].role==='user'){msgs[i].content+='\n\n[Persistent Instructions]\n'+pcmdTxt;break;}}}
 return msgs;}
 
 // ═══ Screenshot ═══
@@ -1102,17 +1102,17 @@ async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('s
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1){toast('對話太短');return;}
 let transcript='';for(let i=0;i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'Character'):(m.role==='system'?'System':'Player'))+': '+m.content+'\n\n';}
 try{const evText=await buildAllEventsText();if(evText.trim())transcript+='\n'+evText;}catch(e){}
-const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[常駐指令]\n'+pcmdTxt+'\n';
-toast('生成摘要…');const sysPr=getSettings().summary_prompt||'你是對話摘要助手。將以下 RP 對話濃縮成簡潔摘要，保留重要劇情、角色關係和關鍵事件，並結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok=parseInt(getSettings().sum_tokens)||500;
+const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[Persistent Instructions]\n'+pcmdTxt+'\n';
+toast('生成摘要…');const sysPr=getSettings().summary_prompt||'You are a conversation summarizer. Condense the following RP conversation into a concise summary, preserving important plot developments, character relationship changes, and key events. Incorporate known events for forward-looking narrative planning. Max 500 tokens. Output in Traditional Chinese.';const sumTok=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'[Transcript]\n\n'+transcript,sumTok,0.3);
 if(text){$('sum-ta').value=text;cntF($('sum-ta'));_curChat.summary=text;saveChatStore();toast('已生成');}else toast('生成失敗');}
 async function autoGenSummary(vecEvents){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1)return;
-let transcript=(_curChat.summary?'[上次摘要]\n'+_curChat.summary+'\n\n[新對話]\n':'');
+let transcript=(_curChat.summary?'[Previous Summary]\n'+_curChat.summary+'\n\n[New Dialogue]\n':'');
 for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'Character'):(m.role==='system'?'System':'Player'))+': '+m.content+'\n\n';}
 try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,vecEvents||[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
-const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[常駐指令]\n'+pcmdTxt+'\n';
-const sysPr=getSettings().summary_prompt||'你是對話摘要助手。合併濃縮成簡潔摘要，結合已知事件為劇情發展做前瞻性規劃。500 tokens 以內。繁體中文。';const sumTok2=parseInt(getSettings().sum_tokens)||500;
+const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[Persistent Instructions]\n'+pcmdTxt+'\n';
+const sysPr=getSettings().summary_prompt||'You are a conversation summarizer. Merge and condense into a concise summary. Incorporate known events for forward-looking narrative planning. Max 500 tokens. Output in Traditional Chinese.';const sumTok2=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'[Transcript]\n\n'+transcript,sumTok2,0.3);
 if(text&&text.trim()){_curChat.summary=text;saveChatStore();toast('摘要已更新');}else{toast('摘要生成失敗');}}
 
@@ -1132,7 +1132,7 @@ toast('記憶生成中…');
 const msgs=chat.msgs||[];const readCount=interval*2;const startIdx=Math.max(0,msgs.length-readCount);
 let transcript='';for(let i=startIdx;i<msgs.length;i++){const m=msgs[i];if(m.role==='system')continue;transcript+=(m.role==='ai'?(m.name||'Character'):'Player')+': '+m.content+'\n\n';}
 if(!transcript.trim()){_memGenRunning=false;return;}
-const defPrompt='從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。';
+const defPrompt='Extract important memories from the following conversation and consolidate them into a concise paragraph. Include: relationship changes between characters, important promises or agreements, personal information revealed by characters, emotional turning points, and key plot events. Output in Traditional Chinese. Output only the memory content with no prefixes or explanations.';
 const memTok=parseInt(s.mem_tokens)||500;
 const text=await callApiSimple(apiCfg,s.mem_prompt||defPrompt,transcript,memTok,0.3);
 if(!text||!text.trim()){_memGenRunning=false;return;}
