@@ -892,12 +892,9 @@ function editMsg(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;_emIdx=
 function closeEditModal(){$('em-ov').classList.remove('show');_emIdx=null;}
 async function confirmEditMsg(){if(_emIdx===null||!_curChat)return;_curChat.msgs[_emIdx].content=$('em-ta').value;
 if(_curChatId){const rows=sortBy(await dbByIndex('messages','chat_id',_curChatId),'sort_order');if(rows[_emIdx])await dbPut('messages',{...rows[_emIdx],content:$('em-ta').value});}
-// Update in-place instead of refreshMsgs to preserve typing animation
 const oldRow=document.querySelector('.msg-row[data-msg-idx="'+_emIdx+'"]');
 if(oldRow){const newRow=renderMsgRow(_curChat.msgs[_emIdx],_emIdx);oldRow.replaceWith(newRow);}
-const editedIdx=_emIdx;closeEditModal();
-// Scroll to edited message
-setTimeout(()=>{const row=document.querySelector('.msg-row[data-msg-idx="'+editedIdx+'"]');if(row)row.scrollIntoView({behavior:'smooth',block:'center'});},100);}
+closeEditModal();}
 let _msgDelMode=false,_msgDelSel=new Set();
 // ═══ Bookmarks ═══
 async function toggleBookmark(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;
