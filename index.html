@@ -155,7 +155,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .ctx-menu{position:fixed;z-index:500;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.12);padding:6px 0;min-width:150px;}
 .ctx-item{padding:11px 16px;font-size:15px;cursor:pointer;color:var(--tx);display:flex;align-items:center;gap:8px;}.ctx-item:hover{background:var(--bgi);}.ctx-item.danger{color:var(--del);}
 .bs-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:500;align-items:center;justify-content:center;}.bs-overlay.show{display:flex;}
-.bs-popup{background:var(--bg2);border-radius:16px;width:min(260px,80vw);padding:8px 0;box-shadow:0 8px 30px rgba(0,0,0,.18);}.bs-popup.wide{width:min(320px,88vw);}
+.bs-popup{background:var(--bg2);border-radius:16px;width:min(260px,80vw);padding:8px 0;box-shadow:0 8px 30px rgba(0,0,0,.18);}.bs-popup.wide{width:min(500px,92vw);}
 .bs-item{padding:14px 24px;font-size:15px;cursor:pointer;color:var(--tx);display:flex;align-items:center;gap:12px;border-top:1px solid var(--bd);}.bs-item:first-of-type{border-top:none;}.bs-item:hover{background:var(--bgi);}.bs-item.danger{color:var(--del);}.bs-item.danger svg{stroke:var(--del);}
 .bs-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
 .typing-indicator{display:flex;gap:4px;padding:10px 14px;align-items:center;}.typing-dot{width:6px;height:6px;background:var(--tx2);border-radius:50%;animation:typeBounce 1.4s ease-in-out infinite;}.typing-dot:nth-child(2){animation-delay:.25s;}.typing-dot:nth-child(3){animation-delay:.5s;}
@@ -883,7 +883,12 @@ function editMsg(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;_emIdx=
 function closeEditModal(){$('em-ov').classList.remove('show');_emIdx=null;}
 async function confirmEditMsg(){if(_emIdx===null||!_curChat)return;_curChat.msgs[_emIdx].content=$('em-ta').value;
 if(_curChatId){const rows=sortBy(await dbByIndex('messages','chat_id',_curChatId),'sort_order');if(rows[_emIdx])await dbPut('messages',{...rows[_emIdx],content:$('em-ta').value});}
-refreshMsgs();closeEditModal();}
+// Update in-place instead of refreshMsgs to preserve typing animation
+const oldRow=document.querySelector('.msg-row[data-msg-idx="'+_emIdx+'"]');
+if(oldRow){const newRow=renderMsgRow(_curChat.msgs[_emIdx],_emIdx);oldRow.replaceWith(newRow);}
+const editedIdx=_emIdx;closeEditModal();
+// Scroll to edited message
+setTimeout(()=>{const row=document.querySelector('.msg-row[data-msg-idx="'+editedIdx+'"]');if(row)row.scrollIntoView({behavior:'smooth',block:'center'});},100);}
 let _msgDelMode=false,_msgDelSel=new Set();
 // ═══ Bookmarks ═══
 async function toggleBookmark(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;
@@ -974,8 +979,8 @@ function buildSummarySection(){let s='';if(_curChat.summary&&_curChat.summary.tr
 function buildExtrasSection(allExtras,vecExtras){let s='';if(!allExtras||!allExtras.length)return s;const hasAnyEmb=allExtras.some(e=>e.embedding);
 if(vecExtras.length){s+='\n[附加設定]\n';vecExtras.forEach(v=>{const ex=allExtras.find(e=>e.id===v.id);if(ex){if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';}});const vecIds=new Set(vecExtras.map(v=>v.id));allExtras.filter(e=>!e.embedding&&!vecIds.has(e.id)).forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}
 else if(!hasAnyEmb){s+='\n[附加設定]\n';allExtras.forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}return s;}
-function buildMemorySection(vecMemories){let s='';if(vecMemories&&vecMemories.length){s+='\n[相關記憶]\n';vecMemories.forEach(m=>{s+='- '+(m.important?'⭐ ':'')+m.content+'\n';});}
-if(_curChat.memories&&_curChat.memories.length){s+='\n[記憶體]\n';_curChat.memories.forEach(m=>{s+='- '+(typeof m==='string'?m:(m.content||''))+'\n';});}return s;}
+function buildMemorySection(vecMemories){let s='';if(vecMemories&&vecMemories.length){s+='\n[相關記憶]\n';vecMemories.forEach(m=>{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';});}
+if(_curChat.memories&&_curChat.memories.length){s+='\n[記憶體]\n';_curChat.memories.forEach(m=>{if(typeof m==='string'){s+='- '+m+'\n';}else{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';}});}return s;}
 async function buildEventSection(cEvs,vecEvents){let s='';let creatorToggles={},playerEvs=[];
 try{const toggleRows=await dbByIndex('chat_creator_event_toggles','chat_id',_curChatId);toggleRows.forEach(r=>{creatorToggles[r.event_id]=r.enabled;});const plEvRows=(await dbByIndex('chat_events','chat_id',_curChatId)).filter(e=>e.enabled!==false);playerEvs=sortBy(plEvRows,'sort_order');}catch(e){}
 const vecEvIds=new Set(vecEvents.map(v=>v.id));
@@ -1193,8 +1198,8 @@ async function openChatMemory(){if(!_curChat)return;const b=$('chat-mem-body');b
 let dbMems=await dbByIndex('memories','chat_id',_curChatId);
 const localMems=(_curChat.memories||[]).map((m,i)=>({_local:true,_idx:i,content:typeof m==='string'?m:(m.content||''),date:typeof m==='object'?m.date:'',important:typeof m==='object'?m.important:false}));
 const allMems=[...dbMems.map(m=>({...m,_local:false})),...localMems];
-// Sort all by date descending (newest first), then by created_at if available
-allMems.sort((a,b)=>{const da=a.date||a.created_at||'';const db2=b.date||b.created_at||'';if(da&&db2)return db2.localeCompare(da);if(db2)return 1;if(da)return -1;return 0;});
+// Sort newest first: by created_at timestamp (precise), fallback to date string
+allMems.sort((a,b)=>{const ca=a.created_at||'';const cb=b.created_at||'';if(ca&&cb)return cb.localeCompare(ca);const da=a.date||'';const db2=b.date||'';if(da&&db2)return db2.localeCompare(da);if(cb||db2)return 1;if(ca||da)return -1;return 0;});
 if(!allMems.length){b.innerHTML='<div class="empty">尚未建立記憶</div>';}else{
 let lastMemDate='';
 allMems.forEach(m=>{const isDb=!m._local;const mid=isDb?m.id:('l'+m._idx);const src=isDb?'db':'local';
@@ -1228,10 +1233,10 @@ let _pcmds=[];
 async function loadPcmds(){_pcmds=sortBy(await dbAll('persistent_commands'),'sort_order');}
 function togglePcmdPanel(){const p=$('pcmd-panel');if(p.classList.contains('show')){closePcmdPanel();}else{renderPcmdList();p.classList.add('show');$('pcmd-overlay').classList.add('show');$('pcmd-plus-btn').classList.add('active');}}
 function closePcmdPanel(){$('pcmd-panel').classList.remove('show');$('pcmd-panel').style.transform='';$('pcmd-overlay').classList.remove('show');$('pcmd-plus-btn').classList.remove('active');}
-(function(){let startY=0,curY=0,dragging=false;const handle=$('pcmd-handle');const panel=$('pcmd-panel');if(!handle||!panel)return;
-handle.addEventListener('touchstart',e=>{startY=e.touches[0].clientY;curY=startY;dragging=true;panel.style.transition='none';},{passive:true});
-document.addEventListener('touchmove',e=>{if(!dragging)return;curY=e.touches[0].clientY;const dy=curY-startY;if(dy>0)panel.style.transform='translateY('+dy+'px)';},{passive:true});
-document.addEventListener('touchend',()=>{if(!dragging)return;dragging=false;panel.style.transition='transform .25s ease';if(curY-startY>80){closePcmdPanel();}else{panel.style.transform='';}});})();
+(function(){let startY=0,curY=0,dragging=false;const panel=$('pcmd-panel');if(!panel)return;
+panel.addEventListener('touchstart',e=>{if(panel.scrollTop>0)return;startY=e.touches[0].clientY;curY=startY;dragging=true;panel.style.transition='none';},{passive:true});
+panel.addEventListener('touchmove',e=>{if(!dragging)return;curY=e.touches[0].clientY;const dy=curY-startY;if(dy>0){panel.style.transform='translateY('+dy+'px)';e.preventDefault();}else{dragging=false;panel.style.transition='transform .25s ease';panel.style.transform='';}},{passive:false});
+panel.addEventListener('touchend',()=>{if(!dragging)return;dragging=false;panel.style.transition='transform .25s ease';if(curY-startY>80){closePcmdPanel();}else{panel.style.transform='';}});})();
 function renderPcmdList(){const el=$('pcmd-list');if(!_pcmds.length){el.innerHTML='<div style="color:var(--tx2);font-size:15px;padding:8px;">尚未建立常駐指令</div>';return;}
 const t=(_curChat&&_curChat.pcmdToggles)||{};
 el.innerHTML=_pcmds.map((p,i)=>{const isOn=t[p.id]!==undefined?t[p.id]!==false:p.enabled===true;return '<div class="ev-toggle-item" data-pcid="'+p.id+'"><div style="flex:1;min-width:0;cursor:pointer;" onclick="editPcmd(\''+p.id+'\')"><div class="lt">'+esc(p.name||'未命名')+'</div><div class="ls">'+esc((p.content||'').substring(0,80))+'</div></div><div class="tog'+(isOn?' on':'')+'" onclick="event.stopPropagation();togglePcmdEnabled('+i+',this)"></div></div>';}).join('');initPcmdDrag(el);}
