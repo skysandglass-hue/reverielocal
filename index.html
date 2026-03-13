@@ -951,7 +951,7 @@ let allMemHits=[];
 vecMemories=allMemHits.filter(m=>m.type!=='memo').slice(0,s.vec_memories_count||5);
 vecMemos=allMemHits.filter(m=>m.type==='memo').slice(0,s.vec_memos_count||5);
 // Worldbook vector search: search across all enabled worldbooks for this chat
-const wbIds=(_curChat.worldbook_ids)||[];if(wbIds.length){const allWBE=[];for(const wid of wbIds){const ens=await dbByIndex('worldbook_entries','worldbook_id',wid);allWBE.push(...ens);}const wbWithEmb=allWBE.filter(e=>e.embedding);if(wbWithEmb.length){vecWB=wbWithEmb.map(x=>({...x,similarity:cosineSim(emb,x.embedding)})).filter(x=>x.similarity>=vt).sort((a,b)=>b.similarity-a.similarity).slice(0,s.vec_wb_count||5);}}}else{toast('向量搜尋未就緒');}}
+const wbIds=(_curChat.worldbook_ids)||[];if(wbIds.length){const allWBE=[];for(const wid of wbIds){const ens=await dbByIndex('worldbook_entries','worldbook_id',wid);allWBE.push(...ens);}const wbWithEmb=allWBE.filter(e=>e.embedding);if(wbWithEmb.length){vecWB=wbWithEmb.map(x=>({...x,similarity:cosineSim(emb,x.embedding)})).filter(x=>x.similarity>=vt).sort((a,b)=>b.similarity-a.similarity).slice(0,s.vec_wb_count||5);}}}}
 const sysContent=await buildSysPrompt(vecExtras,vecEvents,vecMemories,vecWB,vecMemos);const msgs=buildApiMsgs();
 const provider=apiCfg.provider||'anthropic',model=apiCfg.model,maxOut=parseInt(apiCfg.max_output_tokens)||1200,temp=apiCfg.temperature!=null?apiCfg.temperature:0.8,topP=apiCfg.top_p!=null?apiCfg.top_p:null,topK=apiCfg.top_k!=null?apiCfg.top_k:null;
 let resp;
@@ -1215,8 +1215,8 @@ async function openChatMemory(){if(!_curChat)return;const b=$('chat-mem-body');b
 let dbMems=(await dbByIndex('memories','chat_id',_curChatId)).filter(m=>m.type!=='memo');
 const localMems=(_curChat.memories||[]).map((m,i)=>({_local:true,_idx:i,content:typeof m==='string'?m:(m.content||''),date:typeof m==='object'?m.date:'',important:typeof m==='object'?m.important:false}));
 const allMems=[...dbMems.map(m=>({...m,_local:false})),...localMems];
-// Sort newest first: by created_at timestamp (precise), fallback to date string
-allMems.sort((a,b)=>{const ca=a.created_at||'';const cb=b.created_at||'';if(ca&&cb)return cb.localeCompare(ca);const da=a.date||'';const db2=b.date||'';if(da&&db2)return db2.localeCompare(da);if(cb||db2)return 1;if(ca||da)return -1;return 0;});
+// Sort newest first: by created_at timestamp (precise), fallback to date string, then id
+allMems.sort((a,b)=>{const ca=a.created_at||'';const cb=b.created_at||'';if(ca&&cb)return cb.localeCompare(ca);if(ca)return -1;if(cb)return 1;const da=a.date||'';const db2=b.date||'';if(da!==db2)return(db2||'').localeCompare(da||'');const ia=a.id||'';const ib=b.id||'';return ib.localeCompare(ia);});
 if(!allMems.length){b.innerHTML='<div class="empty">尚未建立記憶</div>';}else{
 let lastMemDate='';
 allMems.forEach(m=>{const isDb=!m._local;const mid=isDb?m.id:('l'+m._idx);const src=isDb?'db':'local';
