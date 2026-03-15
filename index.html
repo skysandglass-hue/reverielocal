@@ -1189,12 +1189,20 @@ const s=getSettings();const memoOn=s.memo_on,stateOn=s.state_on;
 if(!memoOn&&!stateOn)return;
 let apiCfg=getFeatureApiCfg('trk');
 if(!apiCfg||!apiCfg.api_key||!apiCfg.model){console.warn('[Tracker] 未設定追蹤器 API，跳過');return;}
-const msgs=chat.msgs||[];const recent=msgs.slice(-2);if(!recent.length)return;
-let transcript='';recent.forEach(m=>{if(m.role==='system')return;transcript+=(m.role==='ai'?(m.name||'Character'):'Player')+': '+m.content+'\n\n';});
-if(!transcript.trim())return;
-let sysPr='You are a background tracker for a roleplay session. Analyze the recent conversation and output ONLY the requested tags. No prose, no explanation.\n';
-if(memoOn){const memoInstr='Analyze the recent conversation for information that helps understand who the player is as a person.\n\nRecord: self-definitions and titles the player uses, personality traits and behavioral patterns, lasting preferences and values, the relationship dynamic they have established with the character.\n\nDo not record: momentary emotional reactions, one-time events, anything already inferable from context.\n\nFormat: one entry per line, each beginning with "[MEMO] ". If there is nothing worth recording, output nothing.';sysPr+='\n'+memoInstr+'\n';}
+const msgs=chat.msgs||[];if(!msgs.length)return;
+// Resolve names
+const charName=chat.charName||'Character';
+let playerName='Player';if(chat.playerId){const pf=profiles.find(x=>x.id===chat.playerId);if(pf&&pf.name)playerName=pf.name;}
+// Build transcripts
+const lastPlayerMsg=msgs.filter(m=>m.role==='user').slice(-1)[0];
+const recent=msgs.slice(-2);
+let stateTranscript='';recent.forEach(m=>{if(m.role==='system')return;stateTranscript+=(m.role==='ai'?charName:playerName)+': '+m.content+'\n\n';});
+let sysPr='You are a background tracker for a roleplay session. Output ONLY the requested tags. No prose, no explanation, no commentary.\n';
+sysPr+='\nContext: The player controls a character named "'+playerName+'". The AI controls a character named "'+charName+'". Keep this distinction in mind.\n';
+if(memoOn&&lastPlayerMsg){const playerText=lastPlayerMsg.content;sysPr+='\nAnalyze '+playerName+'\'s (the player\'s character) behavior as if they were a real person. Record what kind of person they are — their personality, emotional patterns, values, habits, self-definitions, and the relationship dynamic they are building with '+charName+' (the AI character).\n\n['+playerName+'\'s Message]\n'+playerText+'\n\nDo NOT record:\n- '+charName+'\'s (the AI character) behavior or traits\n- Plot events or scene descriptions\n- Momentary emotional reactions to a single event\n- Anything already obvious from the story context\n\nIMPORTANT: Only record insights that would still be relevant and useful in future sessions. When in doubt, do NOT output any [MEMO].\n\nFormat: one entry per line, each beginning with "[MEMO] ". If nothing is worth recording, output nothing.\n';}
 if(stateOn){const sb=(chat.sceneBoard)||{};if(sb.autoUpdate!==false){const sbPrompt=sb.prompt||DEFAULT_SB_PROMPT;if(sbPrompt){let stateInstr='Update the scene board based on the recent conversation. Output ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+sbPrompt+'\n';if(sb.content){stateInstr+='\nCurrent scene board content:\n'+sb.content+'\n\nUpdate the above based on what changed in the conversation. Keep unchanged information intact.\n';}else{stateInstr+='\nThe scene board is currently empty. Create initial content based on the conversation.\n';}stateInstr+='If nothing has changed, do not output any [STATE_START]/[STATE_END] block.';stateInstr=tplReplace(stateInstr);sysPr+='\n'+stateInstr+'\n';}}}
+const transcript=stateTranscript||((lastPlayerMsg)?playerName+': '+lastPlayerMsg.content:'');
+if(!transcript.trim())return;
 const text=await callApiSimple(apiCfg,sysPr,transcript,600,0.2);
 if(!text||!text.trim())return;
 // Parse MEMO
