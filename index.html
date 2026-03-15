@@ -218,13 +218,13 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .sf-editor-panel{background:var(--bg);border-radius:16px 16px 0 0;width:100%;max-width:500px;max-height:85vh;min-height:460px;overflow-y:auto;padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 16px);animation:slideUp .25s ease;}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .sb-tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:12px;}
-.sb-tab{flex:1;text-align:center;padding:10px 0;font-size:14px;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
+.sb-tab{flex:1;text-align:center;padding:10px 0;font-size:15px;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
 .sb-tab.active{color:var(--ac);border-bottom-color:var(--ac);font-weight:600;}
-.sb-content-area{font-size:14px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;min-height:260px;line-height:1.7;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;white-space:pre-wrap;}
+.sb-content-area{font-size:16px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;min-height:260px;line-height:1.7;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;white-space:pre-wrap;}
 .sb-content-area:focus{border-color:var(--ac);}
-.sb-prompt-area{font-size:13px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;min-height:260px;line-height:1.6;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;}
+.sb-prompt-area{font-size:15px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;min-height:260px;line-height:1.6;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;}
 .sb-prompt-area:focus{border-color:var(--ac);}
-.sb-hint{font-size:12px;color:var(--tx2);line-height:1.5;margin-bottom:8px;}
+.sb-hint{font-size:14px;color:var(--tx2);line-height:1.6;margin-bottom:10px;}
 </style>
 </head>
 <body>
@@ -431,9 +431,9 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="fp" id="fp-chat-memo"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-memo')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">MEMO</div><button class="btn bp bs2" onclick="newMemo()">+ 新增</button></div><div class="fp-body" id="chat-memo-body"></div></div>
 <div class="popup-ov" id="memo-edit-pop" onclick="if(event.target===this)closePopup('memo-edit-pop')"><div class="popup" style="width:90%;max-width:400px;"><div class="popup-title" id="memo-edit-title">新增 MEMO</div><input type="hidden" id="memo-eid"><div class="f" style="padding:0 4px;"><textarea rows="6" id="memo-ec" oninput="cntF(this)" style="min-height:180px;width:100%;box-sizing:border-box;" placeholder="輸入備忘內容…"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:8px;padding:8px 4px 0;"><button class="btn bp" style="flex:1;" onclick="saveMemoEdit()">儲存</button></div></div></div>
 <div class="sf-editor" id="sf-editor" onclick="if(event.target===this)closeSceneEditor()"><div class="sf-editor-panel">
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div style="font-size:16px;font-weight:700;color:var(--tx);">場景板</div><button class="btn bp bs2" onclick="saveSceneBoard()">儲存</button></div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div style="font-size:18px;font-weight:600;color:var(--tx);">場景板</div><button class="btn bp bs2" onclick="saveSceneBoard()">儲存</button></div>
 <div class="sb-tabs"><div class="sb-tab active" onclick="switchSBTab(0,this)">場景內容</div><div class="sb-tab" onclick="switchSBTab(1,this)">追蹤格式</div></div>
-<div id="sb-tab-0"><textarea class="sb-content-area" id="sb-content" placeholder="AI 會根據對話自動填寫場景狀態…&#10;你也可以直接手動編輯。" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea></div>
+<div id="sb-tab-0"><textarea class="sb-content-area" id="sb-content" placeholder="AI 會根據對話自動填寫場景狀態…&#10;你也可以直接手動編輯。" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea><button class="btn bs2" id="sb-gen-btn" onclick="genSceneBoard()" style="width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>生成</button></div>
 <div id="sb-tab-1" style="display:none;"><div class="sb-hint">告訴 AI 你想追蹤什麼、用什麼格式呈現。AI 會在每次回覆後根據這段指示更新場景內容。</div><textarea class="sb-prompt-area" id="sb-prompt" placeholder="例：&#10;請按照以下格式總結：&#10;- 背景：目前季節、時間和地點&#10;- 情況：用一行話總結當前情況&#10;- 在場人物：列出目前在場的所有角色" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea></div>
 </div></div>
 <div class="fp" id="fp-cev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title" id="cev-t">預設事件</div><button class="btn bp bs2" onclick="newCEv()">+ 新增</button></div><div class="fp-body" id="cev-body"></div></div>
@@ -1186,7 +1186,7 @@ let transcript='';recent.forEach(m=>{if(m.role==='system')return;transcript+=(m.
 if(!transcript.trim())return;
 let sysPr='You are a background tracker for a roleplay session. Analyze the recent conversation and output ONLY the requested tags. No prose, no explanation.\n';
 if(memoOn){const memoInstr='Analyze the recent conversation for information that helps understand who the player is as a person.\n\nRecord: self-definitions and titles the player uses, personality traits and behavioral patterns, lasting preferences and values, the relationship dynamic they have established with the character.\n\nDo not record: momentary emotional reactions, one-time events, anything already inferable from context.\n\nFormat: one entry per line, each beginning with "[MEMO] ". If there is nothing worth recording, output nothing.';sysPr+='\n'+memoInstr+'\n';}
-if(stateOn){const sb=(chat.sceneBoard)||{};const sbPrompt=sb.prompt||DEFAULT_SB_PROMPT;if(sbPrompt){let stateInstr='Update the scene board based on the recent conversation. Output ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+sbPrompt+'\n\nIf nothing has changed, do not output any [STATE_START]/[STATE_END] block.';stateInstr=tplReplace(stateInstr);sysPr+='\n'+stateInstr+'\n';}}
+if(stateOn){const sb=(chat.sceneBoard)||{};const sbPrompt=sb.prompt||DEFAULT_SB_PROMPT;if(sbPrompt){let stateInstr='Update the scene board based on the recent conversation. Output ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+sbPrompt+'\n';if(sb.content){stateInstr+='\nCurrent scene board content:\n'+sb.content+'\n\nUpdate the above based on what changed in the conversation. Keep unchanged information intact.\n';}else{stateInstr+='\nThe scene board is currently empty. Create initial content based on the conversation.\n';}stateInstr+='If nothing has changed, do not output any [STATE_START]/[STATE_END] block.';stateInstr=tplReplace(stateInstr);sysPr+='\n'+stateInstr+'\n';}}
 const text=await callApiSimple(apiCfg,sysPr,transcript,400,0.2);
 if(!text||!text.trim())return;
 // Parse MEMO
@@ -1337,6 +1337,21 @@ switchSBTab(0,document.querySelectorAll('.sb-tab')[0]);}
 function closeSceneEditor(){$('sf-editor').classList.remove('show');}
 function switchSBTab(idx,el){document.querySelectorAll('.sb-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');$('sb-tab-0').style.display=idx===0?'block':'none';$('sb-tab-1').style.display=idx===1?'block':'none';}
 function saveSceneBoard(){if(!_curChat)return;const sb=getSceneBoard();sb.content=$('sb-content').value.trim();sb.prompt=$('sb-prompt').value.trim()||DEFAULT_SB_PROMPT;_curChat.sceneBoard=sb;saveChatStore();renderSceneFab();toast('已儲存');closeSceneEditor();}
+async function genSceneBoard(){if(!_curChat||!_curChatId){toast('請先開啟對話');return;}
+const s=getSettings();let apiCfg=getFeatureApiCfg('trk');
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定追蹤器 API/模型');return;}
+const msgs=_curChat.msgs||[];const recent=msgs.slice(-10);if(!recent.length){toast('對話太短');return;}
+let transcript='';recent.forEach(m=>{if(m.role==='system')return;transcript+=(m.role==='ai'?(m.name||'Character'):'Player')+': '+m.content+'\n\n';});
+if(!transcript.trim()){toast('沒有可分析的對話');return;}
+const sb=getSceneBoard();const sbPrompt=$('sb-prompt').value.trim()||sb.prompt||DEFAULT_SB_PROMPT;
+let sysPr='You are a background tracker for a roleplay session. Analyze the recent conversation and update the scene board.\nOutput ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+tplReplace(sbPrompt)+'\n';
+if(sb.content){sysPr+='\nCurrent scene board content:\n'+sb.content+'\n\nUpdate the above based on what changed in the conversation. Keep unchanged information intact.\n';}else{sysPr+='\nThe scene board is currently empty. Create initial content based on the conversation.\n';}
+const btn=$('sb-gen-btn');btn.disabled=true;btn.textContent='生成中…';
+try{const text=await callApiSimple(apiCfg,sysPr,transcript,400,0.2);
+if(text){const m=text.match(/\[STATE_START\]([\s\S]*?)\[STATE_END\]/);const content=m?m[1].trim():text.trim();
+if(content){$('sb-content').value=content;const ta=$('sb-content');ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';toast('已生成');}else{toast('AI 未回傳場景內容');}}
+else{toast('生成失敗');}}catch(e){toast('生成失敗');console.error(e);}
+finally{btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>生成';}}
 
 // ═══ Persistent Commands ═══
 let _pcmds=[];
