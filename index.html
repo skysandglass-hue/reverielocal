@@ -721,9 +721,12 @@ function getSettings(){return _settings;}
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&_curChat){_curChat.draft=$('c-inp').value||'';saveChatStore();}});
 window.addEventListener('beforeunload',()=>{if(_curChat){_curChat.draft=$('c-inp').value||'';}});
 async function saveSettings(){await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,theme:document.body.className||'default',emb_local:$('set-emb-local').classList.contains('on'),vec_threshold:parseFloat((parseInt($('set-vec-threshold').value)/100).toFixed(2)),vec_extras_count:parseInt($('set-vec-extras').value)||3,vec_events_count:parseInt($('set-vec-events').value)||3,vec_memories_count:parseInt($('set-vec-memories').value)||5,vec_wb_count:parseInt($('set-vec-wb').value)||5,vec_memos_count:parseInt($('set-vec-memos').value)||5});toast('已儲存');}
-async function saveMemSettings(){await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,
-mem_prompt:$('mem-prompt').value,mem_rule:parseInt($('mem-rule').value)||10,mem_tokens:parseInt($('set-mem-tokens').value)||500,
-auto_summary:$('set-sum-auto').classList.contains('on'),summary_interval:parseInt($('set-sum-interval').value)||10,summary_prompt:$('sum-prompt').value,sum_tokens:parseInt($('set-sum-tokens').value)||500,
+async function saveMemSettings(){
+const memPr=$('mem-prompt').value.trim()||DEFAULT_MEM_PROMPT;$('mem-prompt').value=memPr;cntF($('mem-prompt'));
+const sumPr=$('sum-prompt').value.trim()||DEFAULT_SUM_PROMPT;$('sum-prompt').value=sumPr;cntF($('sum-prompt'));
+await saveSettingsObj({...(_settings||{}),id:SETTINGS_ID,
+mem_prompt:memPr,mem_rule:parseInt($('mem-rule').value)||10,mem_tokens:parseInt($('set-mem-tokens').value)||500,
+auto_summary:$('set-sum-auto').classList.contains('on'),summary_interval:parseInt($('set-sum-interval').value)||10,summary_prompt:sumPr,sum_tokens:parseInt($('set-sum-tokens').value)||500,
 sum_api_id:$('sum-api-id').value||null,sum_model:$('sum-model-id').value||null,
 mem_api_id:$('mem-api-id').value||null,mem_model:$('mem-model-id').value||null,
 memo_on:$('set-memo-on').classList.contains('on'),
@@ -774,11 +777,11 @@ function getFeatureApiCfg(pfx){const s=getSettings(),apiId=s[pfx+'_api_id']||'',
 function getApiCfgForPrompt(rpId){let cfgId=null,model=null;if(rpId){const p=prompts.find(x=>x.id===rpId);if(p){cfgId=p.api_config_id||null;model=p.model||null;}}const acfg=cfgId?_apiCfgs.find(x=>x.id===cfgId):_apiCfgs[0];if(!acfg)return null;return{...acfg,model:model||acfg.model||null};}
 // === PROMPTS ===
 let prompts=[];
-async function loadPr(){prompts=sortBy(await dbAll('prompts'),'sort_order');if(!prompts.length){const p={id:uid(),name:'標準 RP',content:'你是一位專業的角色扮演敘事者。請根據角色設定與場景，以豐富的文學筆觸推進劇情。\n\n## 回覆規則\n- 以第三人稱描寫角色的動作、表情、心理活動\n- 對話使用「」包裹，內心獨白使用（）包裹\n- 每次回覆控制在 200～400 字之間\n- 不要替玩家角色做出決定或說話\n- 適當描寫環境氛圍與感官細節\n- 根據角色的性格與好感度調整互動方式\n\n## 敘事風格\n保持沉浸感，避免跳出角色。如果玩家的行為超出場景邏輯，角色應以符合設定的方式自然回應。',sort_order:0};await dbPut('prompts',p);prompts=[p];}renderPr();syncRpPopup();}
+async function loadPr(){prompts=sortBy(await dbAll('prompts'),'sort_order');if(!prompts.length){const p={id:uid(),name:'標準 RP',content:DEFAULT_RP_PROMPT,sort_order:0};await dbPut('prompts',p);prompts=[p];}renderPr();syncRpPopup();}
 function renderPr(){const pl=$('pl'),curId=$('pe-id').value;pl.innerHTML=prompts.map((p,i)=>'<div class="pi'+(p.id===curId?' sel':(!curId&&i===0?' sel':''))+'" data-prid="'+p.id+'" data-pridx="'+i+'"><div class="pn2" onclick="selPr(this.parentElement,'+i+')">'+esc(p.name)+'</div><div class="ptk">≈ '+tok(p.content)+'</div></div>').join('');const si=curId?prompts.findIndex(p=>p.id===curId):-1;if(si>=0)selPr(pl.children[si],si);else if(prompts.length)selPr(pl.children[0],0);else $('pr-edit').style.display='none';initPromptDrag(pl);}
 function selPr(el,i){document.querySelectorAll('.pi').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');$('pe-id').value=prompts[i].id;$('pn').value=prompts[i].name;$('tp2').value=prompts[i].content;$('pr-api-id').value=prompts[i].api_config_id||'';$('pr-model-id').value=prompts[i].model||'';const acfg=prompts[i].api_config_id?_apiCfgs.find(a=>a.id===prompts[i].api_config_id):null;$('pr-api-btn').childNodes[0].textContent=acfg?acfg.name:'未選擇';$('pr-model-btn').childNodes[0].textContent=prompts[i].model||'未選擇';syncPrApiPop();syncPrModelPop();cntF($('tp2'));$('pr-edit').style.display='block';}
-async function createPr(){const p={id:uid(),name:'新模式',content:'',sort_order:prompts.length};await dbPut('prompts',p);toast('已新增');await loadPr();selPr($('pl').lastElementChild,prompts.length-1);}
-async function savePr(){const id=$('pe-id').value,p=await dbGet('prompts',id)||{id};Object.assign(p,{name:$('pn').value.trim()||'未命名',content:$('tp2').value,api_config_id:$('pr-api-id').value||null,model:$('pr-model-id').value||null});await dbPut('prompts',p);toast('已儲存');await loadPr();}
+async function createPr(){const p={id:uid(),name:'新模式',content:DEFAULT_RP_PROMPT,sort_order:prompts.length};await dbPut('prompts',p);toast('已新增');await loadPr();selPr($('pl').lastElementChild,prompts.length-1);}
+async function savePr(){const id=$('pe-id').value,p=await dbGet('prompts',id)||{id};const content=$('tp2').value.trim()||DEFAULT_RP_PROMPT;$('tp2').value=content;cntF($('tp2'));Object.assign(p,{name:$('pn').value.trim()||'未命名',content:content,api_config_id:$('pr-api-id').value||null,model:$('pr-model-id').value||null});await dbPut('prompts',p);toast('已儲存');await loadPr();}
 async function delPr(){if(!await cfm('確定要刪除此模式嗎？'))return;await dbDel('prompts',$('pe-id').value);toast('已刪除');$('pr-edit').style.display='none';await loadPr();}
 let _chatRpId=null;
 function syncRpPopup(){const el=$('rp-list');if(!prompts.length){el.innerHTML='<div style="padding:8px;color:var(--tx2);">請先建立提示詞</div>';return;}el.innerHTML=prompts.map(p=>'<div class="popup-item'+(_chatRpId===p.id?' active':'')+'" onclick="pickRp(\''+p.id+'\',this)"><span>'+esc(p.name)+'</span><span class="check">✓</span></div>').join('');}
@@ -1187,7 +1190,7 @@ if(!transcript.trim())return;
 let sysPr='You are a background tracker for a roleplay session. Analyze the recent conversation and output ONLY the requested tags. No prose, no explanation.\n';
 if(memoOn){const memoInstr='Analyze the recent conversation for information that helps understand who the player is as a person.\n\nRecord: self-definitions and titles the player uses, personality traits and behavioral patterns, lasting preferences and values, the relationship dynamic they have established with the character.\n\nDo not record: momentary emotional reactions, one-time events, anything already inferable from context.\n\nFormat: one entry per line, each beginning with "[MEMO] ". If there is nothing worth recording, output nothing.';sysPr+='\n'+memoInstr+'\n';}
 if(stateOn){const sb=(chat.sceneBoard)||{};const sbPrompt=sb.prompt||DEFAULT_SB_PROMPT;if(sbPrompt){let stateInstr='Update the scene board based on the recent conversation. Output ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+sbPrompt+'\n';if(sb.content){stateInstr+='\nCurrent scene board content:\n'+sb.content+'\n\nUpdate the above based on what changed in the conversation. Keep unchanged information intact.\n';}else{stateInstr+='\nThe scene board is currently empty. Create initial content based on the conversation.\n';}stateInstr+='If nothing has changed, do not output any [STATE_START]/[STATE_END] block.';stateInstr=tplReplace(stateInstr);sysPr+='\n'+stateInstr+'\n';}}
-const text=await callApiSimple(apiCfg,sysPr,transcript,400,0.2);
+const text=await callApiSimple(apiCfg,sysPr,transcript,600,0.2);
 if(!text||!text.trim())return;
 // Parse MEMO
 if(memoOn){const memoRegex=/^\[MEMO\]\s*(.+)$/gm;let mm;while((mm=memoRegex.exec(text))!==null){const mt=mm[1].trim();if(mt){const mid=uid();await dbPut('memories',{id:mid,chat_id:chatId,content:mt,date:localDateStr(),created_at:new Date().toISOString(),type:'memo'});embedAndPatch('memories',mid,mt);}}}
@@ -1321,14 +1324,15 @@ else{const nid=uid();await dbPut('memories',{id:nid,chat_id:_curChatId,content:t
 toast('已儲存');closePopup('memo-edit-pop');openChatMemos();}
 
 // ═══ Scene Board (場景板) ═══
-const DEFAULT_SB_PROMPT='總結當前場景的以下資訊，每項一行：\n- 地點：角色目前所在的具體場所\n- 時間：YYYY/MM/DD HH:mm\n- 在場人物：列出場景中所有在場的角色\n- 角色外觀：描述角色當前的服裝或外觀特徵\n僅列出有明確描寫的項目，沒有提及的不要編造。';
+const DEFAULT_SB_PROMPT='總結當前場景的以下資訊，每項一行：\n- 地點：角色目前所在的具體場所\n- 時間：YYYY/MM/DD HH:mm\n- 在場人物：列出場景中所有在場的角色\n- 角色外觀：描述角色當前的服裝或外觀特徵\n僅列出有明確描寫的項目，沒有提及的不要編造。\n請控制在 300 字以內。';
+const DEFAULT_SUM_PROMPT='你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。';
+const DEFAULT_MEM_PROMPT='從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。';
+const DEFAULT_RP_PROMPT='你是一位專業的角色扮演敘事者。請根據角色設定與場景，以豐富的文學筆觸推進劇情。\n\n## 回覆規則\n- 以第三人稱描寫角色的動作、表情、心理活動\n- 對話使用「」包裹，內心獨白使用（）包裹\n- 每次回覆控制在 200～400 字之間\n- 不要替玩家角色做出決定或說話\n- 適當描寫環境氛圍與感官細節\n- 根據角色的性格與好感度調整互動方式\n\n## 敘事風格\n保持沉浸感，避免跳出角色。如果玩家的行為超出場景邏輯，角色應以符合設定的方式自然回應。';
 function getSceneBoard(){if(!_curChat)return{prompt:'',content:''};if(!_curChat.sceneBoard)_curChat.sceneBoard={prompt:DEFAULT_SB_PROMPT,content:''};return _curChat.sceneBoard;}
 function renderSceneFab(){const el=$('sb-fab');if(!el)return;if(!_curChat){el.style.display='none';return;}
 const s=getSettings();if(!s.state_on){el.style.display='none';return;}
 el.style.display='flex';
-const sb=getSceneBoard();
-if(sb.content){el.classList.add('has-content');el.innerHTML='<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';}
-else{el.classList.remove('has-content');el.innerHTML='<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';}}
+el.innerHTML='<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';}
 function openSceneEditor(){if(!_curChat)return;const sb=getSceneBoard();
 $('sb-content').value=sb.content||'';$('sb-prompt').value=sb.prompt||DEFAULT_SB_PROMPT;
 $('sf-editor').classList.add('show');
@@ -1336,9 +1340,9 @@ setTimeout(()=>{const p=$('sb-prompt');p.style.height='auto';p.style.height=Math
 switchSBTab(0,document.querySelectorAll('.sb-tab')[0]);}
 function closeSceneEditor(){$('sf-editor').classList.remove('show');}
 function switchSBTab(idx,el){document.querySelectorAll('.sb-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');$('sb-tab-0').style.display=idx===0?'block':'none';$('sb-tab-1').style.display=idx===1?'block':'none';}
-function saveSceneBoard(){if(!_curChat)return;const sb=getSceneBoard();sb.content=$('sb-content').value.trim();sb.prompt=$('sb-prompt').value.trim()||DEFAULT_SB_PROMPT;_curChat.sceneBoard=sb;saveChatStore();renderSceneFab();toast('已儲存');closeSceneEditor();}
+function saveSceneBoard(){if(!_curChat)return;const sb=getSceneBoard();sb.content=$('sb-content').value.trim();sb.prompt=$('sb-prompt').value.trim()||DEFAULT_SB_PROMPT;$('sb-prompt').value=sb.prompt;_curChat.sceneBoard=sb;saveChatStore();renderSceneFab();toast('已儲存');closeSceneEditor();}
 async function genSceneBoard(){if(!_curChat||!_curChatId){toast('請先開啟對話');return;}
-const s=getSettings();let apiCfg=getFeatureApiCfg('trk');
+let apiCfg=getFeatureApiCfg('trk');
 if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定追蹤器 API/模型');return;}
 const msgs=_curChat.msgs||[];const recent=msgs.slice(-10);if(!recent.length){toast('對話太短');return;}
 let transcript='';recent.forEach(m=>{if(m.role==='system')return;transcript+=(m.role==='ai'?(m.name||'Character'):'Player')+': '+m.content+'\n\n';});
@@ -1347,9 +1351,9 @@ const sb=getSceneBoard();const sbPrompt=$('sb-prompt').value.trim()||sb.prompt||
 let sysPr='You are a background tracker for a roleplay session. Analyze the recent conversation and update the scene board.\nOutput ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+tplReplace(sbPrompt)+'\n';
 if(sb.content){sysPr+='\nCurrent scene board content:\n'+sb.content+'\n\nUpdate the above based on what changed in the conversation. Keep unchanged information intact.\n';}else{sysPr+='\nThe scene board is currently empty. Create initial content based on the conversation.\n';}
 const btn=$('sb-gen-btn');btn.disabled=true;btn.textContent='生成中…';
-try{const text=await callApiSimple(apiCfg,sysPr,transcript,400,0.2);
+try{const text=await callApiSimple(apiCfg,sysPr,transcript,800,0.2);
 if(text){const m=text.match(/\[STATE_START\]([\s\S]*?)\[STATE_END\]/);const content=m?m[1].trim():text.trim();
-if(content){$('sb-content').value=content;toast('已生成');}else{toast('AI 未回傳場景內容');}}
+if(content){$('sb-content').value=content;const sb2=getSceneBoard();sb2.content=content;sb2.prompt=$('sb-prompt').value.trim()||sb2.prompt||DEFAULT_SB_PROMPT;_curChat.sceneBoard=sb2;saveChatStore();renderSceneFab();toast('已生成並儲存');}else{toast('AI 未回傳場景內容');}}
 else{toast('生成失敗');}}catch(e){toast('生成失敗');console.error(e);}
 finally{btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>生成';}}
 
