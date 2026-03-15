@@ -1184,7 +1184,7 @@ const s=getSettings();const memoOn=s.memo_on,stateOn=s.state_on;
 if(!memoOn&&!stateOn)return;
 let apiCfg=getFeatureApiCfg('trk');
 if(!apiCfg||!apiCfg.api_key||!apiCfg.model){console.warn('[Tracker] 未設定追蹤器 API，跳過');return;}
-const msgs=chat.msgs||[];const recent=msgs.slice(-6);if(!recent.length)return;
+const msgs=chat.msgs||[];const recent=msgs.slice(-2);if(!recent.length)return;
 let transcript='';recent.forEach(m=>{if(m.role==='system')return;transcript+=(m.role==='ai'?(m.name||'Character'):'Player')+': '+m.content+'\n\n';});
 if(!transcript.trim())return;
 let sysPr='You are a background tracker for a roleplay session. Analyze the recent conversation and output ONLY the requested tags. No prose, no explanation.\n';
@@ -1344,7 +1344,7 @@ function saveSceneBoard(){if(!_curChat)return;const sb=getSceneBoard();sb.conten
 async function genSceneBoard(){if(!_curChat||!_curChatId){toast('請先開啟對話');return;}
 let apiCfg=getFeatureApiCfg('trk');
 if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定追蹤器 API/模型');return;}
-const msgs=_curChat.msgs||[];const recent=msgs.slice(-10);if(!recent.length){toast('對話太短');return;}
+const msgs=_curChat.msgs||[];const recent=msgs.slice(-6);if(!recent.length){toast('對話太短');return;}
 let transcript='';recent.forEach(m=>{if(m.role==='system')return;transcript+=(m.role==='ai'?(m.name||'Character'):'Player')+': '+m.content+'\n\n';});
 if(!transcript.trim()){toast('沒有可分析的對話');return;}
 const sb=getSceneBoard();const sbPrompt=$('sb-prompt').value.trim()||sb.prompt||DEFAULT_SB_PROMPT;
