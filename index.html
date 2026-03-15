@@ -111,7 +111,7 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:4px;font-weigh
 .popup-title{font-size:16px;font-weight:600;color:var(--tx3);margin-bottom:12px;}
 .popup-item{padding:12px 14px;border:1px solid var(--bd);border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;}.popup-item:hover{border-color:var(--ac);}.popup-item.active{border-color:var(--ac);background:var(--acl);}
 .popup-item .check{color:var(--ac);font-weight:600;display:none;}.popup-item.active .check{display:inline;}
-.confirm-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:500;align-items:center;justify-content:center;}.confirm-ov.show{display:flex;}
+.confirm-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:9000;align-items:center;justify-content:center;}.confirm-ov.show{display:flex;}
 .confirm-box{background:var(--bg2);border-radius:14px;width:min(320px,88vw);padding:22px;box-shadow:0 8px 24px rgba(0,0,0,.15);text-align:center;}
 .confirm-msg{font-size:16px;color:var(--tx);margin-bottom:18px;line-height:1.6;}
 .confirm-actions{display:flex;gap:8px;justify-content:center;}
@@ -174,7 +174,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .ev-toggle-item{display:flex;align-items:center;gap:10px;padding:18px 16px;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;margin-bottom:16px;box-shadow:0 1px 2px var(--sh);}
 .ev-toggle-item .lb{flex:1;min-width:0;cursor:pointer;overflow:visible;}.ev-toggle-item .lt{font-size:17px;font-weight:500;color:var(--tx3);line-height:1.4;}.ev-toggle-item .ls{font-size:15px;color:var(--tx2);margin-top:8px;line-height:1.4;}
 .tog{position:relative;width:34px;height:18px;background:var(--bd);border-radius:9px;cursor:pointer;flex-shrink:0;transition:background .2s;}.tog.on{background:var(--ac);}.tog::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.08);}.tog.on::after{transform:translateX(16px);}
-.pcmd-panel{display:none;position:fixed;bottom:0;left:0;right:0;z-index:251;background:var(--bg2);border-top:1px solid var(--bd);box-shadow:0 -4px 16px rgba(0,0,0,.08);border-radius:16px 16px 0 0;max-height:80vh;min-height:50vh;overflow-y:auto;padding:20px 16px;transition:transform .25s ease;}.pcmd-panel.show{display:block;}
+.pcmd-panel{position:fixed;bottom:0;left:0;right:0;z-index:251;background:var(--bg2);border-top:1px solid var(--bd);box-shadow:0 -4px 16px rgba(0,0,0,.08);border-radius:16px 16px 0 0;height:60vh;overflow:hidden;padding:20px 16px;transition:transform .25s ease;display:none;flex-direction:column;}.pcmd-panel.show{display:flex;}
 .pcmd-panel-handle{width:36px;height:4px;background:var(--bd2);border-radius:2px;margin:0 auto 14px;}
 .pcmd-overlay{display:none;position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.25);}.pcmd-overlay.show{display:block;}
 .pcmd-card{padding:14px;border:1px solid var(--bd);border-radius:10px;margin-bottom:8px;background:var(--bg3);}.pcmd-card .lt{font-size:16px;font-weight:500;margin-bottom:6px;}.pcmd-card .ls{font-size:16px;color:var(--tx2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
@@ -212,10 +212,11 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .sb-fab:hover{opacity:.95;}
 .sb-fab svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .sb-fab.has-content{opacity:.85;}
-.sf-editor{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;}
+.sf-editor{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;}
 .sf-editor.show{display:flex;}
-.sf-editor-panel{background:var(--bg);border-radius:16px 16px 0 0;width:100%;max-width:500px;max-height:85vh;min-height:460px;overflow-y:auto;padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 16px);animation:slideUp .25s ease;}
-@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sf-editor-panel{background:var(--bg2);border-radius:16px;width:100%;max-width:500px;max-height:75vh;min-height:420px;overflow-y:auto;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.18);display:flex;flex-direction:column;animation:sfPop .2s ease;}
+@keyframes sfPop{from{transform:scale(.95);opacity:0;}to{transform:scale(1);opacity:1;}}
+
 .sb-tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:12px;}
 .sb-tab{flex:1;text-align:center;padding:10px 0;font-size:15px;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
 .sb-tab.active{color:var(--ac);border-bottom-color:var(--ac);font-weight:600;}
@@ -250,7 +251,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="confirm-ov" id="inp-ov"><div class="confirm-box"><div class="confirm-msg" id="inp-msg" style="font-size:16px;"></div><input type="text" id="inp-val" onkeydown="if(event.key==='Enter')inpR(this.value)" style="width:100%;margin:8px 0 12px;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font-size:16px;"><div class="confirm-actions"><button class="btn bs2" onclick="inpR(null)">取消</button><button class="btn bp bs2" onclick="inpR($('inp-val').value)">確定</button></div></div></div>
 <div class="ctx-menu hidden" id="ctx-menu"></div>
 <div class="bs-overlay" id="bs-ov" onclick="closeBs()"><div class="bs-popup" id="bs-body" onclick="event.stopPropagation()"></div></div>
-<div class="edit-modal-ov" id="em-ov"><div class="edit-modal"><div class="edit-modal-head"><div class="edit-modal-title">更正訊息</div><button class="edit-modal-close" onclick="closeEditModal()">✕</button></div><textarea id="em-ta" oninput="$('em-ctr').textContent='('+this.value.length+'/'+(_emMax||9999)+')'"></textarea><div class="ctr" id="em-ctr"></div><button class="edit-modal-btn" onclick="confirmEditMsg()">完成</button></div></div>
+<div class="edit-modal-ov" id="em-ov" onclick="if(event.target===this)closeEditModal()"><div class="edit-modal"><div class="edit-modal-head"><div class="edit-modal-title">更正訊息</div></div><textarea id="em-ta" oninput="$('em-ctr').textContent='('+this.value.length+'/'+(_emMax||9999)+')'"></textarea><div class="ctr" id="em-ctr"></div><button class="edit-modal-btn" onclick="confirmEditMsg()">完成</button></div></div>
 <div class="main" id="main">
 <!-- 聊天 -->
 <div class="pnl a" id="p-chat">
@@ -264,7 +265,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
     <div class="msg-del-bar" id="msg-del-bar"><button class="mdel-main" id="msg-del-exec" onclick="execMsgDel()">刪除 (0)</button><button class="mdel-cancel" onclick="cancelMsgDel()">取消選擇</button></div>
     <div class="msg-ss-bar" id="msg-ss-bar"><button class="mss-main" id="msg-ss-exec" onclick="execScreenshot()">截圖 (0)</button><button class="mss-cancel" onclick="cancelScreenshot()">取消</button></div>
     <div class="pcmd-overlay" id="pcmd-overlay" onclick="closePcmdPanel()"></div>
-    <div class="pcmd-panel" id="pcmd-panel"><div class="pcmd-panel-handle" id="pcmd-handle"></div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-size:18px;font-weight:600;color:var(--tx3);">常駐指令</div><div class="ham" onclick="newPcmd()" style="width:32px;height:32px;"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div id="pcmd-list"></div></div>
+    <div class="pcmd-panel" id="pcmd-panel"><div class="pcmd-panel-handle" id="pcmd-handle"></div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0px;"><div class="sb-tabs" id="pcmd-tabs" style="flex:1;margin-bottom:0;"><div class="sb-tab active" onclick="switchPcmdTab(0,this)">指令匣</div><div class="sb-tab" onclick="switchPcmdTab(1,this)">咒語書</div></div><div class="ham" id="pcmd-add-btn" onclick="newPcmd()" style="width:32px;height:32px;flex-shrink:0;"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div id="pcmd-tab-0" style="flex:1;overflow-y:auto;min-height:0;padding-top:10px;"><div class="sb-hint">開啟的指令會隨每次訊息一起傳給 AI，影響回覆風格與行為。</div><div id="pcmd-list"></div></div><div id="pcmd-tab-1" style="display:none;flex:1;overflow-y:auto;min-height:0;padding-top:10px;"><div class="sb-hint">儲存常用的訊息片段，點擊貼入輸入框。長按拖曳調整順序。</div><div id="spell-list"></div></div></div>
     <div class="ci" id="ci"><div class="pcmd-plus" id="pcmd-plus-btn" onclick="togglePcmdPanel()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></div><div class="ci-box"><textarea rows="1" placeholder="輸入..." id="c-inp" onkeydown="handleCInpKey(event)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,200)+'px';"></textarea><div class="ci-send" onclick="sendMsg()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div></div></div>
   </div>
 </div>
@@ -361,10 +362,11 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div style="position:relative;z-index:2;margin-top:2px;font-size:22px;font-weight:700;color:var(--tx);letter-spacing:1px;">Reverie</div>
   </div>
   <div style="font-size:13px;color:var(--tx2);margin-top:0;">RP Studio · Local Edition</div>
-  <div style="font-size:12px;color:var(--tx2);margin-top:2px;">v1.3</div>
+  <div style="font-size:12px;color:var(--tx2);margin-top:2px;">v1.4</div>
   </div>
   <div class="card"><div class="stt">版本紀錄</div>
   <div style="font-size:14px;color:var(--tx2);line-height:1.8;">
+  <p><strong>v1.4</strong> — 場景板改為懸浮視窗、新增咒語書、常駐指令改名為指令匣</p>
   <p><strong>v1.3</strong> — 新增場景板、MEMO 追蹤器改進</p>
   <p><strong>v1.2</strong> — 新增世界書系統</p>
   <p><strong>v1.1</strong> — 記憶系統改進、新增主題配色、UI 細節改善</p>
@@ -433,7 +435,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="fp" id="fp-chat-memo"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-memo')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">MEMO</div><button class="btn bp bs2" onclick="newMemo()">+ 新增</button></div><div class="fp-body" id="chat-memo-body"></div></div>
 <div class="popup-ov" id="memo-edit-pop" onclick="if(event.target===this)closePopup('memo-edit-pop')"><div class="popup" style="width:90%;max-width:400px;"><div class="popup-title" id="memo-edit-title">新增 MEMO</div><input type="hidden" id="memo-eid"><div class="f" style="padding:0 4px;"><textarea rows="6" id="memo-ec" oninput="cntF(this)" style="min-height:180px;width:100%;box-sizing:border-box;" placeholder="輸入備忘內容…"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:8px;padding:8px 4px 0;"><button class="btn bp" style="flex:1;" onclick="saveMemoEdit()">儲存</button></div></div></div>
 <div class="sf-editor" id="sf-editor" onclick="if(event.target===this)closeSceneEditor()"><div class="sf-editor-panel">
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div style="font-size:18px;font-weight:600;color:var(--tx);">場景板</div><button class="btn bp bs2" onclick="saveSceneBoard()">儲存</button></div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-shrink:0;"><div style="font-size:18px;font-weight:600;color:var(--tx);">場景板</div><button class="btn bp bs2" onclick="saveSceneBoard()">儲存</button></div>
 <div class="sb-tabs"><div class="sb-tab active" onclick="switchSBTab(0,this)">場景內容</div><div class="sb-tab" onclick="switchSBTab(1,this)">追蹤格式</div></div>
 <div id="sb-tab-0"><div class="sb-hint">開啟「自動更新」後，每次 AI 回覆會自動更新場景。開啟「注入對話」後，場景內容會供主 AI 參考。</div><textarea class="sb-content-area" id="sb-content" placeholder="AI 會根據對話自動填寫場景狀態…&#10;你也可以直接手動編輯。"></textarea><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn bs2" id="sb-auto-btn" onclick="toggleSBBtn('sb-auto-btn')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>自動更新</button><button class="btn bs2" id="sb-inject-btn" onclick="toggleSBBtn('sb-inject-btn')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><path d="M4 12h16"/><path d="M12 4v16"/></svg>注入對話</button><button class="btn bs2" id="sb-gen-btn" onclick="genSceneBoard()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>生成</button></div></div>
 <div id="sb-tab-1" style="display:none;"><div class="sb-hint">告訴 AI 你想追蹤什麼、用什麼格式呈現。AI 會在每次回覆後根據這段指示更新場景內容。</div><textarea class="sb-prompt-area" id="sb-prompt" placeholder="例：&#10;請按照以下格式總結：&#10;- 背景：目前季節、時間和地點&#10;- 情況：用一行話總結當前情況&#10;- 在場人物：列出目前在場的所有角色" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea></div>
@@ -455,9 +457,15 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 </div></div>
 <script>
 // === IndexedDB Data Layer ===
-const DB_NAME='reverie_local',DB_VER=3;let _db=null;
+const DB_NAME='reverie_local',DB_VER=4;let _db=null;
+// ═══ Default Prompts ═══
+const DEFAULT_RP_PROMPT='你是一位專業的角色扮演敘事者。請根據角色設定與場景，以豐富的文學筆觸推進劇情。\n\n## 回覆規則\n- 以第三人稱描寫角色的動作、表情、心理活動\n- 對話使用「」包裹，內心獨白使用（）包裹\n- 每次回覆控制在 200～400 字之間\n- 不要替玩家角色做出決定或說話\n- 適當描寫環境氛圍與感官細節\n- 根據角色的性格與好感度調整互動方式\n\n## 敘事風格\n保持沉浸感，避免跳出角色。如果玩家的行為超出場景邏輯，角色應以符合設定的方式自然回應。';
+const DEFAULT_SUM_PROMPT='你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。';
+const DEFAULT_MEM_PROMPT='從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。';
+const DEFAULT_MEMO_PROMPT='Analyze {{playerName}}\'s (the player\'s character) behavior as if they were a real person. Record what kind of person they are — their personality, emotional patterns, values, habits, self-definitions, and the relationship dynamic they are building with {{charName}} (the AI character).\n\nDo NOT record:\n- {{charName}}\'s (the AI character) behavior or traits\n- Plot events or scene descriptions\n- Momentary emotional reactions to a single event\n- Anything already obvious from the story context\n\nIMPORTANT: Only record insights that would still be relevant and useful in future sessions. When in doubt, do NOT output any [MEMO].';
+const DEFAULT_SB_PROMPT='*嚴格遵守要求格式撰寫內容，禁止擅自增減\n*簡記當前場景的以下資訊，每項一行：\n\n- 地點：劇情場所\n- 時間：YYYY/MM/DD HH:mm，依照互動合理更新時間推移\n- 角色衣著：在場角色的衣著打扮';
 function openDB(){return new Promise((res,rej)=>{if(_db){res(_db);return;}const req=indexedDB.open(DB_NAME,DB_VER);req.onupgradeneeded=e=>{const db=e.target.result;
-const stores={characters:{},character_extras:{indexes:{character_id:'character_id'}},character_events:{indexes:{character_id:'character_id'}},profiles:{},prompts:{},chats:{},messages:{indexes:{chat_id:'chat_id'}},chat_events:{indexes:{chat_id:'chat_id'}},chat_creator_event_toggles:{indexes:{chat_id:'chat_id'}},memories:{indexes:{chat_id:'chat_id'}},settings:{},api_configs:{},persistent_commands:{},avatars:{},worldbooks:{},worldbook_entries:{indexes:{worldbook_id:'worldbook_id'}}};
+const stores={characters:{},character_extras:{indexes:{character_id:'character_id'}},character_events:{indexes:{character_id:'character_id'}},profiles:{},prompts:{},chats:{},messages:{indexes:{chat_id:'chat_id'}},chat_events:{indexes:{chat_id:'chat_id'}},chat_creator_event_toggles:{indexes:{chat_id:'chat_id'}},memories:{indexes:{chat_id:'chat_id'}},settings:{},api_configs:{},persistent_commands:{},avatars:{},worldbooks:{},worldbook_entries:{indexes:{worldbook_id:'worldbook_id'}},spellbook:{}};
 for(const[s,cfg] of Object.entries(stores)){let st;if(!db.objectStoreNames.contains(s)){st=db.createObjectStore(s,{keyPath:'id'});}else{st=e.target.transaction.objectStore(s);}
 if(cfg.indexes){for(const[iName,iKey] of Object.entries(cfg.indexes)){if(!st.indexNames.contains(iName))st.createIndex(iName,iKey);}}}
 };req.onsuccess=e=>{_db=e.target.result;res(_db);};req.onerror=e=>rej(e.target.error);req.onblocked=()=>{console.warn('DB upgrade blocked - close other tabs');toast('請關閉其他分頁後重新整理');};});}
@@ -481,8 +489,8 @@ async function vectorSearch(store,indexField,indexVal,queryEmb,count,threshold){
 async function rebuildAllEmb(){if(!getSettings().emb_local){toast('請先啟用');return;}if(!await cfm('重新生成所有向量？'))return;const pipe=await loadEmbeddingModel();if(!pipe)return;let c=0;toast('處理中...');for(const x of await dbAll('character_extras')){await embedAndPatch('character_extras',x.id,(x.title||'')+' '+(x.content||''));c++;}for(const x of await dbAll('character_events')){await embedAndPatch('character_events',x.id,(x.name||'')+' '+(x.time_or_keyword||'')+' '+(x.content||''));c++;}for(const x of await dbAll('memories')){await embedAndPatch('memories',x.id,x.content||'');c++;}for(const x of await dbAll('worldbook_entries')){await embedAndPatch('worldbook_entries',x.id,(x.name||'')+' '+(x.keywords||'')+' '+(x.content||''));c++;}toast('已完成 '+c+' 筆');}
 
 // === Storage Info ===
-async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
-async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries'])try{await dbClear(s);}catch(e){}localStorage.removeItem('rp_av_off');toast('已清除');location.reload();}
+async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
+async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'])try{await dbClear(s);}catch(e){}localStorage.removeItem('rp_av_off');toast('已清除');location.reload();}
 // === Core UI ===
 const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){return '<p>'+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
 function tok(s){if(!s)return 0;let t=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);if(c>0x2E7F)t+=1.5;else if(c===32||c===10)t+=0;else t+=0.35;}return Math.ceil(t);}
@@ -810,7 +818,7 @@ function pickPfGen(el,v){el.closest('.popup').querySelectorAll('.popup-item').fo
 
 // === IMPORT / EXPORT ===
 function dlJson(data,fn){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download=fn;a.click();URL.revokeObjectURL(a.href);}
-async function exportAll(){toast('匯出中...');try{const strip=arr=>(arr||[]).map(x=>{const c={...x};delete c.embedding;return c;});const data={_type:'rp_studio_backup',_version:2,_storage:'local',_date:new Date().toISOString(),characters:strip(await dbAll('characters')),character_extras:strip(await dbAll('character_extras')),character_events:strip(await dbAll('character_events')),profiles:await dbAll('profiles'),prompts:await dbAll('prompts'),api_configs:await dbAll('api_configs'),settings:[_settings],persistent_commands:await dbAll('persistent_commands'),chats:await dbAll('chats'),messages:await dbAll('messages'),chat_events:await dbAll('chat_events'),memories:strip(await dbAll('memories')),worldbooks:await dbAll('worldbooks'),worldbook_entries:strip(await dbAll('worldbook_entries'))};dlJson(data,'rp-backup-'+new Date().toISOString().slice(0,10)+'.json');toast('已匯出');}catch(e){toast('失敗: '+e.message.substring(0,50));}}
+async function exportAll(){toast('匯出中...');try{const strip=arr=>(arr||[]).map(x=>{const c={...x};delete c.embedding;return c;});const data={_type:'rp_studio_backup',_version:2,_storage:'local',_date:new Date().toISOString(),characters:strip(await dbAll('characters')),character_extras:strip(await dbAll('character_extras')),character_events:strip(await dbAll('character_events')),profiles:await dbAll('profiles'),prompts:await dbAll('prompts'),api_configs:await dbAll('api_configs'),settings:[_settings],persistent_commands:await dbAll('persistent_commands'),chats:await dbAll('chats'),messages:await dbAll('messages'),chat_events:await dbAll('chat_events'),memories:strip(await dbAll('memories')),worldbooks:await dbAll('worldbooks'),worldbook_entries:strip(await dbAll('worldbook_entries')),spellbook:await dbAll('spellbook')};dlJson(data,'rp-backup-'+new Date().toISOString().slice(0,10)+'.json');toast('已匯出');}catch(e){toast('失敗: '+e.message.substring(0,50));}}
 async function exportChars(){toast('匯出中...');try{dlJson({_type:'rp_studio_characters',_version:2,_date:new Date().toISOString(),characters:await dbAll('characters'),character_extras:await dbAll('character_extras'),character_events:await dbAll('character_events')},'rp-chars-'+new Date().toISOString().slice(0,10)+'.json');toast('已匯出');}catch(e){toast('失敗');}}
 async function exportChats(){toast('匯出中...');try{const strip=arr=>(arr||[]).map(x=>{const c={...x};delete c.embedding;return c;});dlJson({_type:'rp_studio_chats',_version:2,_date:new Date().toISOString(),chats:await dbAll('chats'),messages:await dbAll('messages'),chat_events:await dbAll('chat_events'),memories:strip(await dbAll('memories'))},'rp-chats-'+new Date().toISOString().slice(0,10)+'.json');toast('已匯出');}catch(e){toast('失敗');}}
 async function importFile(inp){if(!inp.files[0])return;try{const file=inp.files[0],name=file.name.toLowerCase();
@@ -825,7 +833,7 @@ else{toast('無法辨識格式');return;}
 await initApp();}catch(e){toast('失敗: '+e.message.substring(0,60));}}
 
 async function importReverie(data){let total=0;const up=async(s,rows)=>{if(!rows||!rows.length)return 0;for(const r of rows){const c={...r};delete c.embedding;await dbPut(s,c);}return rows.length;};
-if(data.characters)total+=await up('characters',data.characters);if(data.character_extras)total+=await up('character_extras',data.character_extras);if(data.character_events)total+=await up('character_events',data.character_events);if(data.profiles)total+=await up('profiles',data.profiles);if(data.prompts)total+=await up('prompts',data.prompts);if(data.api_configs)total+=await up('api_configs',data.api_configs);if(data.settings&&data.settings[0]){data.settings[0].id=SETTINGS_ID;await dbPut('settings',data.settings[0]);total++;}if(data.persistent_commands)total+=await up('persistent_commands',data.persistent_commands);if(data.chats)total+=await up('chats',data.chats);if(data.messages)total+=await up('messages',data.messages);if(data.chat_events)total+=await up('chat_events',data.chat_events);if(data.memories)total+=await up('memories',data.memories);if(data.worldbooks)total+=await up('worldbooks',data.worldbooks);if(data.worldbook_entries)total+=await up('worldbook_entries',data.worldbook_entries);
+if(data.characters)total+=await up('characters',data.characters);if(data.character_extras)total+=await up('character_extras',data.character_extras);if(data.character_events)total+=await up('character_events',data.character_events);if(data.profiles)total+=await up('profiles',data.profiles);if(data.prompts)total+=await up('prompts',data.prompts);if(data.api_configs)total+=await up('api_configs',data.api_configs);if(data.settings&&data.settings[0]){data.settings[0].id=SETTINGS_ID;await dbPut('settings',data.settings[0]);total++;}if(data.persistent_commands)total+=await up('persistent_commands',data.persistent_commands);if(data.chats)total+=await up('chats',data.chats);if(data.messages)total+=await up('messages',data.messages);if(data.chat_events)total+=await up('chat_events',data.chat_events);if(data.memories)total+=await up('memories',data.memories);if(data.worldbooks)total+=await up('worldbooks',data.worldbooks);if(data.worldbook_entries)total+=await up('worldbook_entries',data.worldbook_entries);if(data.spellbook)total+=await up('spellbook',data.spellbook);
 toast('已完成 '+total+' 筆');}
 
 async function importSTCard(d){const cid=uid();const c={id:cid,name:d.name||'未命名',sort_order:chars.length,created_at:new Date().toISOString()};
@@ -866,6 +874,7 @@ dlJson(card,(card.data.name||'character')+'-card-v2.json');toast('已匯出');}
 (async()=>{
   history.replaceState({p:'main'},'');
   try{await openDB();await initApp();}catch(e){console.error('Init:',e);}
+  await new Promise(r=>setTimeout(r,1200));
   const sp=$('splash');if(sp){sp.classList.add('hide');setTimeout(()=>sp.remove(),400);}
   document.addEventListener('click',hideCtx);
 })();
@@ -877,6 +886,7 @@ async function initApp(){
     loadPr().catch(e=>console.warn('loadPr',e)),
     loadPf().catch(e=>console.warn('loadPf',e)),
     loadPcmds().catch(e=>console.warn('loadPcmds',e)),
+    loadSpells().catch(e=>console.warn('loadSpells',e)),
     loadWBs().catch(e=>console.warn('loadWBs',e))
   ]);
   await loadChatIndex().catch(e=>console.warn('loadChatIndex',e));
@@ -1144,21 +1154,21 @@ if(!resp.ok)return null;const data=await resp.json();
 if(pv==='anthropic')return data.content.map(b=>b.text||'').join('');
 if(pv==='google')return(data.candidates&&data.candidates[0]&&data.candidates[0].content)?data.candidates[0].content.parts.map(p=>p.text||'').join(''):''
 return data.choices&&data.choices[0]?data.choices[0].message.content:'';}
-async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定摘要 API/模型');return;}
+async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum');if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定摘要 API/模型');return;}
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1){toast('對話太短');return;}
 let transcript='';for(let i=0;i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'Character'):(m.role==='system'?'System':'Player'))+': '+m.content+'\n\n';}
 try{const evText=await buildAllEventsText();if(evText.trim())transcript+='\n'+evText;}catch(e){}
 const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[Persistent Instructions]\n'+pcmdTxt+'\n';
-toast('生成摘要…');const sysPr=getSettings().summary_prompt||'You are a conversation summarizer. Condense the following RP conversation into a concise summary, preserving important plot developments, character relationship changes, and key events. Incorporate known events for forward-looking narrative planning. Max 500 tokens. Output in Traditional Chinese.';const sumTok=parseInt(getSettings().sum_tokens)||500;
+toast('生成摘要…');const sysPr=getSettings().summary_prompt||DEFAULT_SUM_PROMPT;const sumTok=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'[Transcript]\n\n'+transcript,sumTok,0.3);
 if(text){$('sum-ta').value=text;cntF($('sum-ta'));_curChat.summary=text;saveChatStore();toast('已生成');}else toast('生成失敗');}
-async function autoGenSummary(vecEvents){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum')||getApiCfgForPrompt(_curChat.rpId);if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
+async function autoGenSummary(vecEvents){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum');if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1)return;
 let transcript=(_curChat.summary?'[Previous Summary]\n'+_curChat.summary+'\n\n[New Dialogue]\n':'');
 for(let i=Math.max(0,endIdx-20);i<endIdx;i++){const m=allMsgs[i];transcript+=(m.role==='ai'?(m.name||'Character'):(m.role==='system'?'System':'Player'))+': '+m.content+'\n\n';}
 try{const cd=await getCharData(_curChat.charId);const evText=await buildEventSection(cd.events,vecEvents||[]);if(evText.trim())transcript+='\n'+evText;}catch(e){}
 const pcmdTxt=getActivePcmds();if(pcmdTxt)transcript+='\n[Persistent Instructions]\n'+pcmdTxt+'\n';
-const sysPr=getSettings().summary_prompt||'You are a conversation summarizer. Merge and condense into a concise summary. Incorporate known events for forward-looking narrative planning. Max 500 tokens. Output in Traditional Chinese.';const sumTok2=parseInt(getSettings().sum_tokens)||500;
+const sysPr=getSettings().summary_prompt||DEFAULT_SUM_PROMPT;const sumTok2=parseInt(getSettings().sum_tokens)||500;
 const text=await callApiSimple(apiCfg,sysPr,'[Transcript]\n\n'+transcript,sumTok2,0.3);
 if(text&&text.trim()){_curChat.summary=text;saveChatStore();toast('摘要已更新');}else{toast('摘要生成失敗');}}
 
@@ -1166,8 +1176,7 @@ if(text&&text.trim()){_curChat.summary=text;saveChatStore();toast('摘要已更�
 let _memGenRunning=false;
 async function autoGenMemory(chat,chatId){if(!chat||_memGenRunning)return;
 const s=getSettings();let apiCfg=getFeatureApiCfg('mem');
-if(!apiCfg||!apiCfg.api_key||!apiCfg.model){apiCfg=getApiCfgForPrompt(chat.rpId);}
-if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model){console.warn('[Memory] 未設定記憶生成 API，跳過');return;}
 const interval=parseInt(s.mem_rule)||10;
 const msgCount=(chat.msgs||[]).filter(m=>m.role==='ai').length;
 const lastAt=chat.lastMemGenAt||0;
@@ -1178,9 +1187,8 @@ toast('記憶生成中…');
 const msgs=chat.msgs||[];const readCount=interval*2;const startIdx=Math.max(0,msgs.length-readCount);
 let transcript='';for(let i=startIdx;i<msgs.length;i++){const m=msgs[i];if(m.role==='system')continue;transcript+=(m.role==='ai'?(m.name||'Character'):'Player')+': '+m.content+'\n\n';}
 if(!transcript.trim()){_memGenRunning=false;return;}
-const defPrompt='Extract important memories from the following conversation and consolidate them into a concise paragraph. Include: relationship changes between characters, important promises or agreements, personal information revealed by characters, emotional turning points, and key plot events. Output in Traditional Chinese. Output only the memory content with no prefixes or explanations.';
 const memTok=parseInt(s.mem_tokens)||500;
-const text=await callApiSimple(apiCfg,s.mem_prompt||defPrompt,transcript,memTok,0.3);
+const text=await callApiSimple(apiCfg,s.mem_prompt||DEFAULT_MEM_PROMPT,transcript,memTok,0.3);
 if(!text||!text.trim()){_memGenRunning=false;return;}
 const date=localDateStr();const nid=uid();
 await dbPut('memories',{id:nid,chat_id:chatId,content:text.trim(),date,created_at:new Date().toISOString()});embedAndPatch('memories',nid,text.trim());
@@ -1205,14 +1213,14 @@ sysPr+='\nContext: The player controls a character named "'+playerName+'". The A
 if(memoOn&&lastPlayerMsg){const playerText=lastPlayerMsg.content;
 let memoInstr=s.memo_prompt||DEFAULT_MEMO_PROMPT;
 memoInstr=memoInstr.replace(/\{\{playerName\}\}/gi,playerName).replace(/\{\{charName\}\}/gi,charName);
-sysPr+='\n['+playerName+'\'s Message]\n'+playerText+'\n\n'+memoInstr+'\n';}
+sysPr+='\n['+playerName+'\'s Message]\n'+playerText+'\n\n'+memoInstr+'\n\nOUTPUT RULE: Output at most ONE [MEMO] line. Format: "[MEMO] " followed by a single concise sentence. If nothing is worth recording, output nothing.\n';}
 if(stateOn){const sb=(chat.sceneBoard)||{};if(sb.autoUpdate!==false){const sbPrompt=sb.prompt||DEFAULT_SB_PROMPT;if(sbPrompt){let stateInstr='Update the scene board based on the recent conversation. Output ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+sbPrompt+'\n';if(sb.content){stateInstr+='\nCurrent scene board content:\n'+sb.content+'\n\nUpdate the above based on what changed in the conversation. Keep unchanged information intact.\n';}else{stateInstr+='\nThe scene board is currently empty. Create initial content based on the conversation.\n';}stateInstr+='If nothing has changed, do not output any [STATE_START]/[STATE_END] block.';stateInstr=tplReplace(stateInstr);sysPr+='\n'+stateInstr+'\n';}}}
 const transcript=stateTranscript||((lastPlayerMsg)?playerName+': '+lastPlayerMsg.content:'');
 if(!transcript.trim())return;
 const text=await callApiSimple(apiCfg,sysPr,transcript,600,0.2);
 if(!text||!text.trim())return;
-// Parse MEMO
-if(memoOn){const memoRegex=/^\[MEMO\]\s*(.+)$/gm;let mm;while((mm=memoRegex.exec(text))!==null){const mt=mm[1].trim();if(mt){const mid=uid();await dbPut('memories',{id:mid,chat_id:chatId,content:mt,date:localDateStr(),created_at:new Date().toISOString(),type:'memo'});embedAndPatch('memories',mid,mt);}}}
+// Parse MEMO (only first one per turn)
+if(memoOn){const memoMatch=text.match(/^\[MEMO\]\s*(.+)$/m);if(memoMatch){const mt=memoMatch[1].trim();if(mt){const mid=uid();await dbPut('memories',{id:mid,chat_id:chatId,content:mt,date:localDateStr(),created_at:new Date().toISOString(),type:'memo'});embedAndPatch('memories',mid,mt);}}}
 // Parse STATE content
 if(stateOn){const stateMatch=text.match(/\[STATE_START\]([\s\S]*?)\[STATE_END\]/);if(stateMatch){const newContent=stateMatch[1].trim();if(newContent){if(!chat.sceneBoard)chat.sceneBoard={prompt:DEFAULT_SB_PROMPT,content:''};chat.sceneBoard.content=newContent;saveChatStore();renderSceneFab();}}}}
 
@@ -1343,11 +1351,6 @@ else{const nid=uid();await dbPut('memories',{id:nid,chat_id:_curChatId,content:t
 toast('已儲存');closePopup('memo-edit-pop');openChatMemos();}
 
 // ═══ Scene Board (場景板) ═══
-const DEFAULT_SB_PROMPT='*嚴格遵守要求格式撰寫內容，禁止擅自增減\n*簡記當前場景的以下資訊，每項一行：\n\n- 地點：劇情場所\n- 時間：YYYY/MM/DD HH:mm，依照互動合理更新時間推移\n- 角色衣著：在場角色的衣著打扮';
-const DEFAULT_SUM_PROMPT='你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。';
-const DEFAULT_MEM_PROMPT='從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。';
-const DEFAULT_MEMO_PROMPT='Analyze {{playerName}}\'s (the player\'s character) behavior as if they were a real person. Record what kind of person they are — their personality, emotional patterns, values, habits, self-definitions, and the relationship dynamic they are building with {{charName}} (the AI character).\n\nDo NOT record:\n- {{charName}}\'s (the AI character) behavior or traits\n- Plot events or scene descriptions\n- Momentary emotional reactions to a single event\n- Anything already obvious from the story context\n\nIMPORTANT: Only record insights that would still be relevant and useful in future sessions. When in doubt, do NOT output any [MEMO].\n\nFormat: one entry per line, each beginning with "[MEMO] ". If nothing is worth recording, output nothing.';
-const DEFAULT_RP_PROMPT='你是一位專業的角色扮演敘事者。請根據角色設定與場景，以豐富的文學筆觸推進劇情。\n\n## 回覆規則\n- 以第三人稱描寫角色的動作、表情、心理活動\n- 對話使用「」包裹，內心獨白使用（）包裹\n- 每次回覆控制在 200～400 字之間\n- 不要替玩家角色做出決定或說話\n- 適當描寫環境氛圍與感官細節\n- 根據角色的性格與好感度調整互動方式\n\n## 敘事風格\n保持沉浸感，避免跳出角色。如果玩家的行為超出場景邏輯，角色應以符合設定的方式自然回應。';
 function getSceneBoard(){if(!_curChat)return{prompt:'',content:'',autoUpdate:true,inject:true};if(!_curChat.sceneBoard)_curChat.sceneBoard={prompt:DEFAULT_SB_PROMPT,content:'',autoUpdate:true,inject:true};if(_curChat.sceneBoard.autoUpdate===undefined)_curChat.sceneBoard.autoUpdate=true;if(_curChat.sceneBoard.inject===undefined)_curChat.sceneBoard.inject=true;return _curChat.sceneBoard;}
 function renderSceneFab(){const el=$('sb-fab');if(!el)return;if(!_curChat){el.style.display='none';return;}
 const s=getSettings();if(!s.state_on){el.style.display='none';return;}
@@ -1383,24 +1386,44 @@ finally{btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:
 // ═══ Persistent Commands ═══
 let _pcmds=[];
 async function loadPcmds(){_pcmds=sortBy(await dbAll('persistent_commands'),'sort_order');}
-function togglePcmdPanel(){const p=$('pcmd-panel');if(p.classList.contains('show')){closePcmdPanel();}else{renderPcmdList();p.classList.add('show');$('pcmd-overlay').classList.add('show');$('pcmd-plus-btn').classList.add('active');}}
+function togglePcmdPanel(){const p=$('pcmd-panel');if(p.classList.contains('show')){closePcmdPanel();}else{renderPcmdList();renderSpellList();const tabs=document.querySelectorAll('#pcmd-tabs .sb-tab');switchPcmdTab(_pcmdTabIdx,tabs[_pcmdTabIdx]);p.classList.add('show');$('pcmd-overlay').classList.add('show');$('pcmd-plus-btn').classList.add('active');}}
 function closePcmdPanel(){$('pcmd-panel').classList.remove('show');$('pcmd-panel').style.transform='';$('pcmd-overlay').classList.remove('show');$('pcmd-plus-btn').classList.remove('active');}
 (function(){let startY=0,curY=0,dragging=false;const panel=$('pcmd-panel');if(!panel)return;
-panel.addEventListener('touchstart',e=>{if(panel.scrollTop>0)return;startY=e.touches[0].clientY;curY=startY;dragging=true;panel.style.transition='none';},{passive:true});
+panel.addEventListener('touchstart',e=>{const touch=e.touches[0];const touchEl=document.elementFromPoint(touch.clientX,touch.clientY);const activeList=_pcmdTabIdx===0?$('pcmd-tab-0'):$('pcmd-tab-1');const inList=activeList&&activeList.contains(touchEl);
+if(inList&&activeList.scrollTop>0)return;
+startY=touch.clientY;curY=startY;dragging=true;panel.style.transition='none';},{passive:true});
 panel.addEventListener('touchmove',e=>{if(!dragging)return;curY=e.touches[0].clientY;const dy=curY-startY;if(dy>0){panel.style.transform='translateY('+dy+'px)';e.preventDefault();}else{dragging=false;panel.style.transition='transform .25s ease';panel.style.transform='';}},{passive:false});
 panel.addEventListener('touchend',()=>{if(!dragging)return;dragging=false;panel.style.transition='transform .25s ease';if(curY-startY>80){closePcmdPanel();}else{panel.style.transform='';}});})();
-function renderPcmdList(){const el=$('pcmd-list');if(!_pcmds.length){el.innerHTML='<div style="color:var(--tx2);font-size:15px;padding:8px;">尚未建立常駐指令</div>';return;}
+function renderPcmdList(){const el=$('pcmd-list');if(!_pcmds.length){el.innerHTML='<div style="color:var(--tx2);font-size:15px;padding:8px;">尚未建立指令</div>';return;}
 const t=(_curChat&&_curChat.pcmdToggles)||{};
 el.innerHTML=_pcmds.map((p,i)=>{const isOn=t[p.id]!==undefined?t[p.id]!==false:p.enabled===true;return '<div class="ev-toggle-item" data-pcid="'+p.id+'"><div style="flex:1;min-width:0;cursor:pointer;" onclick="editPcmd(\''+p.id+'\')"><div class="lt">'+esc(p.name||'未命名')+'</div><div class="ls">'+esc((p.content||'').substring(0,80))+'</div></div><div class="tog'+(isOn?' on':'')+'" onclick="event.stopPropagation();togglePcmdEnabled('+i+',this)"></div></div>';}).join('');initPcmdDrag(el);}
 function togglePcmdEnabled(i,el){if(!_pcmds[i]||!_curChat)return;if(!_curChat.pcmdToggles)_curChat.pcmdToggles={};const pid=_pcmds[i].id;_curChat.pcmdToggles[pid]=!(_curChat.pcmdToggles[pid]!==false);el.classList.toggle('on');saveChatStore();}
-function newPcmd(){closePcmdPanel();$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">新增常駐指令</div><input type="hidden" id="pcmd-id" value=""><div class="f"><label>名稱</label><input type="text" id="pcmd-name" placeholder="例：加強情緒描寫"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)" placeholder="這段文字會隨每次訊息一起傳給 AI..."></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button></div></div>';$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
-function editPcmd(id){closePcmdPanel();const p=_pcmds.find(x=>x.id===id);if(!p)return;$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">編輯常駐指令</div><input type="hidden" id="pcmd-id" value="'+id+'"><div class="f"><label>名稱</label><input type="text" id="pcmd-name" value="'+esc(p.name||'')+'"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)">'+esc(p.content||'')+'</textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button><button class="btn bdel bs2" onclick="delPcmd()">刪除</button></div></div>';cntF($('pcmd-content'));$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
+function newPcmd(){closePcmdPanel();$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">新增指令</div><input type="hidden" id="pcmd-id" value=""><div class="f"><label>名稱</label><input type="text" id="pcmd-name" placeholder="例：加強情緒描寫"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)" placeholder="這段文字會隨每次訊息一起傳給 AI..."></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button></div></div>';$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
+function editPcmd(id){closePcmdPanel();const p=_pcmds.find(x=>x.id===id);if(!p)return;$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">編輯指令</div><input type="hidden" id="pcmd-id" value="'+id+'"><div class="f"><label>名稱</label><input type="text" id="pcmd-name" value="'+esc(p.name||'')+'"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)">'+esc(p.content||'')+'</textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button><button class="btn bdel bs2" onclick="delPcmd()">刪除</button></div></div>';cntF($('pcmd-content'));$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
 async function savePcmd(){const id=$('pcmd-id').value,name=$('pcmd-name').value.trim()||'未命名',content=$('pcmd-content').value;
 if(id){const p=await dbGet('persistent_commands',id)||{id};Object.assign(p,{name,content});await dbPut('persistent_commands',p);}
 else await dbPut('persistent_commands',{id:uid(),name,content,enabled:true,sort_order:_pcmds.length});
 await loadPcmds();renderPcmdList();toast('已儲存');closeBs();togglePcmdPanel();}
 async function delPcmd(){const id=$('pcmd-id').value;if(!id)return;if(!await cfm('確定刪除？'))return;await dbDel('persistent_commands',id);await loadPcmds();renderPcmdList();toast('已刪除');closeBs();togglePcmdPanel();}
 function getActivePcmds(){const t=(_curChat&&_curChat.pcmdToggles)||{};return _pcmds.filter(p=>{const v=t[p.id];return v===true||(v===undefined&&p.enabled===true);}).map(p=>p.content).join('\n');}
+let _pcmdTabIdx=0;
+function switchPcmdTab(idx,el){_pcmdTabIdx=idx;document.querySelectorAll('#pcmd-tabs .sb-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');$('pcmd-tab-0').style.display=idx===0?'block':'none';$('pcmd-tab-1').style.display=idx===1?'block':'none';const addBtn=$('pcmd-add-btn');if(idx===0){addBtn.setAttribute('onclick','newPcmd()');}else{addBtn.setAttribute('onclick','newSpell()');}}
+
+// ═══ Spellbook (咒語書) ═══
+let _spells=[];
+async function loadSpells(){_spells=sortBy(await dbAll('spellbook'),'sort_order');}
+function renderSpellList(){const el=$('spell-list');if(!_spells.length){el.innerHTML='<div style="color:var(--tx2);font-size:15px;padding:8px;">尚未建立咒語</div>';return;}
+el.innerHTML=_spells.map(s=>'<div class="ev-toggle-item" data-spid="'+s.id+'"><div style="flex:1;min-width:0;cursor:pointer;" onclick="pasteSpell(\''+s.id+'\')"><div class="lt">'+esc(s.name||'未命名')+'</div><div class="ls">'+esc((s.content||'').substring(0,80))+'</div></div><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--tx2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;cursor:pointer;" onclick="event.stopPropagation();editSpell(\''+s.id+'\')"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>').join('');initSpellDrag(el);}
+async function saveSpellOrder(c){const items=c.querySelectorAll('.ev-toggle-item[data-spid]');const ns=[];for(let i=0;i<items.length;i++){const id=items[i].getAttribute('data-spid'),s=_spells.find(x=>x.id===id);if(s){ns.push(s);const o=await dbGet('spellbook',id);if(o){o.sort_order=i;await dbPut('spellbook',o);}}}_spells=ns;}
+function initSpellDrag(container){initLPDrag(container,'.ev-toggle-item[data-spid]',saveSpellOrder);}
+function pasteSpell(id){const s=_spells.find(x=>x.id===id);if(!s)return;const inp=$('c-inp');inp.value+=s.content;inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,200)+'px';closePcmdPanel();toast('已貼入');}
+function newSpell(){closePcmdPanel();$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">新增咒語</div><input type="hidden" id="spell-id" value=""><div class="f"><label>名稱</label><input type="text" id="spell-name" placeholder="例：場景描寫起手式"></div><div class="f"><label>內容</label><textarea rows="10" id="spell-content" oninput="cntF(this)" placeholder="點擊咒語會將這段文字貼入輸入框..."></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="saveSpell()">儲存</button></div></div>';$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
+function editSpell(id){closePcmdPanel();const s=_spells.find(x=>x.id===id);if(!s)return;$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">編輯咒語</div><input type="hidden" id="spell-id" value="'+id+'"><div class="f"><label>名稱</label><input type="text" id="spell-name" value="'+esc(s.name||'')+'"></div><div class="f"><label>內容</label><textarea rows="10" id="spell-content" oninput="cntF(this)">'+esc(s.content||'')+'</textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="saveSpell()">儲存</button><button class="btn bdel bs2" onclick="delSpell()">刪除</button></div></div>';cntF($('spell-content'));$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
+async function saveSpell(){const id=$('spell-id').value,name=$('spell-name').value.trim()||'未命名',content=$('spell-content').value;
+if(id){const s=await dbGet('spellbook',id)||{id};Object.assign(s,{name,content});await dbPut('spellbook',s);}
+else await dbPut('spellbook',{id:uid(),name,content,sort_order:_spells.length});
+await loadSpells();renderSpellList();toast('已儲存');closeBs();_pcmdTabIdx=1;togglePcmdPanel();}
+async function delSpell(){const id=$('spell-id').value;if(!id)return;if(!await cfm('確定刪除？'))return;await dbDel('spellbook',id);await loadSpells();renderSpellList();toast('已刪除');closeBs();_pcmdTabIdx=1;togglePcmdPanel();}
 
 // ═══ Batch Delete ═══
 let _batchMode=false,_batchSel=new Set();
