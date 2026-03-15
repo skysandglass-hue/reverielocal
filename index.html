@@ -212,7 +212,6 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .sb-fab:hover{opacity:.95;}
 .sb-fab svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .sb-fab.has-content{opacity:.85;}
-.sb-fab.has-content::after{content:'';position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;background:#4ade80;border:2px solid var(--bg);}
 .sf-editor{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;}
 .sf-editor.show{display:flex;}
 .sf-editor-panel{background:var(--bg);border-radius:16px 16px 0 0;width:100%;max-width:500px;max-height:85vh;min-height:460px;overflow-y:auto;padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 16px);animation:slideUp .25s ease;}
@@ -220,7 +219,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .sb-tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:12px;}
 .sb-tab{flex:1;text-align:center;padding:10px 0;font-size:15px;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
 .sb-tab.active{color:var(--ac);border-bottom-color:var(--ac);font-weight:600;}
-.sb-content-area{font-size:16px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;min-height:260px;line-height:1.7;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;white-space:pre-wrap;}
+.sb-content-area{font-size:16px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;height:260px;line-height:1.7;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;white-space:pre-wrap;overflow-y:auto;}
 .sb-content-area:focus{border-color:var(--ac);}
 .sb-prompt-area{font-size:15px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;min-height:260px;line-height:1.6;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;}
 .sb-prompt-area:focus{border-color:var(--ac);}
@@ -364,6 +363,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   </div>
   <div class="card"><div class="stt">版本紀錄</div>
   <div style="font-size:14px;color:var(--tx2);line-height:1.8;">
+  <p><strong>v1.3</strong> — 新增場景板、MEMO 追蹤器改進</p>
   <p><strong>v1.2</strong> — 新增世界書系統</p>
   <p><strong>v1.1</strong> — 記憶系統改進、新增主題配色、UI 細節改善</p>
   <p><strong>v1.0</strong> — 初始版本</p>
@@ -433,7 +433,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="sf-editor" id="sf-editor" onclick="if(event.target===this)closeSceneEditor()"><div class="sf-editor-panel">
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div style="font-size:18px;font-weight:600;color:var(--tx);">場景板</div><button class="btn bp bs2" onclick="saveSceneBoard()">儲存</button></div>
 <div class="sb-tabs"><div class="sb-tab active" onclick="switchSBTab(0,this)">場景內容</div><div class="sb-tab" onclick="switchSBTab(1,this)">追蹤格式</div></div>
-<div id="sb-tab-0"><textarea class="sb-content-area" id="sb-content" placeholder="AI 會根據對話自動填寫場景狀態…&#10;你也可以直接手動編輯。" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea><button class="btn bs2" id="sb-gen-btn" onclick="genSceneBoard()" style="width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>生成</button></div>
+<div id="sb-tab-0"><div class="sb-hint">場景追蹤器會在每次 AI 回覆後自動更新，內容會注入對話供 AI 參考。你也可以手動編輯或點擊生成。</div><textarea class="sb-content-area" id="sb-content" placeholder="AI 會根據對話自動填寫場景狀態…&#10;你也可以直接手動編輯。"></textarea><button class="btn bs2" id="sb-gen-btn" onclick="genSceneBoard()" style="width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>生成</button></div>
 <div id="sb-tab-1" style="display:none;"><div class="sb-hint">告訴 AI 你想追蹤什麼、用什麼格式呈現。AI 會在每次回覆後根據這段指示更新場景內容。</div><textarea class="sb-prompt-area" id="sb-prompt" placeholder="例：&#10;請按照以下格式總結：&#10;- 背景：目前季節、時間和地點&#10;- 情況：用一行話總結當前情況&#10;- 在場人物：列出目前在場的所有角色" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea></div>
 </div></div>
 <div class="fp" id="fp-cev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title" id="cev-t">預設事件</div><button class="btn bp bs2" onclick="newCEv()">+ 新增</button></div><div class="fp-body" id="cev-body"></div></div>
@@ -1332,7 +1332,7 @@ else{el.classList.remove('has-content');el.innerHTML='<svg viewBox="0 0 24 24"><
 function openSceneEditor(){if(!_curChat)return;const sb=getSceneBoard();
 $('sb-content').value=sb.content||'';$('sb-prompt').value=sb.prompt||DEFAULT_SB_PROMPT;
 $('sf-editor').classList.add('show');
-setTimeout(()=>{const c=$('sb-content'),p=$('sb-prompt');c.style.height='auto';c.style.height=Math.max(120,c.scrollHeight)+'px';p.style.height='auto';p.style.height=Math.max(80,p.scrollHeight)+'px';},50);
+setTimeout(()=>{const p=$('sb-prompt');p.style.height='auto';p.style.height=Math.max(260,p.scrollHeight)+'px';},50);
 switchSBTab(0,document.querySelectorAll('.sb-tab')[0]);}
 function closeSceneEditor(){$('sf-editor').classList.remove('show');}
 function switchSBTab(idx,el){document.querySelectorAll('.sb-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');$('sb-tab-0').style.display=idx===0?'block':'none';$('sb-tab-1').style.display=idx===1?'block':'none';}
@@ -1349,7 +1349,7 @@ if(sb.content){sysPr+='\nCurrent scene board content:\n'+sb.content+'\n\nUpdate 
 const btn=$('sb-gen-btn');btn.disabled=true;btn.textContent='生成中…';
 try{const text=await callApiSimple(apiCfg,sysPr,transcript,400,0.2);
 if(text){const m=text.match(/\[STATE_START\]([\s\S]*?)\[STATE_END\]/);const content=m?m[1].trim():text.trim();
-if(content){$('sb-content').value=content;const ta=$('sb-content');ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';toast('已生成');}else{toast('AI 未回傳場景內容');}}
+if(content){$('sb-content').value=content;toast('已生成');}else{toast('AI 未回傳場景內容');}}
 else{toast('生成失敗');}}catch(e){toast('生成失敗');console.error(e);}
 finally{btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>生成';}}
 
