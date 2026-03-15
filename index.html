@@ -207,7 +207,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .splash-sub{font-size:14px;color:var(--tx2);margin-top:8px;}
 .splash-dots{display:flex;gap:6px;margin-top:24px;}.splash-dots span{width:6px;height:6px;background:var(--ac);border-radius:50%;animation:sDot 1.2s infinite;opacity:.3;}.splash-dots span:nth-child(2){animation-delay:.2s;}.splash-dots span:nth-child(3){animation-delay:.4s;}
 @keyframes sDot{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.3);}}
-.sb-fab{position:absolute;top:52px;left:12px;z-index:20;width:40px;height:40px;border-radius:50%;background:var(--ac);color:#fff;display:none;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.18);cursor:pointer;transition:transform .15s,opacity .15s;opacity:.7;}
+.sb-fab{position:absolute;top:64px;left:12px;z-index:20;width:40px;height:40px;border-radius:50%;background:var(--ac);color:#fff;display:none;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.18);cursor:pointer;transition:transform .15s,opacity .15s;opacity:.7;}
 .sb-fab:active{transform:scale(.9);}
 .sb-fab:hover{opacity:.95;}
 .sb-fab svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
@@ -224,6 +224,8 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .sb-prompt-area{font-size:15px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;min-height:260px;line-height:1.6;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;}
 .sb-prompt-area:focus{border-color:var(--ac);}
 .sb-hint{font-size:14px;color:var(--tx2);line-height:1.6;margin-bottom:10px;}
+.sb-btn-on{background:var(--ac)!important;color:#fff!important;border-color:var(--ac)!important;}
+.sb-btn-on svg{stroke:#fff!important;}
 </style>
 </head>
 <body>
@@ -359,7 +361,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div style="position:relative;z-index:2;margin-top:2px;font-size:22px;font-weight:700;color:var(--tx);letter-spacing:1px;">Reverie</div>
   </div>
   <div style="font-size:13px;color:var(--tx2);margin-top:0;">RP Studio · Local Edition</div>
-  <div style="font-size:12px;color:var(--tx2);margin-top:2px;">v1.2</div>
+  <div style="font-size:12px;color:var(--tx2);margin-top:2px;">v1.3</div>
   </div>
   <div class="card"><div class="stt">版本紀錄</div>
   <div style="font-size:14px;color:var(--tx2);line-height:1.8;">
@@ -433,7 +435,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="sf-editor" id="sf-editor" onclick="if(event.target===this)closeSceneEditor()"><div class="sf-editor-panel">
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div style="font-size:18px;font-weight:600;color:var(--tx);">場景板</div><button class="btn bp bs2" onclick="saveSceneBoard()">儲存</button></div>
 <div class="sb-tabs"><div class="sb-tab active" onclick="switchSBTab(0,this)">場景內容</div><div class="sb-tab" onclick="switchSBTab(1,this)">追蹤格式</div></div>
-<div id="sb-tab-0"><div class="sb-hint">場景追蹤器會在每次 AI 回覆後自動更新，內容會注入對話供 AI 參考。你也可以手動編輯或點擊生成。</div><textarea class="sb-content-area" id="sb-content" placeholder="AI 會根據對話自動填寫場景狀態…&#10;你也可以直接手動編輯。"></textarea><button class="btn bs2" id="sb-gen-btn" onclick="genSceneBoard()" style="width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>生成</button></div>
+<div id="sb-tab-0"><div class="sb-hint">開啟「自動更新」後，每次 AI 回覆會自動更新場景。開啟「注入對話」後，場景內容會供主 AI 參考。</div><textarea class="sb-content-area" id="sb-content" placeholder="AI 會根據對話自動填寫場景狀態…&#10;你也可以直接手動編輯。"></textarea><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn bs2" id="sb-auto-btn" onclick="toggleSBBtn('sb-auto-btn')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>自動更新</button><button class="btn bs2" id="sb-inject-btn" onclick="toggleSBBtn('sb-inject-btn')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><path d="M4 12h16"/><path d="M12 4v16"/></svg>注入對話</button><button class="btn bs2" id="sb-gen-btn" onclick="genSceneBoard()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>生成</button></div></div>
 <div id="sb-tab-1" style="display:none;"><div class="sb-hint">告訴 AI 你想追蹤什麼、用什麼格式呈現。AI 會在每次回覆後根據這段指示更新場景內容。</div><textarea class="sb-prompt-area" id="sb-prompt" placeholder="例：&#10;請按照以下格式總結：&#10;- 背景：目前季節、時間和地點&#10;- 情況：用一行話總結當前情況&#10;- 在場人物：列出目前在場的所有角色" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea></div>
 </div></div>
 <div class="fp" id="fp-cev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title" id="cev-t">預設事件</div><button class="btn bp bs2" onclick="newCEv()">+ 新增</button></div><div class="fp-body" id="cev-body"></div></div>
@@ -1034,7 +1036,7 @@ if(vecMemos&&vecMemos.length){sec+='\n[Player Memos]\nThe following are personal
 return sec;}
 function buildStateSection(){let sec='';
 const sb=(_curChat&&_curChat.sceneBoard)||{};
-if(sb.content){sec+='\n[Current Scene State]\n'+sb.content+'\n';}
+if(sb.inject!==false&&sb.content){sec+='\n[Current Scene State]\n'+sb.content+'\n';}
 return sec;}
 async function buildEventSection(cEvs,vecEvents){let s='';let creatorToggles={},playerEvs=[];
 try{const toggleRows=await dbByIndex('chat_creator_event_toggles','chat_id',_curChatId);toggleRows.forEach(r=>{creatorToggles[r.event_id]=r.enabled;});const plEvRows=(await dbByIndex('chat_events','chat_id',_curChatId)).filter(e=>e.enabled!==false);playerEvs=sortBy(plEvRows,'sort_order');}catch(e){}
@@ -1192,7 +1194,7 @@ let transcript='';recent.forEach(m=>{if(m.role==='system')return;transcript+=(m.
 if(!transcript.trim())return;
 let sysPr='You are a background tracker for a roleplay session. Analyze the recent conversation and output ONLY the requested tags. No prose, no explanation.\n';
 if(memoOn){const memoInstr='Analyze the recent conversation for information that helps understand who the player is as a person.\n\nRecord: self-definitions and titles the player uses, personality traits and behavioral patterns, lasting preferences and values, the relationship dynamic they have established with the character.\n\nDo not record: momentary emotional reactions, one-time events, anything already inferable from context.\n\nFormat: one entry per line, each beginning with "[MEMO] ". If there is nothing worth recording, output nothing.';sysPr+='\n'+memoInstr+'\n';}
-if(stateOn){const sb=(chat.sceneBoard)||{};const sbPrompt=sb.prompt||DEFAULT_SB_PROMPT;if(sbPrompt){let stateInstr='Update the scene board based on the recent conversation. Output ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+sbPrompt+'\n';if(sb.content){stateInstr+='\nCurrent scene board content:\n'+sb.content+'\n\nUpdate the above based on what changed in the conversation. Keep unchanged information intact.\n';}else{stateInstr+='\nThe scene board is currently empty. Create initial content based on the conversation.\n';}stateInstr+='If nothing has changed, do not output any [STATE_START]/[STATE_END] block.';stateInstr=tplReplace(stateInstr);sysPr+='\n'+stateInstr+'\n';}}
+if(stateOn){const sb=(chat.sceneBoard)||{};if(sb.autoUpdate!==false){const sbPrompt=sb.prompt||DEFAULT_SB_PROMPT;if(sbPrompt){let stateInstr='Update the scene board based on the recent conversation. Output ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+sbPrompt+'\n';if(sb.content){stateInstr+='\nCurrent scene board content:\n'+sb.content+'\n\nUpdate the above based on what changed in the conversation. Keep unchanged information intact.\n';}else{stateInstr+='\nThe scene board is currently empty. Create initial content based on the conversation.\n';}stateInstr+='If nothing has changed, do not output any [STATE_START]/[STATE_END] block.';stateInstr=tplReplace(stateInstr);sysPr+='\n'+stateInstr+'\n';}}}
 const text=await callApiSimple(apiCfg,sysPr,transcript,600,0.2);
 if(!text||!text.trim())return;
 // Parse MEMO
@@ -1327,23 +1329,26 @@ else{const nid=uid();await dbPut('memories',{id:nid,chat_id:_curChatId,content:t
 toast('已儲存');closePopup('memo-edit-pop');openChatMemos();}
 
 // ═══ Scene Board (場景板) ═══
-const DEFAULT_SB_PROMPT='總結當前場景的以下資訊，每項一行：\n- 地點：角色目前所在的具體場所\n- 時間：YYYY/MM/DD HH:mm\n- 在場人物：列出場景中所有在場的角色\n- 角色外觀：描述角色當前的服裝或外觀特徵\n僅列出有明確描寫的項目，沒有提及的不要編造。\n請控制在 300 字以內。';
+const DEFAULT_SB_PROMPT='*嚴格遵守要求格式撰寫內容，禁止擅自增減\n*簡記當前場景的以下資訊，每項一行：\n\n- 地點：劇情場所\n- 時間：YYYY/MM/DD HH:mm，依照互動合理更新時間推移\n- 角色衣著：在場角色的衣著打扮';
 const DEFAULT_SUM_PROMPT='你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。';
 const DEFAULT_MEM_PROMPT='從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。';
 const DEFAULT_RP_PROMPT='你是一位專業的角色扮演敘事者。請根據角色設定與場景，以豐富的文學筆觸推進劇情。\n\n## 回覆規則\n- 以第三人稱描寫角色的動作、表情、心理活動\n- 對話使用「」包裹，內心獨白使用（）包裹\n- 每次回覆控制在 200～400 字之間\n- 不要替玩家角色做出決定或說話\n- 適當描寫環境氛圍與感官細節\n- 根據角色的性格與好感度調整互動方式\n\n## 敘事風格\n保持沉浸感，避免跳出角色。如果玩家的行為超出場景邏輯，角色應以符合設定的方式自然回應。';
-function getSceneBoard(){if(!_curChat)return{prompt:'',content:''};if(!_curChat.sceneBoard)_curChat.sceneBoard={prompt:DEFAULT_SB_PROMPT,content:''};return _curChat.sceneBoard;}
+function getSceneBoard(){if(!_curChat)return{prompt:'',content:'',autoUpdate:true,inject:true};if(!_curChat.sceneBoard)_curChat.sceneBoard={prompt:DEFAULT_SB_PROMPT,content:'',autoUpdate:true,inject:true};if(_curChat.sceneBoard.autoUpdate===undefined)_curChat.sceneBoard.autoUpdate=true;if(_curChat.sceneBoard.inject===undefined)_curChat.sceneBoard.inject=true;return _curChat.sceneBoard;}
 function renderSceneFab(){const el=$('sb-fab');if(!el)return;if(!_curChat){el.style.display='none';return;}
 const s=getSettings();if(!s.state_on){el.style.display='none';return;}
 el.style.display='flex';
 el.innerHTML='<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';}
 function openSceneEditor(){if(!_curChat)return;const sb=getSceneBoard();
 $('sb-content').value=sb.content||'';$('sb-prompt').value=sb.prompt||DEFAULT_SB_PROMPT;
+if(sb.autoUpdate)$('sb-auto-btn').classList.add('sb-btn-on');else $('sb-auto-btn').classList.remove('sb-btn-on');
+if(sb.inject)$('sb-inject-btn').classList.add('sb-btn-on');else $('sb-inject-btn').classList.remove('sb-btn-on');
 $('sf-editor').classList.add('show');
 setTimeout(()=>{const p=$('sb-prompt');p.style.height='auto';p.style.height=Math.max(260,p.scrollHeight)+'px';},50);
 switchSBTab(0,document.querySelectorAll('.sb-tab')[0]);}
 function closeSceneEditor(){$('sf-editor').classList.remove('show');}
+function toggleSBBtn(id){$(id).classList.toggle('sb-btn-on');}
 function switchSBTab(idx,el){document.querySelectorAll('.sb-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');$('sb-tab-0').style.display=idx===0?'block':'none';$('sb-tab-1').style.display=idx===1?'block':'none';}
-function saveSceneBoard(){if(!_curChat)return;const sb=getSceneBoard();sb.content=$('sb-content').value.trim();sb.prompt=$('sb-prompt').value.trim()||DEFAULT_SB_PROMPT;$('sb-prompt').value=sb.prompt;_curChat.sceneBoard=sb;saveChatStore();renderSceneFab();toast('已儲存');closeSceneEditor();}
+function saveSceneBoard(){if(!_curChat)return;const sb=getSceneBoard();sb.content=$('sb-content').value.trim();sb.prompt=$('sb-prompt').value.trim()||DEFAULT_SB_PROMPT;$('sb-prompt').value=sb.prompt;sb.autoUpdate=$('sb-auto-btn').classList.contains('sb-btn-on');sb.inject=$('sb-inject-btn').classList.contains('sb-btn-on');_curChat.sceneBoard=sb;saveChatStore();renderSceneFab();toast('已儲存');closeSceneEditor();}
 async function genSceneBoard(){if(!_curChat||!_curChatId){toast('請先開啟對話');return;}
 let apiCfg=getFeatureApiCfg('trk');
 if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定追蹤器 API/模型');return;}
