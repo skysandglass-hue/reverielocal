@@ -207,6 +207,24 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .splash-sub{font-size:14px;color:var(--tx2);margin-top:8px;}
 .splash-dots{display:flex;gap:6px;margin-top:24px;}.splash-dots span{width:6px;height:6px;background:var(--ac);border-radius:50%;animation:sDot 1.2s infinite;opacity:.3;}.splash-dots span:nth-child(2){animation-delay:.2s;}.splash-dots span:nth-child(3){animation-delay:.4s;}
 @keyframes sDot{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.3);}}
+.sb-fab{position:absolute;bottom:70px;right:12px;z-index:20;width:40px;height:40px;border-radius:50%;background:var(--ac);color:#fff;display:none;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.18);cursor:pointer;transition:transform .15s,opacity .15s;opacity:.7;}
+.sb-fab:active{transform:scale(.9);}
+.sb-fab:hover{opacity:.95;}
+.sb-fab svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.sb-fab.has-content{opacity:.85;}
+.sb-fab.has-content::after{content:'';position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;background:#4ade80;border:2px solid var(--bg);}
+.sf-editor{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;}
+.sf-editor.show{display:flex;}
+.sf-editor-panel{background:var(--bg);border-radius:16px 16px 0 0;width:100%;max-width:500px;max-height:85vh;min-height:460px;overflow-y:auto;padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 16px);animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sb-tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:12px;}
+.sb-tab{flex:1;text-align:center;padding:10px 0;font-size:14px;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
+.sb-tab.active{color:var(--ac);border-bottom-color:var(--ac);font-weight:600;}
+.sb-content-area{font-size:14px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;min-height:260px;line-height:1.7;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;white-space:pre-wrap;}
+.sb-content-area:focus{border-color:var(--ac);}
+.sb-prompt-area{font-size:13px;color:var(--tx);background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;min-height:260px;line-height:1.6;outline:none;resize:none;width:100%;box-sizing:border-box;font-family:inherit;}
+.sb-prompt-area:focus{border-color:var(--ac);}
+.sb-hint{font-size:12px;color:var(--tx2);line-height:1.5;margin-bottom:8px;}
 </style>
 </head>
 <body>
@@ -241,6 +259,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
     <div class="msg-del-banner" id="msg-del-banner">請選擇要刪除的訊息。</div>
     <div class="msg-ss-banner" id="msg-ss-banner">範圍模式：點選起點與終點 <span style="opacity:.7;font-size:12px;">（長按切換自由模式）</span></div>
     <div class="cm" id="c-msgs"></div>
+    <div class="sb-fab" id="sb-fab" onclick="openSceneEditor()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg></div>
     <div class="msg-del-bar" id="msg-del-bar"><button class="mdel-main" id="msg-del-exec" onclick="execMsgDel()">刪除 (0)</button><button class="mdel-cancel" onclick="cancelMsgDel()">取消選擇</button></div>
     <div class="msg-ss-bar" id="msg-ss-bar"><button class="mss-main" id="msg-ss-exec" onclick="execScreenshot()">截圖 (0)</button><button class="mss-cancel" onclick="cancelScreenshot()">取消</button></div>
     <div class="pcmd-overlay" id="pcmd-overlay" onclick="closePcmdPanel()"></div>
@@ -309,11 +328,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div class="sp" id="s2">
   <div class="card"><div class="stt">自動摘要</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用自動摘要</label><div class="tog" id="set-sum-auto" onclick="this.classList.toggle('on')"></div></div><div class="f"><label>使用 API</label><div class="rp-sel" id="sum-api-btn" onclick="openPopup('sum-api-pop')">未選擇</div><input type="hidden" id="sum-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="sum-model-btn" onclick="openPopup('sum-model-pop')">未選擇</div><input type="hidden" id="sum-model-id" value=""></div><div class="f"><label>摘要提示詞</label><textarea rows="10" id="sum-prompt" oninput="cntF(this)">你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。</textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發間隔（每 N 次 AI 回覆）</label><div class="sr"><input type="range" id="set-sum-interval" min="3" max="50" value="10" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">10</span></div></div><div class="f"><label>Max Tokens</label><div class="sr"><input type="range" id="set-sum-tokens" min="100" max="2000" step="50" value="500" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">500</span></div></div></div>
   <div class="card"><div class="stt">記憶生成</div><div class="f"><label>使用 API</label><div class="rp-sel" id="mem-api-btn" onclick="openPopup('mem-api-pop')">未選擇</div><input type="hidden" id="mem-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="mem-model-btn" onclick="openPopup('mem-model-pop')">未選擇</div><input type="hidden" id="mem-model-id" value=""></div><div class="f"><label>生成指令</label><textarea rows="10" id="mem-prompt" oninput="cntF(this)">從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。</textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發間隔（每 N 次 AI 回覆）</label><div class="sr"><input type="range" id="mem-rule" min="3" max="50" value="10" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">10</span></div></div><div class="f"><label>Max Tokens</label><div class="sr"><input type="range" id="set-mem-tokens" min="100" max="2000" step="50" value="500" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">500</span></div></div></div>
-  <div class="card"><div class="stt">MEMO（玩家備忘）</div><div style="font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:10px;">啟用後，MEMO 指令會附加在系統提示詞中一起傳送，AI 將自動辨識並記錄玩家透露的個人資訊。已記錄的 MEMO 會透過向量搜尋注入相關內容，佔用少量 token 額度。</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用 MEMO</label><div class="tog" id="set-memo-on" onclick="this.classList.toggle('on')"></div></div><div class="f"><label>MEMO 提示詞</label><textarea rows="6" id="memo-prompt" oninput="cntF(this)">When {{user}} reveals personal preferences, values, habits, important people or events, or private information during conversation, append a [MEMO] block on a new line after your roleplay response has completely ended. Never write [MEMO] inside the roleplay text. Format strictly: one entry per line, each beginning with "[MEMO] ". If there is nothing worth recording this turn, output no [MEMO] at all.
-
-Example:
-[MEMO] {{user}} likes black coffee
-[MEMO] {{user}}'s sister is named Xiaoxue</textarea><div class="ctr">0 字</div></div></div>
+  <div class="card"><div class="stt">追蹤器（MEMO + 場景狀態）</div><div style="font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:10px;">啟用後，AI 回覆完成後會背景呼叫指定的模型，自動擷取玩家備忘（MEMO）和更新場景狀態（STATE）。不佔用主聊天的 token。</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用 MEMO</label><div class="tog" id="set-memo-on" onclick="this.classList.toggle('on')"></div></div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用場景狀態</label><div class="tog" id="set-state-on" onclick="this.classList.toggle('on')"></div></div><div class="f"><label>使用 API</label><div class="rp-sel" id="trk-api-btn" onclick="openPopup('trk-api-pop')">未選擇</div><input type="hidden" id="trk-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="trk-model-btn" onclick="openPopup('trk-model-pop')">未選擇</div><input type="hidden" id="trk-model-id" value=""></div><div style="font-size:12px;color:var(--tx2);line-height:1.5;margin-top:8px;padding:0 2px;">MEMO 會自動記錄玩家的個人特質、偏好、價值觀和人際關係。場景追蹤的格式在每個對話視窗的場景板中設定。</div></div>
   <div style="margin-top:12px;"><button class="btn bp" onclick="saveMemSettings()">儲存</button></div>
   </div>
   <div class="sp" id="s3">
@@ -398,6 +413,8 @@ Example:
 <div class="popup-ov" id="sum-model-pop" onclick="if(event.target===this)closePopup('sum-model-pop')"><div class="popup"><div class="popup-title">摘要模型</div><div id="sum-model-list"></div></div></div>
 <div class="popup-ov" id="mem-api-pop" onclick="if(event.target===this)closePopup('mem-api-pop')"><div class="popup"><div class="popup-title">記憶 API</div><div id="mem-api-list"></div></div></div>
 <div class="popup-ov" id="mem-model-pop" onclick="if(event.target===this)closePopup('mem-model-pop')"><div class="popup"><div class="popup-title">記憶模型</div><div id="mem-model-list"></div></div></div>
+<div class="popup-ov" id="trk-api-pop" onclick="if(event.target===this)closePopup('trk-api-pop')"><div class="popup"><div class="popup-title">追蹤器 API</div><div id="trk-api-list"></div></div></div>
+<div class="popup-ov" id="trk-model-pop" onclick="if(event.target===this)closePopup('trk-model-pop')"><div class="popup"><div class="popup-title">追蹤器模型</div><div id="trk-model-list"></div></div></div>
 <div class="popup-ov" id="emb-api-pop" onclick="if(event.target===this)closePopup('emb-api-pop')"><div class="popup"><div class="popup-title">Embedding API</div><div id="emb-api-list"></div></div></div>
 <div class="popup-ov" id="emb-model-pop" onclick="if(event.target===this)closePopup('emb-model-pop')"><div class="popup"><div class="popup-title">Embedding 模型</div><div id="emb-model-list"></div></div></div>
 <div class="popup-ov" id="provider-pop" onclick="if(event.target===this)closePopup('provider-pop')"><div class="popup"><div class="popup-title">選擇供應商</div><div class="popup-item active" onclick="pickSel('acfg-provider','anthropic','Anthropic',this,'provider-pop');syncProviderParams()"><span>Anthropic</span><span class="check">✓</span></div><div class="popup-item" onclick="pickSel('acfg-provider','openai','OpenAI',this,'provider-pop');syncProviderParams()"><span>OpenAI</span><span class="check">✓</span></div><div class="popup-item" onclick="pickSel('acfg-provider','google','Google',this,'provider-pop');syncProviderParams()"><span>Google</span><span class="check">✓</span></div><div class="popup-item" onclick="pickSel('acfg-provider','openrouter','OpenRouter',this,'provider-pop');syncProviderParams()"><span>OpenRouter</span><span class="check">✓</span></div></div></div>
@@ -412,7 +429,13 @@ Example:
 <div class="fp" id="fp-chat-mem"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-mem')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">記憶體</div><button class="btn bp bs2" onclick="newChatMem()">+ 新增</button></div><div class="fp-body" id="chat-mem-body"></div></div>
 <div class="popup-ov" id="mem-edit-pop" onclick="if(event.target===this)closePopup('mem-edit-pop')"><div class="popup" style="width:90%;max-width:400px;"><div class="popup-title" id="mem-edit-title">新增記憶</div><input type="hidden" id="cmem-id"><input type="hidden" id="cmem-src" value="local"><div class="f" style="padding:0 4px;"><textarea rows="6" id="cmem-c" oninput="cntF(this)" style="min-height:120px;width:100%;box-sizing:border-box;" placeholder="輸入記憶內容…"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:8px;padding:8px 4px 0;"><button class="btn bp" style="flex:1;" onclick="saveChatMem()">儲存</button></div></div></div>
 <div class="fp" id="fp-chat-memo"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-memo')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">MEMO</div><button class="btn bp bs2" onclick="newMemo()">+ 新增</button></div><div class="fp-body" id="chat-memo-body"></div></div>
-<div class="popup-ov" id="memo-edit-pop" onclick="if(event.target===this)closePopup('memo-edit-pop')"><div class="popup" style="width:90%;max-width:400px;"><div class="popup-title" id="memo-edit-title">新增 MEMO</div><input type="hidden" id="memo-eid"><div class="f" style="padding:0 4px;"><textarea rows="4" id="memo-ec" oninput="cntF(this)" style="min-height:90px;width:100%;box-sizing:border-box;" placeholder="輸入備忘內容…"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:8px;padding:8px 4px 0;"><button class="btn bp" style="flex:1;" onclick="saveMemoEdit()">儲存</button></div></div></div>
+<div class="popup-ov" id="memo-edit-pop" onclick="if(event.target===this)closePopup('memo-edit-pop')"><div class="popup" style="width:90%;max-width:400px;"><div class="popup-title" id="memo-edit-title">新增 MEMO</div><input type="hidden" id="memo-eid"><div class="f" style="padding:0 4px;"><textarea rows="6" id="memo-ec" oninput="cntF(this)" style="min-height:180px;width:100%;box-sizing:border-box;" placeholder="輸入備忘內容…"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:8px;padding:8px 4px 0;"><button class="btn bp" style="flex:1;" onclick="saveMemoEdit()">儲存</button></div></div></div>
+<div class="sf-editor" id="sf-editor" onclick="if(event.target===this)closeSceneEditor()"><div class="sf-editor-panel">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div style="font-size:16px;font-weight:700;color:var(--tx);">場景板</div><button class="btn bp bs2" onclick="saveSceneBoard()">儲存</button></div>
+<div class="sb-tabs"><div class="sb-tab active" onclick="switchSBTab(0,this)">場景內容</div><div class="sb-tab" onclick="switchSBTab(1,this)">追蹤格式</div></div>
+<div id="sb-tab-0"><textarea class="sb-content-area" id="sb-content" placeholder="AI 會根據對話自動填寫場景狀態…&#10;你也可以直接手動編輯。" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea></div>
+<div id="sb-tab-1" style="display:none;"><div class="sb-hint">告訴 AI 你想追蹤什麼、用什麼格式呈現。AI 會在每次回覆後根據這段指示更新場景內容。</div><textarea class="sb-prompt-area" id="sb-prompt" placeholder="例：&#10;請按照以下格式總結：&#10;- 背景：目前季節、時間和地點&#10;- 情況：用一行話總結當前情況&#10;- 在場人物：列出目前在場的所有角色" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea></div>
+</div></div>
 <div class="fp" id="fp-cev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title" id="cev-t">預設事件</div><button class="btn bp bs2" onclick="newCEv()">+ 新增</button></div><div class="fp-body" id="cev-body"></div></div>
 <div class="fp" id="fp-cev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveCEv()">儲存</button><button class="btn bdel bs2" onclick="delCEv()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="ev-id"><div class="f"><label>標題</label><input type="text" id="ev-n"></div><div class="f"><label>時間 / 關鍵字</label><input type="text" id="ev-t"></div><div class="f"><label>內容</label><textarea rows="8" id="ev-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div></div></div>
 <!-- 聊天視窗世界書管理 -->
@@ -486,7 +509,7 @@ else if(p==='pfDetail'){doClosePfEdit();showNav();}
 else if(p==='wbDetail'){doCloseWBEdit();}
 });
 function nav(el){document.querySelectorAll('.nv').forEach(n=>n.classList.remove('a'));el.classList.add('a');document.querySelectorAll('.pnl').forEach(x=>x.classList.remove('a'));$('p-'+el.dataset.p).classList.add('a');showNav();hs=['main'];history.replaceState({p:'main'},'');if($('cl'))$('cl').style.display='block';if($('cv'))$('cv').classList.remove('a');if($('vl')){$('vl').style.display='block';$('vd').style.display='none';}if($('wb-vl')){$('wb-vl').style.display='block';$('wb-vd').style.display='none';}if(el.dataset.p==='chars')loadChars();if(el.dataset.p==='wb')loadWBs();if(el.dataset.p==='prof'){loadPf();closePfEdit();}if(el.dataset.p==='sys'){loadPr();syncThemeDots();}if(el.dataset.p==='chat')renderChatList();if(el.dataset.p==='sys'){loadPr();syncThemeDots();if(_sysTab===3)calcStorageInfo();}}
-function openChat(n){$('cl').style.display='none';$('cv').classList.add('a');$('c-name').textContent=n;hideNav();pushH('chat');closePcmdPanel();}
+function openChat(n){$('cl').style.display='none';$('cv').classList.add('a');$('c-name').textContent=n;hideNav();pushH('chat');closePcmdPanel();renderSceneFab();}
 function closeChat(q){if(_curChat)_curChat.draft=$('c-inp').value||'';$('cl').style.display='block';$('cv').classList.remove('a');saveChatStore();if(!q){showNav();renderChatList();}}
 function openSide(){$('sov').classList.add('show');$('sbar').classList.add('show');}function closeSide(){$('sov').classList.remove('show');$('sbar').classList.remove('show');}function closeSideQ(){closeSide();}
 function openFP(id){$(id).classList.add('show');pushH('fp');}function closeFP(id){$(id).classList.remove('show');}
@@ -703,7 +726,9 @@ mem_prompt:$('mem-prompt').value,mem_rule:parseInt($('mem-rule').value)||10,mem_
 auto_summary:$('set-sum-auto').classList.contains('on'),summary_interval:parseInt($('set-sum-interval').value)||10,summary_prompt:$('sum-prompt').value,sum_tokens:parseInt($('set-sum-tokens').value)||500,
 sum_api_id:$('sum-api-id').value||null,sum_model:$('sum-model-id').value||null,
 mem_api_id:$('mem-api-id').value||null,mem_model:$('mem-model-id').value||null,
-memo_on:$('set-memo-on').classList.contains('on'),memo_prompt:$('memo-prompt').value,
+memo_on:$('set-memo-on').classList.contains('on'),
+state_on:$('set-state-on').classList.contains('on'),
+trk_api_id:$('trk-api-id').value||null,trk_model:$('trk-model-id').value||null,
 emb_local:$('set-emb-local').classList.contains('on'),
 vec_threshold:parseFloat((parseInt($('set-vec-threshold').value)/100).toFixed(2)),
 vec_extras_count:parseInt($('set-vec-extras').value)||3,vec_events_count:parseInt($('set-vec-events').value)||3,vec_memories_count:parseInt($('set-vec-memories').value)||5,vec_wb_count:parseInt($('set-vec-wb').value)||5,vec_memos_count:parseInt($('set-vec-memos').value)||5});toast('已儲存');}
@@ -719,11 +744,14 @@ if(s.mem_api_id){$('mem-api-id').value=s.mem_api_id;const a=_apiCfgs.find(x=>x.i
 if(s.mem_model){$('mem-model-id').value=s.mem_model;$('mem-model-btn').childNodes[0].textContent=s.mem_model;}
 if(s.vec_threshold!=null){$('set-vec-threshold').value=Math.round(s.vec_threshold*100);$('set-vec-threshold').nextElementSibling.textContent=s.vec_threshold.toFixed(2);}
 if(s.vec_extras_count)$('set-vec-extras').value=s.vec_extras_count;if(s.vec_events_count)$('set-vec-events').value=s.vec_events_count;if(s.vec_memories_count)$('set-vec-memories').value=s.vec_memories_count;if(s.vec_wb_count)$('set-vec-wb').value=s.vec_wb_count;if(s.vec_memos_count)$('set-vec-memos').value=s.vec_memos_count;
-if(s.memo_on)$('set-memo-on').classList.add('on');if(s.memo_prompt)$('memo-prompt').value=s.memo_prompt;cntF($('memo-prompt'));
-['sum','mem'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});cntF($('sum-prompt'));cntF($('mem-prompt'));}
+if(s.memo_on)$('set-memo-on').classList.add('on');
+if(s.state_on)$('set-state-on').classList.add('on');
+if(s.trk_api_id){$('trk-api-id').value=s.trk_api_id;const a=_apiCfgs.find(x=>x.id===s.trk_api_id);$('trk-api-btn').childNodes[0].textContent=a?a.name:'未選擇';}
+if(s.trk_model){$('trk-model-id').value=s.trk_model;$('trk-model-btn').childNodes[0].textContent=s.trk_model;}
+['sum','mem','trk'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});cntF($('sum-prompt'));cntF($('mem-prompt'));}
 
 // API Configs
-async function loadApiCfgs(){_apiCfgs=sortBy(await dbAll('api_configs'),'sort_order');renderApiCfgList();syncPrApiPop();['sum','mem'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});}
+async function loadApiCfgs(){_apiCfgs=sortBy(await dbAll('api_configs'),'sort_order');renderApiCfgList();syncPrApiPop();['sum','mem','trk'].forEach(p=>{syncFeatureApiPop(p);syncFeatureModelPop(p);});}
 function renderApiCfgList(){const el=$('api-cfg-list');if(!_apiCfgs.length){el.innerHTML='<div class="empty" style="font-size:13px;">尚未設定 API</div>';return;}el.innerHTML=_apiCfgs.map(a=>{const t=a.temperature!=null?a.temperature:0.8;const mi=a.max_input_tokens||20000;const mo=a.max_output_tokens||1200;const pv=a.provider||'anthropic';let line1='T '+t.toFixed(2);if(pv==='openai'||pv==='google'||pv==='openrouter'){const tp=a.top_p!=null?a.top_p:0.95;line1+=' · P '+tp.toFixed(2);}if(pv==='google'){const tk=a.top_k||40;line1+=' · K '+tk;}const line2='Input '+mi+' · Output '+mo;return '<div class="ev-toggle-item" onclick="openApiCfgEdit(\''+a.id+'\')"><div class="lb"><div class="lt">'+esc(a.name||'未命名')+'</div><div class="ls">'+esc(pv.charAt(0).toUpperCase()+pv.slice(1))+'</div><div class="ls" style="margin-top:4px;white-space:nowrap;">'+line1+'</div><div class="ls" style="margin-top:4px;white-space:nowrap;">'+line2+'</div></div><svg style="width:16px;height:16px;color:var(--tx2);stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>';}).join('');}
 async function addApiCfg(){const r={id:uid(),name:'新 API',provider:'anthropic',api_key:'',sort_order:_apiCfgs.length};await dbPut('api_configs',r);toast('已新增');await loadApiCfgs();openApiCfgEdit(r.id);}
 function syncProviderParams(){const pv=$('acfg-provider').value,el=$('acfg-sampling-extra');const hasTopP=pv==='openai'||pv==='google'||pv==='openrouter';const hasTopK=pv==='google';let h='';if(hasTopP)h+='<div class="f"><label>Top P</label><div class="sr"><input type="range" id="acfg-topp" min="0" max="100" value="'+(el._topP||95)+'" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">'+((el._topP||95)/100).toFixed(2)+'</span></div></div>';if(hasTopK)h+='<div class="f"><label>Top K</label><input type="number" id="acfg-topk" value="'+(el._topK||40)+'" min="1" max="100"></div>';el.innerHTML=h;}
@@ -850,9 +878,12 @@ async function initApp(){
 }
 // ═══ CHAT SYSTEM (IndexedDB) ═══
 let _chatStore={},_curChatId=null,_curChat=null;
-async function loadChatIndex(){const rows=sortBy(await dbAll('chats'),'updated_at','desc');_chatStore={};rows.forEach(r=>{_chatStore[r.id]={charId:r.char_id,charName:r.char_name||'',windowName:r.window_name||'',avatarUrl:r.avatar_url||'',rpId:r.rp_id,playerId:r.player_id,pinned:r.pinned||false,draft:r.draft||'',summary:r.summary||'',pcmdToggles:r.pcmd_toggles||{},lastMemGenAt:r.last_mem_gen_at||0,lastSumGenAt:r.last_sum_gen_at||0,updated:r.updated_at||0,worldbook_ids:r.worldbook_ids||[],msgs:null};});}
+async function loadChatIndex(){const rows=sortBy(await dbAll('chats'),'updated_at','desc');_chatStore={};rows.forEach(r=>{let sb=r.scene_board||null;
+if(!sb&&r.scene_state){sb={prompt:DEFAULT_SB_PROMPT,content:r.scene_state};}
+if(!sb&&r.state_fields&&r.state_fields.length){const filled=r.state_fields.filter(f=>f.enabled&&f.value);if(filled.length)sb={prompt:DEFAULT_SB_PROMPT,content:filled.map(f=>f.key+': '+f.value).join('\n')};}
+_chatStore[r.id]={charId:r.char_id,charName:r.char_name||'',windowName:r.window_name||'',avatarUrl:r.avatar_url||'',rpId:r.rp_id,playerId:r.player_id,pinned:r.pinned||false,draft:r.draft||'',summary:r.summary||'',sceneBoard:sb,pcmdToggles:r.pcmd_toggles||{},lastMemGenAt:r.last_mem_gen_at||0,lastSumGenAt:r.last_sum_gen_at||0,updated:r.updated_at||0,worldbook_ids:r.worldbook_ids||[],msgs:null};});}
 async function loadChatMsgs(chatId){const rows=sortBy(await dbByIndex('messages','chat_id',chatId),'sort_order');return rows.map(r=>({role:r.role,name:r.name||'',content:r.content||'',time:r.time||'',date:r.date||'',avUrl:r.av_url||'',bookmarked:r.bookmarked||false,bmkTitle:r.bmk_title||''}));}
-async function saveChatMeta(){if(!_curChatId||!_curChat)return;_chatStore[_curChatId]=_curChat;await dbPut('chats',{id:_curChatId,char_id:_curChat.charId,char_name:_curChat.charName,window_name:_curChat.windowName||'',avatar_url:_curChat.avatarUrl||'',rp_id:_curChat.rpId||null,player_id:_curChat.playerId||null,pinned:_curChat.pinned||false,draft:_curChat.draft||'',summary:_curChat.summary||'',pcmd_toggles:_curChat.pcmdToggles||{},last_mem_gen_at:_curChat.lastMemGenAt||0,last_sum_gen_at:_curChat.lastSumGenAt||0,worldbook_ids:_curChat.worldbook_ids||[],updated_at:new Date(_curChat.updated||Date.now()).toISOString()});}
+async function saveChatMeta(){if(!_curChatId||!_curChat)return;_chatStore[_curChatId]=_curChat;await dbPut('chats',{id:_curChatId,char_id:_curChat.charId,char_name:_curChat.charName,window_name:_curChat.windowName||'',avatar_url:_curChat.avatarUrl||'',rp_id:_curChat.rpId||null,player_id:_curChat.playerId||null,pinned:_curChat.pinned||false,draft:_curChat.draft||'',summary:_curChat.summary||'',scene_board:_curChat.sceneBoard||null,pcmd_toggles:_curChat.pcmdToggles||{},last_mem_gen_at:_curChat.lastMemGenAt||0,last_sum_gen_at:_curChat.lastSumGenAt||0,worldbook_ids:_curChat.worldbook_ids||[],updated_at:new Date(_curChat.updated||Date.now()).toISOString()});}
 async function saveMsg(chatId,msg,idx){await dbPut('messages',{id:uid(),chat_id:chatId,role:msg.role,name:msg.name||'',content:msg.content||'',time:msg.time||'',date:msg.date||'',av_url:msg.avUrl||'',bookmarked:msg.bookmarked||false,bmk_title:msg.bmkTitle||'',sort_order:idx});}
 function saveChatStore(){saveChatMeta().catch(e=>console.error(e));}
 function touchChatTime(){if(_curChat)_curChat.updated=Date.now();}
@@ -965,13 +996,13 @@ const data=await resp.json();let aiText='';
 if(provider==='anthropic')aiText=data.content.map(b=>b.text||'').join('');
 else if(provider==='google')aiText=(data.candidates&&data.candidates[0]&&data.candidates[0].content)?data.candidates[0].content.parts.map(p=>p.text||'').join(''):''
 else aiText=data.choices&&data.choices[0]?data.choices[0].message.content:'';
-// MEMO extraction
+// MEMO/STATE now handled by background tracker call
 let displayText=aiText;
-if(s.memo_on){const memoRegex=/^\[MEMO\]\s*(.+)$/gm;const memos=[];let mm;while((mm=memoRegex.exec(aiText))!==null)memos.push(mm[1].trim());if(memos.length){displayText=aiText.replace(/\n?\[MEMO\]\s*.+$/gm,'').trim();const chatId=_curChatId;for(const mt of memos){const mid=uid();await dbPut('memories',{id:mid,chat_id:chatId,content:mt,date:localDateStr(),created_at:new Date().toISOString(),type:'memo'});embedAndPatch('memories',mid,mt);}toast('已記錄 '+memos.length+' 條 MEMO');}}
 appendMsg('ai',_curChat.charName,displayText,_curChat.avatarUrl);touchChatTime();saveChatStore();
 try{const li=document.getElementById('cli-'+_curChatId);if(li){const ls=li.querySelector('.ls');if(ls)ls.textContent=tplReplace(displayText).replace(/[*#_`>\n]+/g,' ').substring(0,80);const ct=document.getElementById('ct-'+_curChatId);if(ct)ct.textContent=fmtChatTime(new Date().toISOString());}}catch(e){}
 try{console.log('[摘要debug]','auto_summary:',s.auto_summary,'interval:',s.summary_interval,'ai_count:',(_curChat.msgs||[]).filter(m=>m.role==='ai').length,'lastSumAt:',_curChat.lastSumGenAt||0);if(s.auto_summary){const iv=parseInt(s.summary_interval)||10;const ac=(_curChat.msgs||[]).filter(m=>m.role==='ai').length;const lastSumAt=_curChat.lastSumGenAt||0;if(ac-lastSumAt>=iv){_curChat.lastSumGenAt=ac;saveChatStore();toast('自動生成摘要…');await autoGenSummary(vecEvents);}}}catch(e){console.error('autoSummary error:',e);}
 try{await autoGenMemory(_curChat,_curChatId);}catch(e){}
+try{await autoTracker(_curChat,_curChatId);}catch(e){}
 }catch(e){hideTyping();_aiAbort=null;if(e.name==='AbortError')return;toast('請求失敗');console.error(e);}}
 async function buildSysPrompt(vecExtras,vecEvents,vecMemories,vecWB,vecMemos){let sys='';vecExtras=vecExtras||[];vecEvents=vecEvents||[];vecMemories=vecMemories||[];vecWB=vecWB||[];vecMemos=vecMemos||[];
 const rpId=_curChat.rpId;if(rpId){const p=prompts.find(x=>x.id===rpId);if(p)sys+=p.content+'\n\n';}
@@ -982,6 +1013,7 @@ const cd=await getCharData(_curChat.charId);
 sys+=buildExtrasSection(cd.extras,vecExtras);
 sys+=buildMemorySection(vecMemories);
 sys+=buildMemoSection(vecMemos);
+sys+=buildStateSection();
 sys+=await buildEventSection(cd.events,vecEvents);
 sys+=await buildWorldBookSection(vecWB);
 return tplReplace(sys.trim());}
@@ -994,9 +1026,12 @@ if(vecExtras.length){s+='\n[Additional Info]\n';vecExtras.forEach(v=>{const ex=a
 else if(!hasAnyEmb){s+='\n[Additional Info]\n';allExtras.forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}return s;}
 function buildMemorySection(vecMemories){let s='';if(vecMemories&&vecMemories.length){s+='\n[Relevant Memories]\n(Timestamps below are real-world system timestamps, NOT in-universe dates. Never use these dates during roleplay. Only reference them if the player explicitly asks out-of-character.)\n';vecMemories.forEach(m=>{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';});}
 if(_curChat.memories&&_curChat.memories.length){s+='\n[Local Memories]\n';_curChat.memories.forEach(m=>{if(typeof m==='string'){s+='- '+m+'\n';}else{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';}});}return s;}
-function buildMemoSection(vecMemos){const s2=getSettings();let sec='';
+function buildMemoSection(vecMemos){let sec='';
 if(vecMemos&&vecMemos.length){sec+='\n[Player Memos]\nThe following are personal details about the player recorded from conversations. Use this information naturally without directly referencing the tags:\n';vecMemos.forEach(m=>{sec+='- '+m.content+'\n';});}
-if(s2.memo_on){const memoInstr=s2.memo_prompt||'When {{user}} reveals personal preferences, values, habits, important people or events, or private information during conversation, append a [MEMO] block on a new line after your roleplay response has completely ended. Never write [MEMO] inside the roleplay text. Format strictly: one entry per line, each beginning with "[MEMO] ". If there is nothing worth recording this turn, output no [MEMO] at all.';sec+='\n[MEMO Instructions]\n'+memoInstr+'\n';}
+return sec;}
+function buildStateSection(){let sec='';
+const sb=(_curChat&&_curChat.sceneBoard)||{};
+if(sb.content){sec+='\n[Current Scene State]\n'+sb.content+'\n';}
 return sec;}
 async function buildEventSection(cEvs,vecEvents){let s='';let creatorToggles={},playerEvs=[];
 try{const toggleRows=await dbByIndex('chat_creator_event_toggles','chat_id',_curChatId);toggleRows.forEach(r=>{creatorToggles[r.event_id]=r.enabled;});const plEvRows=(await dbByIndex('chat_events','chat_id',_curChatId)).filter(e=>e.enabled!==false);playerEvs=sortBy(plEvRows,'sort_order');}catch(e){}
@@ -1140,6 +1175,25 @@ const date=localDateStr();const nid=uid();
 await dbPut('memories',{id:nid,chat_id:chatId,content:text.trim(),date,created_at:new Date().toISOString()});embedAndPatch('memories',nid,text.trim());
 _memGenRunning=false;toast('已生成記憶');}
 
+// ═══ Auto Tracker (MEMO + STATE) ═══
+async function autoTracker(chat,chatId){if(!chat)return;
+const s=getSettings();const memoOn=s.memo_on,stateOn=s.state_on;
+if(!memoOn&&!stateOn)return;
+let apiCfg=getFeatureApiCfg('trk');
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model){console.warn('[Tracker] 未設定追蹤器 API，跳過');return;}
+const msgs=chat.msgs||[];const recent=msgs.slice(-6);if(!recent.length)return;
+let transcript='';recent.forEach(m=>{if(m.role==='system')return;transcript+=(m.role==='ai'?(m.name||'Character'):'Player')+': '+m.content+'\n\n';});
+if(!transcript.trim())return;
+let sysPr='You are a background tracker for a roleplay session. Analyze the recent conversation and output ONLY the requested tags. No prose, no explanation.\n';
+if(memoOn){const memoInstr='Analyze the recent conversation for information that helps understand who the player is as a person.\n\nRecord: self-definitions and titles the player uses, personality traits and behavioral patterns, lasting preferences and values, the relationship dynamic they have established with the character.\n\nDo not record: momentary emotional reactions, one-time events, anything already inferable from context.\n\nFormat: one entry per line, each beginning with "[MEMO] ". If there is nothing worth recording, output nothing.';sysPr+='\n'+memoInstr+'\n';}
+if(stateOn){const sb=(chat.sceneBoard)||{};const sbPrompt=sb.prompt||DEFAULT_SB_PROMPT;if(sbPrompt){let stateInstr='Update the scene board based on the recent conversation. Output ONLY the updated content between [STATE_START] and [STATE_END] tags. Follow this format instruction from the player:\n'+sbPrompt+'\n\nIf nothing has changed, do not output any [STATE_START]/[STATE_END] block.';stateInstr=tplReplace(stateInstr);sysPr+='\n'+stateInstr+'\n';}}
+const text=await callApiSimple(apiCfg,sysPr,transcript,400,0.2);
+if(!text||!text.trim())return;
+// Parse MEMO
+if(memoOn){const memoRegex=/^\[MEMO\]\s*(.+)$/gm;let mm;while((mm=memoRegex.exec(text))!==null){const mt=mm[1].trim();if(mt){const mid=uid();await dbPut('memories',{id:mid,chat_id:chatId,content:mt,date:localDateStr(),created_at:new Date().toISOString(),type:'memo'});embedAndPatch('memories',mid,mt);}}}
+// Parse STATE content
+if(stateOn){const stateMatch=text.match(/\[STATE_START\]([\s\S]*?)\[STATE_END\]/);if(stateMatch){const newContent=stateMatch[1].trim();if(newContent){if(!chat.sceneBoard)chat.sceneBoard={prompt:DEFAULT_SB_PROMPT,content:''};chat.sceneBoard.content=newContent;saveChatStore();renderSceneFab();}}}}
+
 // ═══ Chat List ═══
 async function renameChatInline(){if(!_curChat||!_curChatId)return;const name=await inp('修改視窗名稱',_curChat.windowName||_curChat.charName);if(name===null)return;_curChat.windowName=name.trim()||_curChat.charName;$('c-name').textContent=_curChat.windowName;saveChatStore();renderChatList();toast('已儲存');}
 function renderChatList(){const el=$('chat-list'),ids=Object.keys(_chatStore).sort((a,b)=>{const pa=_chatStore[a].pinned?1:0,pb=_chatStore[b].pinned?1:0;if(pa!==pb)return pb-pa;return(new Date(_chatStore[b].updated||0).getTime())-(new Date(_chatStore[a].updated||0).getTime());});
@@ -1265,6 +1319,24 @@ async function saveMemoEdit(){const mid=$('memo-eid').value,txt=$('memo-ec').val
 if(mid){const m=await dbGet('memories',mid);if(m){m.content=txt;await dbPut('memories',m);embedAndPatch('memories',mid,txt);}}
 else{const nid=uid();await dbPut('memories',{id:nid,chat_id:_curChatId,content:txt,date:localDateStr(),created_at:new Date().toISOString(),type:'memo'});embedAndPatch('memories',nid,txt);}
 toast('已儲存');closePopup('memo-edit-pop');openChatMemos();}
+
+// ═══ Scene Board (場景板) ═══
+const DEFAULT_SB_PROMPT='總結當前場景的以下資訊，每項一行：\n- 地點：角色目前所在的具體場所\n- 時間：YYYY/MM/DD HH:mm\n- 在場人物：列出場景中所有在場的角色\n- 角色外觀：描述角色當前的服裝或外觀特徵\n僅列出有明確描寫的項目，沒有提及的不要編造。';
+function getSceneBoard(){if(!_curChat)return{prompt:'',content:''};if(!_curChat.sceneBoard)_curChat.sceneBoard={prompt:DEFAULT_SB_PROMPT,content:''};return _curChat.sceneBoard;}
+function renderSceneFab(){const el=$('sb-fab');if(!el)return;if(!_curChat){el.style.display='none';return;}
+const s=getSettings();if(!s.state_on){el.style.display='none';return;}
+el.style.display='flex';
+const sb=getSceneBoard();
+if(sb.content){el.classList.add('has-content');el.innerHTML='<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';}
+else{el.classList.remove('has-content');el.innerHTML='<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';}}
+function openSceneEditor(){if(!_curChat)return;const sb=getSceneBoard();
+$('sb-content').value=sb.content||'';$('sb-prompt').value=sb.prompt||DEFAULT_SB_PROMPT;
+$('sf-editor').classList.add('show');
+setTimeout(()=>{const c=$('sb-content'),p=$('sb-prompt');c.style.height='auto';c.style.height=Math.max(120,c.scrollHeight)+'px';p.style.height='auto';p.style.height=Math.max(80,p.scrollHeight)+'px';},50);
+switchSBTab(0,document.querySelectorAll('.sb-tab')[0]);}
+function closeSceneEditor(){$('sf-editor').classList.remove('show');}
+function switchSBTab(idx,el){document.querySelectorAll('.sb-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');$('sb-tab-0').style.display=idx===0?'block':'none';$('sb-tab-1').style.display=idx===1?'block':'none';}
+function saveSceneBoard(){if(!_curChat)return;const sb=getSceneBoard();sb.content=$('sb-content').value.trim();sb.prompt=$('sb-prompt').value.trim()||DEFAULT_SB_PROMPT;_curChat.sceneBoard=sb;saveChatStore();renderSceneFab();toast('已儲存');closeSceneEditor();}
 
 // ═══ Persistent Commands ═══
 let _pcmds=[];
