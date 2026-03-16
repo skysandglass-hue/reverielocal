@@ -1001,7 +1001,11 @@ async function execMsgDel(){if(!_msgDelSel.size||!_curChat)return;if(!await cfm(
 const sorted=[..._msgDelSel].sort((a,b)=>b-a);for(const idx of sorted)_curChat.msgs.splice(idx,1);
 if(_curChatId){const dbRows=sortBy(await dbByIndex('messages','chat_id',_curChatId),'sort_order');for(const idx of sorted){if(dbRows[idx])await dbDel('messages',dbRows[idx].id);}
 const remaining=sortBy(await dbByIndex('messages','chat_id',_curChatId),'sort_order');for(let i=0;i<remaining.length;i++){if(remaining[i].sort_order!==i){remaining[i].sort_order=i;await dbPut('messages',remaining[i]);}}}
-cancelMsgDel();refreshMsgs();toast('已刪除');}
+cancelMsgDel();
+const newAiCount=(_curChat.msgs||[]).filter(m=>m.role==='ai').length;
+if(_curChat.lastMemGenAt>newAiCount)_curChat.lastMemGenAt=newAiCount;
+if(_curChat.lastSumGenAt>newAiCount)_curChat.lastSumGenAt=newAiCount;
+saveChatStore();refreshMsgs();toast('已刪除');}
 function fmtDate(d){if(!d)return '';const dt=new Date(d);const now=new Date();const y=dt.getFullYear(),m=dt.getMonth(),day=dt.getDate();if(y===now.getFullYear()&&m===now.getMonth()&&day===now.getDate())return '今天';const yd=new Date(now);yd.setDate(yd.getDate()-1);if(y===yd.getFullYear()&&m===yd.getMonth()&&day===yd.getDate())return '昨天';if(y===now.getFullYear())return(m+1)+'/'+day;return y+'/'+(m+1)+'/'+day;}
 function fmtChatTime(d){if(!d)return '';const dt=new Date(d);const now=new Date();const y=dt.getFullYear(),m=dt.getMonth(),day=dt.getDate();if(y===now.getFullYear()&&m===now.getMonth()&&day===now.getDate())return String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0');const yd=new Date(now);yd.setDate(yd.getDate()-1);if(y===yd.getFullYear()&&m===yd.getMonth()&&day===yd.getDate())return '昨天';if(y===now.getFullYear())return(m+1)+'/'+day;return y+'/'+(m+1)+'/'+day;}
 function fmtMsgTime(d){if(!d)return '';const dt=new Date(d);return String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0');}
