@@ -497,11 +497,11 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="popup-ov" id="wb-bind-pop" onclick="if(event.target===this){closePopup('wb-bind-pop');syncWBBindLabel();}"><div class="popup"><div class="popup-title">綁定世界書</div><div id="wb-bind-list"></div></div></div>
 
 <!-- Character Profile Overlay -->
-<div class="cpf-overlay" id="cpf-overlay" onclick="if(event.target===this)closeCharProfile()">
+<div class="cpf-overlay" id="cpf-overlay" onclick="if(event.target===this)history.back()">
   <div class="cpf-card" id="cpf-card">
     <div class="cpf-scroll">
       <div class="cpf-hero" id="cpf-hero">
-        <button class="cpf-back" onclick="closeCharProfile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="cpf-back" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
         <div class="cpf-hero-text">
           <div class="cpf-hero-label">Character File</div>
           <div class="cpf-hero-name" id="cpf-name"></div>
@@ -513,8 +513,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
     <!-- Event detail panel (slides over main content) -->
     <div class="cpf-ev-detail" id="cpf-ev-detail">
       <div class="cpf-ev-detail-bar">
-        <span class="bk" onclick="closeCpfEvDetail()" style="margin:0;cursor:pointer;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-        <div style="font-size:15px;color:var(--tx2);">事件</div>
+        <span class="bk" onclick="history.back()" style="margin:0;cursor:pointer;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
       </div>
       <div class="cpf-ev-detail-scroll" id="cpf-ev-detail-body"></div>
     </div>
@@ -604,6 +603,9 @@ const prev=hs[hs.length-1]||'main';
 // If editing with unsaved changes, block back
 if(_dirty&&(prev==='charDetail'||prev==='pfDetail'||prev==='wbDetail')){const ok=await cfm('尚未儲存，確定離開？');if(!ok){history.pushState({p:prev},'');return;}_dirty=false;}
 hs.pop();const p=hs[hs.length-1]||'main';
+// Character profile overlay
+if(prev==='cpfEv'){closeCpfEvDetail();return;}
+if(prev==='cpf'){closeCharProfile();return;}
 const fps=document.querySelectorAll('.fp.show');if(fps.length>0){fps[fps.length-1].classList.remove('show');return;}
 document.querySelectorAll('.popup-ov.show').forEach(x=>x.classList.remove('show'));$('cfm-ov').classList.remove('show');$('inp-ov').classList.remove('show');closeSideQ();hideCtx();closeBs();$('em-ov').classList.remove('show');
 if(p==='main'){saveChatStore();closeChat(1);doCloseCharEdit(1);doClosePfEdit();doCloseWBEdit();showNav();}
@@ -804,7 +806,7 @@ const cn=c.name||'';let un='';if(_curChat&&_curChat.playerId){const pf=profiles.
 const cpfTpl=t=>(t||'').replace(/\{\{user\}\}/gi,un||'玩家').replace(/\{\{char\}\}/gi,cn);
 // Hero image
 const hero=$('cpf-hero');
-hero.innerHTML='<button class="cpf-back" onclick="closeCharProfile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>';
+hero.innerHTML='<button class="cpf-back" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>';
 const card=$('cpf-card');
 if(c.avatar_url){hero.innerHTML+='<img src="'+c.avatar_url+'">';card.classList.remove('no-img');}
 else{hero.innerHTML+='<div class="cpf-hero-empty">'+esc((c.name||'?')[0])+'</div>';card.classList.add('no-img');}
@@ -847,6 +849,7 @@ html+='</div>';
 }
 $('cpf-body').innerHTML=html;
 $('cpf-overlay').classList.add('show');
+pushH('cpf');
 }
 function closeCharProfile(){$('cpf-overlay').classList.remove('show');$('cpf-ev-detail').classList.remove('show');}
 let _cpfCharId=null;
@@ -861,6 +864,7 @@ const content=ev.content?marked.parse(cpfTpl2(ev.content)):'<span style="color:v
 const trigger=ev.time_or_keyword?'<div class="cpf-ev-detail-trigger">'+esc(cpfTpl2(ev.time_or_keyword))+'</div>':'';
 $('cpf-ev-detail-body').innerHTML='<div class="cpf-ev-detail-inner"><div class="cpf-ev-detail-name">'+esc(cpfTpl2(ev.name||''))+'</div>'+trigger+'<div class="cpf-ev-detail-divider"></div><div class="cpf-ev-detail-content">'+content+'</div></div>';
 $('cpf-ev-detail').classList.add('show');
+pushH('cpfEv');
 }
 function closeCpfEvDetail(){$('cpf-ev-detail').classList.remove('show');}
 
