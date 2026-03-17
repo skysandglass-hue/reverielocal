@@ -168,7 +168,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 
 .ctx-menu{position:fixed;z-index:500;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.12);padding:6px 0;min-width:150px;}
 .ctx-item{padding:11px 16px;font-size:15px;cursor:pointer;color:var(--tx);display:flex;align-items:center;gap:8px;}.ctx-item:hover{background:var(--bgi);}.ctx-item.danger{color:var(--del);}
-.bs-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:500;align-items:center;justify-content:center;}.bs-overlay.show{display:flex;}
+.bs-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:900;align-items:center;justify-content:center;}.bs-overlay.show{display:flex;}
 .bs-popup{background:var(--bg2);border-radius:16px;width:min(200px,75vw);padding:6px 0;box-shadow:0 8px 30px rgba(0,0,0,.18);}.bs-popup.wide{width:min(500px,92vw);}
 .bs-item{padding:12px 20px;font-size:15px;cursor:pointer;color:var(--tx);display:flex;align-items:center;gap:10px;border-top:1px solid var(--bd);}.bs-item:first-of-type{border-top:none;}.bs-item:hover{background:var(--bgi);}.bs-item.danger{color:var(--del);}.bs-item.danger svg{stroke:var(--del);}
 .bs-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
@@ -254,6 +254,9 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-back{position:absolute;top:max(12px,env(safe-area-inset-top,12px));left:12px;z-index:2;width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
 .cpf-back:active{background:rgba(0,0,0,.5);}
 .cpf-back svg{width:20px;height:20px;}
+.cpf-dl{position:absolute;top:max(12px,env(safe-area-inset-top,12px));right:12px;z-index:2;width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.cpf-dl:active{background:rgba(0,0,0,.5);}
+.cpf-dl svg{width:18px;height:18px;}
 .cpf-hero-text{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:0 24px 28px;}
 .cpf-hero-label{font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:6px;}
 .cpf-hero-name{font-size:32px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:.04em;text-shadow:0 2px 12px rgba(0,0,0,.35);margin-bottom:8px;}
@@ -263,7 +266,6 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-intro{position:relative;margin-bottom:28px;}.cpf-intro::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px;background:var(--ac);}
 .cpf-intro-text{font-size:16px;line-height:2.1;color:var(--tx);padding-left:18px;letter-spacing:.02em;}
 .cpf-intro-text p{margin:0 0 .8em;}.cpf-intro-text p:last-child{margin:0;}
-.cpf-intro-text p:first-child::first-letter{font-family:'Cormorant Garamond',serif;float:left;font-size:3.2em;line-height:.8;font-weight:600;color:var(--ac);margin-right:6px;margin-top:6px;}
 .cpf-div-label{display:flex;align-items:center;gap:12px;margin:28px 0 20px;}
 .cpf-div-label::before,.cpf-div-label::after{content:'';flex:1;height:1px;background:var(--bd);}
 .cpf-div-label span{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);white-space:nowrap;}
@@ -588,7 +590,9 @@ async function rebuildAllEmb(){if(!getSettings().emb_local){toast('請先啟用'
 async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
 async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'])try{await dbClear(s);}catch(e){}localStorage.removeItem('rp_av_off');toast('已清除');location.reload();}
 // === Core UI ===
-const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){return '<p>'+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};_renderer.list=function(token){return (token.items||[]).map(i=>typeof i==='string'?i:(i.text||i.tokens?.map(t=>t.raw||t.text||'').join('')||'')).join('\n');};_renderer.listitem=function(token){return (typeof token==='string'?token:(token.text||''))+'\n';};marked.use({renderer:_renderer});
+const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){return '<p>'+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
+// Strip list tags from marked output globally
+const _origMarkedParse=marked.parse.bind(marked);marked.parse=function(src,opt){let html=_origMarkedParse(src,opt);html=html.replace(/<\/?ul[^>]*>/gi,'').replace(/<\/?ol[^>]*>/gi,'').replace(/<li[^>]*>/gi,'<p>').replace(/<\/li>/gi,'</p>');return html;};
 function tok(s){if(!s)return 0;let t=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);if(c>0x2E7F)t+=1.5;else if(c===32||c===10)t+=0;else t+=0.35;}return Math.ceil(t);}
 function cntF(ta){const l=ta.value.length,t=tok(ta.value);const c=ta.parentElement.querySelector('.ctr');if(c)c.textContent=l+' 字 · ≈ '+t+' tokens';}
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
@@ -816,7 +820,7 @@ const cn=c.name||'';let un='';if(_curChat&&_curChat.playerId){const pf=profiles.
 const cpfTpl=t=>(t||'').replace(/\{\{char\}\}/gi,cn).replace(/\{\{user\}\}/gi,un||'{{user}}');
 // Hero image
 const hero=$('cpf-hero');
-hero.innerHTML='<button class="cpf-back" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>';
+hero.innerHTML='<button class="cpf-back" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button><button class="cpf-dl" onclick="event.stopPropagation();openCpfMenu()"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>';
 const card=$('cpf-card');
 if(c.avatar_url){hero.innerHTML+='<img src="'+c.avatar_url+'">';card.classList.remove('no-img');}
 else{hero.innerHTML+='<div class="cpf-hero-empty">'+esc((c.name||'?')[0])+'</div>';card.classList.add('no-img');}
@@ -861,6 +865,67 @@ $('cpf-overlay').classList.add('show');
 pushH('cpf');
 }
 function closeCharProfile(){$('cpf-overlay').classList.remove('show');$('cpf-ev-detail').classList.remove('show');}
+function openCpfMenu(){
+$('bs-body').innerHTML='<div class="bs-item" onclick="closeBs();dlHeroCover()"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>下載封面</div><div class="bs-item" onclick="closeBs();dlHeroFull()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>下載角色頁</div>';
+$('bs-ov').classList.add('show');
+}
+async function dlHeroCover(){
+if(!_cpfCharId)return;
+const hero=$('cpf-hero');if(!hero)return;
+toast('生成中…');
+try{
+const{default:h2c}=await import('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm');
+// Hide buttons, remove border-radius during capture
+const btns=hero.querySelectorAll('.cpf-back,.cpf-dl');
+btns.forEach(b=>b.style.display='none');
+const card=$('cpf-card');const scrollEl=card.querySelector('.cpf-scroll');
+const origBR=card.style.borderRadius;const origOF=card.style.overflow;
+const origScrollBR=scrollEl?scrollEl.style.borderRadius:'';
+card.style.borderRadius='0';card.style.overflow='visible';
+if(scrollEl)scrollEl.style.borderRadius='0';
+hero.style.borderRadius='0';
+const canvas=await h2c(hero,{scale:2,useCORS:true,logging:false,backgroundColor:null});
+card.style.borderRadius=origBR;card.style.overflow=origOF;
+if(scrollEl)scrollEl.style.borderRadius=origScrollBR;
+hero.style.borderRadius='';
+btns.forEach(b=>b.style.display='');
+canvas.toBlob(blob=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+const c=_cpfCharId?chars.find(x=>x.id===_cpfCharId):null;
+a.download=(c?.name||'character')+'-cover.png';a.click();URL.revokeObjectURL(a.href);toast('已下載');},'image/png');
+}catch(e){console.error(e);toast('下載失敗');}
+}
+async function dlHeroFull(){
+if(!_cpfCharId)return;
+const scroll=$('cpf-card')?.querySelector('.cpf-scroll');if(!scroll)return;
+const card=$('cpf-card');
+toast('生成中…');
+try{
+const{default:h2c}=await import('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm');
+// Hide buttons
+const btns=scroll.querySelectorAll('.cpf-back,.cpf-dl');
+btns.forEach(b=>b.style.display='none');
+// Remove card border-radius and expand scroll to full content height
+const origCardBR=card.style.borderRadius;const origCardOF=card.style.overflow;const origCardH=card.style.height;
+card.style.borderRadius='0';card.style.overflow='visible';card.style.height='auto';
+const origH=scroll.style.height;const origOF=scroll.style.overflow;const origMax=scroll.style.maxHeight;const origFlex=scroll.style.flex;const origScrollBR=scroll.style.borderRadius;
+scroll.style.height='auto';scroll.style.overflow='visible';scroll.style.maxHeight='none';scroll.style.flex='none';scroll.style.borderRadius='0';
+const hero=scroll.querySelector('.cpf-hero');const origHeroBR=hero?hero.style.borderRadius:'';
+if(hero)hero.style.borderRadius='0';
+// Scroll to top before capture
+scroll.scrollTop=0;
+const canvas=await h2c(scroll,{scale:2,useCORS:true,logging:false,
+backgroundColor:getComputedStyle(document.body).getPropertyValue('--bg2').trim()||'#fff',
+height:scroll.scrollHeight,windowHeight:scroll.scrollHeight});
+// Restore
+scroll.style.height=origH;scroll.style.overflow=origOF;scroll.style.maxHeight=origMax;scroll.style.flex=origFlex;scroll.style.borderRadius=origScrollBR;
+if(hero)hero.style.borderRadius=origHeroBR;
+card.style.borderRadius=origCardBR;card.style.overflow=origCardOF;card.style.height=origCardH;
+btns.forEach(b=>b.style.display='');
+canvas.toBlob(blob=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+const c=_cpfCharId?chars.find(x=>x.id===_cpfCharId):null;
+a.download=(c?.name||'character')+'-page.png';a.click();URL.revokeObjectURL(a.href);toast('已下載');},'image/png');
+}catch(e){console.error(e);toast('下載失敗');}
+}
 let _cpfCharId=null;
 async function openCpfEvDetail(evId){
 const ev=await dbGet('character_events',evId);if(!ev)return;
