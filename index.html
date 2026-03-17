@@ -652,7 +652,7 @@ async function confirmCrop(){const img=$('crop-img'),frame=$('crop-frame'),area=
 const fx=parseInt(frame.style.left),fy=parseInt(frame.style.top),fw=parseInt(frame.style.width),fh=parseInt(frame.style.height);
 const ix=parseInt(img.style.left),iy=parseInt(img.style.top);
 const sx=(fx-ix)/_cropScale,sy=(fy-iy)/_cropScale,sw=fw/_cropScale,sh=fh/_cropScale;
-const canvas=document.createElement('canvas');canvas.width=360;canvas.height=Math.round(360*(fh/fw));
+const canvas=document.createElement('canvas');canvas.width=420;canvas.height=Math.round(420*(fh/fw));
 const ctx=canvas.getContext('2d');const srcImg=new Image();srcImg.onload=async()=>{ctx.drawImage(srcImg,sx,sy,sw,sh,0,0,canvas.width,canvas.height);
 const dataUrl=canvas.toDataURL('image/webp',0.85);
 const id=_avTarget.id||$('ce-id').value,key=_avTarget.type+'_'+id;
