@@ -15,7 +15,7 @@
 <title>Reverie</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.1/marked.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--bg:#f5f6f8;--bg2:#fff;--bg3:#f9fafb;--bgi:#eef0f3;--ac:#7c9eb2;--acl:#e4eef3;--ach:#5d8299;--tx:#2d3436;--tx2:#8395a7;--tx3:#1a1a1a;--bd:#e2e6ea;--bd2:#d1d8de;--sh:rgba(0,0,0,.03);--msg-ai:#fff;--msg-user:#e4eef3;--del:#b85050;--navh:52px;}
 body.theme-warm{--bg:#f7f5f2;--bg2:#fff;--bg3:#faf9f7;--bgi:#f0ede8;--ac:#c0705a;--acl:#f0ddd6;--ach:#a85d4a;--tx:#3d3a36;--tx2:#8a857d;--tx3:#1a1816;--bd:#e5e0da;--bd2:#d5cfc7;--del:#b85a48;--msg-ai:#fff;--msg-user:#f0ddd6;}
@@ -255,18 +255,19 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-back:active{background:rgba(0,0,0,.5);}
 .cpf-back svg{width:20px;height:20px;}
 .cpf-hero-text{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:0 24px 28px;}
-.cpf-hero-label{font-size:11px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:6px;}
+.cpf-hero-label{font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:6px;}
 .cpf-hero-name{font-size:32px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:.04em;text-shadow:0 2px 12px rgba(0,0,0,.35);margin-bottom:8px;}
-.cpf-hero-tagline{font-size:15px;font-weight:400;color:rgba(255,255,255,.85);text-shadow:0 1px 6px rgba(0,0,0,.35);display:flex;align-items:center;gap:8px;letter-spacing:.02em;}
+.cpf-hero-tagline{font-size:15px;font-weight:400;color:rgba(255,255,255,.85);text-shadow:0 1px 6px rgba(0,0,0,.35);display:flex;align-items:center;gap:8px;letter-spacing:.02em;padding-bottom:12px;border-bottom:1.5px solid rgba(255,255,255,.25);}
 .cpf-hero-tagline .sep{width:3.5px;height:3.5px;border-radius:50%;background:rgba(255,255,255,.5);flex-shrink:0;}
 .cpf-body{padding:28px 24px 36px;}
 .cpf-intro{position:relative;margin-bottom:28px;}.cpf-intro::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px;background:var(--ac);}
 .cpf-intro-text{font-size:16px;line-height:2.1;color:var(--tx);padding-left:18px;letter-spacing:.02em;}
 .cpf-div-label{display:flex;align-items:center;gap:12px;margin:28px 0 20px;}
 .cpf-div-label::before,.cpf-div-label::after{content:'';flex:1;height:1px;background:var(--bd);}
-.cpf-div-label span{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);white-space:nowrap;}
+.cpf-div-label span{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);white-space:nowrap;}
 .cpf-hr{height:1px;background:var(--bd);margin:24px 0;}
-.cpf-encounter{position:relative;background:var(--bg3);border-radius:12px;padding:20px;margin-bottom:6px;}
+.cpf-encounter{position:relative;background:var(--bg3);border-radius:12px;padding:28px 20px 20px;margin-bottom:6px;}
+.cpf-encounter::before{content:'\201C';font-family:'Cormorant Garamond',serif;position:absolute;top:8px;left:16px;font-size:48px;line-height:1;color:var(--ac);opacity:.35;pointer-events:none;}
 .cpf-encounter-text{font-size:15px;line-height:2;color:var(--tx);word-break:break-word;}
 .cpf-encounter-text p{margin:0 0 .8em;}.cpf-encounter-text p:last-child{margin:0;}
 .cpf-section-head{font-size:13px;font-weight:600;color:var(--tx3);margin-bottom:10px;display:flex;align-items:center;gap:6px;letter-spacing:.02em;}
@@ -803,7 +804,7 @@ const[extras,cEvs,allWBs]=await Promise.all([dbByIndex('character_extras','chara
 const evs=sortBy(cEvs,'sort_order');
 // Local template replace (works without _curChat)
 const cn=c.name||'';let un='';if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf)un=pf.name||'';}
-const cpfTpl=t=>(t||'').replace(/\{\{user\}\}/gi,un||'玩家').replace(/\{\{char\}\}/gi,cn);
+const cpfTpl=t=>(t||'').replace(/\{\{char\}\}/gi,cn).replace(/\{\{user\}\}/gi,un||'{{user}}');
 // Hero image
 const hero=$('cpf-hero');
 hero.innerHTML='<button class="cpf-back" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>';
@@ -815,7 +816,6 @@ hero.innerHTML+='<div class="cpf-hero-text"><div class="cpf-hero-label">Characte
 const tl=$('cpf-tagline');
 const parts=[];
 if(c.age)parts.push(esc(c.age));
-if(c.gender&&c.gender!=='未設置')parts.push(esc(c.gender));
 if(c.job)parts.push(esc(c.job));
 tl.innerHTML=parts.map((p,i)=>i>0?'<span class="sep"></span><span>'+p+'</span>':'<span>'+p+'</span>').join('');
 // Body
@@ -859,7 +859,7 @@ const ev=await dbGet('character_events',evId);if(!ev)return;
 let cn='',un='';
 if(_cpfCharId){const c=await dbGet('characters',_cpfCharId);if(c)cn=c.name||'';}
 if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf)un=pf.name||'';}
-const cpfTpl2=t=>(t||'').replace(/\{\{user\}\}/gi,un||'玩家').replace(/\{\{char\}\}/gi,cn);
+const cpfTpl2=t=>(t||'').replace(/\{\{char\}\}/gi,cn).replace(/\{\{user\}\}/gi,un||'{{user}}');
 const content=ev.content?marked.parse(cpfTpl2(ev.content)):'<span style="color:var(--tx2);">無內容</span>';
 const trigger=ev.time_or_keyword?'<div class="cpf-ev-detail-trigger">'+esc(cpfTpl2(ev.time_or_keyword))+'</div>':'';
 $('cpf-ev-detail-body').innerHTML='<div class="cpf-ev-detail-inner"><div class="cpf-ev-detail-name">'+esc(cpfTpl2(ev.name||''))+'</div>'+trigger+'<div class="cpf-ev-detail-divider"></div><div class="cpf-ev-detail-content">'+content+'</div></div>';
@@ -1045,6 +1045,12 @@ toast('已完成 '+total+' 筆');}
 async function importSTCard(d){const cid=uid();const c={id:cid,name:d.name||'未命名',sort_order:chars.length,created_at:new Date().toISOString()};
 let setting='';if(d.description)setting+=d.description+'\n';if(d.personality)setting+='\n個性: '+d.personality+'\n';
 c.setting=setting.trim();c.greeting_scenario=d.scenario||'';c.greeting_message=d.first_mes||'';
+// Reverie fields from extensions
+if(d.extensions){
+if(d.extensions.reverie_age)c.age=d.extensions.reverie_age;
+if(d.extensions.reverie_gender)c.gender=d.extensions.reverie_gender;
+if(d.extensions.reverie_job)c.job=d.extensions.reverie_job;
+}
 await dbPut('characters',c);let exCount=0;
 // mes_example → extras
 if(d.mes_example&&d.mes_example.trim()){await dbPut('character_extras',{id:uid(),character_id:cid,title:'對話範例',content:d.mes_example.trim(),sort_order:exCount++});}
@@ -1054,8 +1060,8 @@ if(d.creator_notes&&d.creator_notes.trim()){await dbPut('character_extras',{id:u
 if(d.system_prompt&&d.system_prompt.trim()){await dbPut('character_extras',{id:uid(),character_id:cid,title:'系統提示詞',content:d.system_prompt.trim(),sort_order:exCount++});}
 // post_history_instructions → extras
 if(d.post_history_instructions&&d.post_history_instructions.trim()){await dbPut('character_extras',{id:uid(),character_id:cid,title:'歷史後指令',content:d.post_history_instructions.trim(),sort_order:exCount++});}
-// character_book entries → worldbook
-if(d.character_book&&d.character_book.entries&&d.character_book.entries.length){const wbId=uid();const wbName=(d.character_book.name||(d.name||'角色')+' 世界書');await dbPut('worldbooks',{id:wbId,name:wbName,description:d.character_book.description||'',sort_order:0,created_at:new Date().toISOString()});const entries=d.character_book.entries;for(let i=0;i<entries.length;i++){const e=entries[i];await dbPut('worldbook_entries',{id:uid(),worldbook_id:wbId,name:e.comment||e.name||('章節 #'+(i+1)),keywords:(e.keys||[]).join(', '),content:e.content||'',constant:e.constant||false,sort_order:i});}c.worldbook_ids=[wbId];await dbPut('characters',c);}
+// character_book entries → character events
+if(d.character_book&&d.character_book.entries&&d.character_book.entries.length){const entries=d.character_book.entries;for(let i=0;i<entries.length;i++){const e=entries[i];await dbPut('character_events',{id:uid(),character_id:cid,name:e.comment||e.name||('事件 #'+(i+1)),time_or_keyword:(e.keys||[]).join(', '),content:e.content||'',sort_order:i});}}
 // extensions.depth_prompt → extras
 if(d.extensions){if(d.extensions.depth_prompt&&d.extensions.depth_prompt.prompt){await dbPut('character_extras',{id:uid(),character_id:cid,title:'深度提示詞',content:d.extensions.depth_prompt.prompt,sort_order:exCount++});}
 // Reverie custom extensions
@@ -1079,12 +1085,11 @@ if(chars.length>1){const sel=await inp('輸入角色名稱匯出',targetChar.nam
 const id=targetChar.id;
 const extras=sortBy(await dbByIndex('character_extras','character_id',id),'sort_order');
 const events=await dbByIndex('character_events','character_id',id);
-let wbEntries=[];const wbIds=targetChar.worldbook_ids||[];for(const wid of wbIds){const ens=await dbByIndex('worldbook_entries','worldbook_id',wid);wbEntries=wbEntries.concat(ens);}
-const allBookEntries=[...events.map((ev,i)=>({keys:(ev.time_or_keyword||'').split(',').map(k=>k.trim()).filter(k=>k),content:ev.content||'',comment:ev.name||'',enabled:true,insertion_order:i,position:'after_char'})),...wbEntries.map((en,i)=>({keys:(en.keywords||'').split(',').map(k=>k.trim()).filter(k=>k),content:en.content||'',comment:en.name||'',enabled:true,constant:en.constant||false,insertion_order:events.length+i,position:'after_char'}))];
+const bookEntries=events.map((ev,i)=>({keys:(ev.time_or_keyword||'').split(',').map(k=>k.trim()).filter(k=>k),content:ev.content||'',comment:ev.name||'',enabled:true,insertion_order:i,position:'after_char'}));
 // Build extras fields — match by known ST V2 field titles, rest go into extensions
 const findEx=(title)=>(extras.find(e=>e.title===title)||{}).content||'';
 const otherExtras=extras.filter(e=>!['對話範例','創作者筆記','系統提示詞','歷史後指令','深度提示詞'].includes(e.title));
-const card={spec:'chara_card_v2',spec_version:'2.0',data:{name:targetChar.name||'',description:targetChar.setting||'',personality:'',scenario:targetChar.greeting_scenario||'',first_mes:targetChar.greeting_message||'',mes_example:findEx('對話範例'),creator_notes:findEx('創作者筆記'),system_prompt:findEx('系統提示詞'),post_history_instructions:findEx('歷史後指令'),tags:[],creator:'Reverie RP Studio',character_version:'1.0',extensions:{reverie_introduction:targetChar.introduction||'',reverie_extras:otherExtras.map(e=>({title:e.title,content:e.content}))},character_book:{entries:allBookEntries}}};
+const card={spec:'chara_card_v2',spec_version:'2.0',data:{name:targetChar.name||'',description:targetChar.setting||'',personality:'',scenario:targetChar.greeting_scenario||'',first_mes:targetChar.greeting_message||'',mes_example:findEx('對話範例'),creator_notes:findEx('創作者筆記'),system_prompt:findEx('系統提示詞'),post_history_instructions:findEx('歷史後指令'),tags:[],creator:'Reverie RP Studio',character_version:'1.0',extensions:{reverie_introduction:targetChar.introduction||'',reverie_age:targetChar.age||'',reverie_gender:targetChar.gender||'',reverie_job:targetChar.job||'',reverie_extras:otherExtras.map(e=>({title:e.title,content:e.content}))},character_book:{entries:bookEntries}}};
 // Embed avatar as base64 if available
 if(targetChar.avatar_url){card.data.extensions.reverie_avatar=targetChar.avatar_url;}
 const dp=findEx('深度提示詞');if(dp){card.data.extensions.depth_prompt={prompt:dp,depth:4};}
