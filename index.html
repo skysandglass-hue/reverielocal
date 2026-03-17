@@ -708,9 +708,9 @@ const dataUrl=canvas.toDataURL('image/webp',0.85);
 const cd=parseInt(circle.style.width);
 const circleTop=parseInt(circle.style.top);
 const circleLeft=Math.round((fw-cd)/2);
-// Circle position in source image coordinates
-const thumbSx=sx+(circleLeft/_cropScale);
-const thumbSy=sy+(circleTop/_cropScale);
+// Circle position relative to the image (in screen pixels), then to source pixels
+const thumbSx=(circleLeft-ix)/_cropScale;
+const thumbSy=(circleTop-iy)/_cropScale;
 const thumbSs=cd/_cropScale;
 const thumbCanvas=document.createElement('canvas');thumbCanvas.width=200;thumbCanvas.height=200;
 const thumbCtx=thumbCanvas.getContext('2d');
