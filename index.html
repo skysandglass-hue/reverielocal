@@ -288,6 +288,11 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-card.no-img .cpf-hero{aspect-ratio:unset;height:220px;background:linear-gradient(160deg,var(--acl) 0%,var(--bgi) 100%);}
 .cpf-empty-intro{color:var(--tx2);font-style:italic;font-size:15px;padding-left:18px;}
 .cpf-empty-enc{color:var(--tx2);font-style:italic;font-size:14.5px;}
+.cpf-ev-detail{position:absolute;inset:0;background:var(--bg2);z-index:3;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.16,1,.3,1);border-radius:14px;}
+.cpf-ev-detail.show{transform:translateX(0);}
+.cpf-ev-detail-head{padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--bg2);border-radius:14px 14px 0 0;}
+.cpf-ev-detail-title{font-size:17px;font-weight:600;color:var(--tx3);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cpf-ev-detail-body{flex:1;overflow-y:auto;padding:24px 20px;overscroll-behavior:contain;}
 </style>
 </head>
 <body>
@@ -501,6 +506,14 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
         </div>
       </div>
       <div class="cpf-body" id="cpf-body"></div>
+    </div>
+    <!-- Event detail panel (slides over main content) -->
+    <div class="cpf-ev-detail" id="cpf-ev-detail">
+      <div class="cpf-ev-detail-head">
+        <span class="bk" onclick="closeCpfEvDetail()" style="margin:0;cursor:pointer;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
+        <div class="cpf-ev-detail-title" id="cpf-ev-detail-title"></div>
+      </div>
+      <div class="cpf-ev-detail-body" id="cpf-ev-detail-body"></div>
     </div>
   </div>
 </div><!-- Full Pages -->
@@ -790,14 +803,23 @@ if(evs.length){
 html+='<div class="cpf-hr"></div><div class="cpf-section-head"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="8" y1="2" x2="6" y2="8"/><line x1="16" y1="2" x2="14" y2="8"/></svg>事件</div><div class="cpf-events">';
 evs.forEach((ev,i)=>{
 const trigger=ev.time_or_keyword?esc(cpfTpl(ev.time_or_keyword)):'—';
-html+='<div class="cpf-ev-item" onclick="viewCreatorEv(\''+ev.id+'\')"><div class="cpf-ev-header"><div class="cpf-ev-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="8" y1="2" x2="6" y2="8"/><line x1="16" y1="2" x2="14" y2="8"/></svg></div><div class="cpf-ev-info"><div class="cpf-ev-name">'+esc(ev.name)+'</div><div class="cpf-ev-trigger">'+trigger+'</div></div><svg class="cpf-ev-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+html+='<div class="cpf-ev-item" onclick="openCpfEvDetail(\''+ev.id+'\')"><div class="cpf-ev-header"><div class="cpf-ev-info"><div class="cpf-ev-name">'+esc(ev.name)+'</div><div class="cpf-ev-trigger">'+trigger+'</div></div><svg class="cpf-ev-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
 });
 html+='</div>';
 }
 $('cpf-body').innerHTML=html;
 $('cpf-overlay').classList.add('show');
 }
-function closeCharProfile(){$('cpf-overlay').classList.remove('show');}
+function closeCharProfile(){$('cpf-overlay').classList.remove('show');$('cpf-ev-detail').classList.remove('show');}
+async function openCpfEvDetail(evId){
+const ev=await dbGet('character_events',evId);if(!ev)return;
+$('cpf-ev-detail-title').textContent=ev.name||'';
+const content=ev.content?marked.parse(tplReplace(ev.content)):'<span style="color:var(--tx2);">無內容</span>';
+const trigger=ev.time_or_keyword?'<div style="font-size:14px;color:var(--ac);margin-bottom:16px;">'+esc(tplReplace(ev.time_or_keyword))+'</div>':'';
+$('cpf-ev-detail-body').innerHTML=trigger+'<div style="font-size:15px;line-height:1.85;color:var(--tx);">'+content+'</div>';
+$('cpf-ev-detail').classList.add('show');
+}
+function closeCpfEvDetail(){$('cpf-ev-detail').classList.remove('show');}
 
 // === Character Events ===
 let _cevCid=null;
