@@ -1332,7 +1332,6 @@ if(!vecMemories.length)_fallbackMems=sorted.filter(m=>m.type!=='memo').slice(0,s
 if(!vecMemos.length)_fallbackMemos=sorted.filter(m=>m.type==='memo').slice(0,s.vec_memos_count||5);
 }catch(e){}}
 const sysContent=await buildSysPrompt(vecExtras,vecEvents,vecMemories,vecWB,vecMemos);_fallbackMems=[];_fallbackMemos=[];
-toast('記憶:'+vecMemories.length+' MEMO:'+vecMemos.length+' '+(sysContent.includes('Memories')?'✓':'✗')+'記 '+(sysContent.includes('Memos')?'✓':'✗')+'備 T:'+tok(sysContent));
 const msgs=buildApiMsgs();
 const provider=apiCfg.provider||'anthropic',model=apiCfg.model,maxOut=parseInt(apiCfg.max_output_tokens)||1200,temp=apiCfg.temperature!=null?apiCfg.temperature:0.8,topP=apiCfg.top_p!=null?apiCfg.top_p:null,topK=apiCfg.top_k!=null?apiCfg.top_k:null;
 let resp;
