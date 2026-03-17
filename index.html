@@ -712,7 +712,7 @@ const circleLeft=Math.round((fw-cd)/2);
 const thumbSx=(circleLeft-ix)/_cropScale;
 const thumbSy=(circleTop-iy)/_cropScale;
 const thumbSs=cd/_cropScale;
-const thumbCanvas=document.createElement('canvas');thumbCanvas.width=200;thumbCanvas.height=200;
+const thumbCanvas=document.createElement('canvas');thumbCanvas.width=400;thumbCanvas.height=400;
 const thumbCtx=thumbCanvas.getContext('2d');
 thumbCtx.drawImage(srcImg,thumbSx,thumbSy,thumbSs,thumbSs,0,0,200,200);
 const thumbUrl=thumbCanvas.toDataURL('image/webp',0.85);
