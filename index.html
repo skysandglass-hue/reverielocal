@@ -262,6 +262,8 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-body{padding:28px 24px 36px;}
 .cpf-intro{position:relative;margin-bottom:28px;}.cpf-intro::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px;background:var(--ac);}
 .cpf-intro-text{font-size:16px;line-height:2.1;color:var(--tx);padding-left:18px;letter-spacing:.02em;}
+.cpf-intro-text p{margin:0 0 .8em;}.cpf-intro-text p:last-child{margin:0;}
+.cpf-intro-text::first-letter{font-family:'Cormorant Garamond',serif;float:left;font-size:3.2em;line-height:.8;font-weight:600;color:var(--ac);margin-right:6px;margin-top:6px;}
 .cpf-div-label{display:flex;align-items:center;gap:12px;margin:28px 0 20px;}
 .cpf-div-label::before,.cpf-div-label::after{content:'';flex:1;height:1px;background:var(--bd);}
 .cpf-div-label span{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);white-space:nowrap;}
@@ -586,7 +588,7 @@ async function rebuildAllEmb(){if(!getSettings().emb_local){toast('請先啟用'
 async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
 async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'])try{await dbClear(s);}catch(e){}localStorage.removeItem('rp_av_off');toast('已清除');location.reload();}
 // === Core UI ===
-const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){return '<p>'+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
+const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){return '<p>'+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};_renderer.list=function(token){return (token.items||[]).map(i=>typeof i==='string'?i:(i.text||i.tokens?.map(t=>t.raw||t.text||'').join('')||'')).join('\n');};_renderer.listitem=function(token){return (typeof token==='string'?token:(token.text||''))+'\n';};marked.use({renderer:_renderer});
 function tok(s){if(!s)return 0;let t=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);if(c>0x2E7F)t+=1.5;else if(c===32||c===10)t+=0;else t+=0.35;}return Math.ceil(t);}
 function cntF(ta){const l=ta.value.length,t=tok(ta.value);const c=ta.parentElement.querySelector('.ctr');if(c)c.textContent=l+' 字 · ≈ '+t+' tokens';}
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
@@ -829,7 +831,7 @@ tl.innerHTML=parts.map((p,i)=>i>0?'<span class="sep"></span><span>'+p+'</span>':
 let html='';
 // Introduction
 html+='<div class="cpf-intro">';
-if(c.introduction&&c.introduction.trim()){html+='<div class="cpf-intro-text">'+esc(c.introduction).replace(/\n/g,'<br>')+'</div>';}
+if(c.introduction&&c.introduction.trim()){html+='<div class="cpf-intro-text">'+marked.parse(cpfTpl(c.introduction))+'</div>';}
 else{html+='<div class="cpf-empty-intro">尚未撰寫角色介紹</div>';}
 html+='</div>';
 // First encounter (greeting) — render with markdown
