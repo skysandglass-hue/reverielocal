@@ -1067,7 +1067,7 @@ function syncFeatureApiPop(pfx){const el=$(pfx+'-api-list');if(!el)return;const 
 function pickFeatureApi(pfx,id,label,el){const idEl=$(pfx+'-api-id');if(idEl)idEl.value=id;const btn=$(pfx+'-api-btn');if(btn)btn.childNodes[0].textContent=label;el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');closePopup(pfx+'-api-pop');const mEl=$(pfx+'-model-id');if(mEl)mEl.value='';const mBtn=$(pfx+'-model-btn');if(mBtn)mBtn.childNodes[0].textContent='未選擇';syncFeatureModelPop(pfx);}
 function syncFeatureModelPop(pfx){const el=$(pfx+'-model-list');if(!el)return;const cEl=$(pfx+'-model-id');const cur=cEl?cEl.value:'';const aEl=$(pfx+'-api-id');const apiId=aEl?aEl.value:'';const acfg=apiId?_apiCfgs.find(a=>a.id===apiId):_apiCfgs[0],pv=acfg?acfg.provider:'anthropic',ms=_models[pv]||[];el.innerHTML=ms.map(m=>'<div class="popup-item'+(cur===m?' active':'')+'" onclick="pickFeatureModel(\''+pfx+'\',\''+m+'\',this)"><span>'+esc(m)+'</span><span class="check">✓</span></div>').join('')+'<div style="padding:8px 12px;border-top:1px solid var(--bd);"><input type="text" placeholder="自訂模型..." style="width:100%;padding:6px;border:1px solid var(--bd);border-radius:6px;font-size:13px;font-family:monospace;background:var(--bg);color:var(--tx);" onkeydown="if(event.key===\'Enter\'){pickFeatureModel(\''+pfx+'\',this.value.trim(),null);this.value=\'\';}"></div>';}
 function pickFeatureModel(pfx,m,el){if(!m)return;$(pfx+'-model-id').value=m;$(pfx+'-model-btn').childNodes[0].textContent=m;if(el){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}closePopup(pfx+'-model-pop');}
-function getFeatureApiCfg(pfx){const s=getSettings(),apiId=s[pfx+'_api_id']||'',model=s[pfx+'_model']||'',acfg=apiId?_apiCfgs.find(a=>a.id===apiId):_apiCfgs[0];if(!acfg)return null;return{...acfg,model:model||null};}
+function getFeatureApiCfg(pfx){const s=getSettings(),apiId=s[pfx+'_api_id']||'',model=s[pfx+'_model']||'',acfg=apiId?_apiCfgs.find(a=>a.id===apiId):_apiCfgs[0];if(!acfg)return null;return{...acfg,model:model||acfg.model||null};}
 function getApiCfgForPrompt(rpId){let cfgId=null,model=null;if(rpId){const p=prompts.find(x=>x.id===rpId);if(p){cfgId=p.api_config_id||null;model=p.model||null;}}const acfg=cfgId?_apiCfgs.find(x=>x.id===cfgId):_apiCfgs[0];if(!acfg)return null;return{...acfg,model:model||acfg.model||null};}
 // === PROMPTS ===
 let prompts=[];
@@ -1468,7 +1468,7 @@ else if(pv==='google')resp=await fetch('https://generativelanguage.googleapis.co
 else{const ep=pv==='openrouter'?'https://openrouter.ai/api/v1/chat/completions':'https://api.openai.com/v1/chat/completions';resp=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiCfg.api_key},body:JSON.stringify({model,max_tokens:maxTok,temperature:temp,messages:[{role:'system',content:sysPr},{role:'user',content:userPr}]})});}
 if(!resp.ok)return null;const data=await resp.json();
 if(pv==='anthropic')return data.content.map(b=>b.text||'').join('');
-if(pv==='google')return(data.candidates&&data.candidates[0]&&data.candidates[0].content)?data.candidates[0].content.parts.map(p=>p.text||'').join(''):''
+if(pv==='google')return(data.candidates&&data.candidates[0]&&data.candidates[0].content)?data.candidates[0].content.parts.map(p=>p.text||'').join(''):'';
 return data.choices&&data.choices[0]?data.choices[0].message.content:'';}
 async function genSummary(){if(!_curChat)return;const apiCfg=getFeatureApiCfg('sum');if(!apiCfg||!apiCfg.api_key||!apiCfg.model){toast('請先設定摘要 API/模型');return;}
 const allMsgs=_curChat.msgs||[];const endIdx=Math.max(0,allMsgs.length-4);if(endIdx<1){toast('對話太短');return;}
@@ -1515,7 +1515,7 @@ async function autoTracker(chat,chatId){if(!chat)return;
 const s=getSettings();const memoOn=s.memo_on,stateOn=s.state_on;
 if(!memoOn&&!stateOn)return;
 let apiCfg=getFeatureApiCfg('trk');
-if(!apiCfg||!apiCfg.api_key||!apiCfg.model){console.warn('[Tracker] 未設定追蹤器 API，跳過');return;}
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model){console.warn('[Tracker] 未設定追蹤器 API/模型，跳過',apiCfg);return;}
 const msgs=chat.msgs||[];if(!msgs.length)return;
 // Resolve names
 const charName=chat.charName||'Character';
@@ -1534,6 +1534,7 @@ if(stateOn){const sb=(chat.sceneBoard)||{};if(sb.autoUpdate!==false){const sbPro
 const transcript=stateTranscript||((lastPlayerMsg)?playerName+': '+lastPlayerMsg.content:'');
 if(!transcript.trim())return;
 const text=await callApiSimple(apiCfg,sysPr,transcript,600,0.2);
+console.log('[Tracker] response:',text?text.substring(0,200):'(empty)');
 if(!text||!text.trim())return;
 // Parse MEMO (only first one per turn)
 if(memoOn){const memoMatch=text.match(/^\[MEMO\]\s*(.+)$/m);if(memoMatch){const mt=memoMatch[1].trim();if(mt){const mid=uid();await dbPut('memories',{id:mid,chat_id:chatId,content:mt,date:localDateStr(),created_at:new Date().toISOString(),type:'memo'});embedAndPatch('memories',mid,mt);}}}
