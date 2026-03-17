@@ -592,7 +592,7 @@ function cntF(ta){const l=ta.value.length,t=tok(ta.value);const c=ta.parentEleme
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
 function localDateStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function avH(url,name,sz,ox,oy){sz=sz||40;ox=ox||0;oy=oy||0;const st='width:'+sz+'px;height:'+sz+'px;font-size:'+Math.round(sz*.38)+'px;';if(url){const p=ox||oy?'object-position:'+(50+ox)+'% '+(50+oy)+'%':'';return '<div class="av" style="'+st+'"><img src="'+url+'" style="'+p+'"></div>';}return '<div class="av" style="'+st+'">'+esc((name||'?')[0])+'</div>';}
+function avH(url,name,sz,ox,oy,thumb){sz=sz||40;const st='width:'+sz+'px;height:'+sz+'px;font-size:'+Math.round(sz*.38)+'px;';const src=thumb||url;if(src){return '<div class="av" style="'+st+'"><img src="'+src+'"></div>';}return '<div class="av" style="'+st+'">'+esc((name||'?')[0])+'</div>';}
 let _cfm=null;function cfm(msg){return new Promise(r=>{_cfm=r;$('cfm-msg').innerHTML=esc(msg).replace(/\n/g,'<br>');$('cfm-ov').classList.add('show');});}function cfmR(v){$('cfm-ov').classList.remove('show');if(_cfm)_cfm(v);_cfm=null;}
 let _inp=null;function inp(msg,def){return new Promise(r=>{_inp=r;$('inp-msg').textContent=msg;$('inp-val').value=def||'';$('inp-ov').classList.add('show');setTimeout(()=>$('inp-val').focus(),100);});}function inpR(v){$('inp-ov').classList.remove('show');if(_inp)_inp(v);_inp=null;}
 
@@ -698,19 +698,26 @@ async function confirmCrop(){const img=$('crop-img'),frame=$('crop-frame'),area=
 const fx=parseInt(frame.style.left),fy=parseInt(frame.style.top),fw=parseInt(frame.style.width),fh=parseInt(frame.style.height);
 const ix=parseInt(img.style.left),iy=parseInt(img.style.top);
 const sx=(fx-ix)/_cropScale,sy=(fy-iy)/_cropScale,sw=fw/_cropScale,sh=fh/_cropScale;
-// Compute circle Y offset as percentage: 0 = centered, negative = circle higher, positive = lower
-const cd=parseInt(circle.style.width);
-const circleTop=parseInt(circle.style.top);
-const circleCenterY=circleTop+cd/2;
-const frameCenterY=fh/2;
-const oyPercent=Math.round((circleCenterY-frameCenterY)/(fh/2)*-50);// invert: circle up → object-position moves up (smaller %)
+// 1) Save full 2:3 image
 const canvas=document.createElement('canvas');canvas.width=420;canvas.height=Math.round(420*(fh/fw));
 const ctx=canvas.getContext('2d');const srcImg=new Image();srcImg.onload=async()=>{ctx.drawImage(srcImg,sx,sy,sw,sh,0,0,canvas.width,canvas.height);
 const dataUrl=canvas.toDataURL('image/webp',0.85);
+// 2) Save square thumb from circle position
+const cd=parseInt(circle.style.width);
+const circleTop=parseInt(circle.style.top);
+const circleLeft=Math.round((fw-cd)/2);
+// Circle position in source image coordinates
+const thumbSx=sx+(circleLeft/_cropScale);
+const thumbSy=sy+(circleTop/_cropScale);
+const thumbSs=cd/_cropScale;
+const thumbCanvas=document.createElement('canvas');thumbCanvas.width=200;thumbCanvas.height=200;
+const thumbCtx=thumbCanvas.getContext('2d');
+thumbCtx.drawImage(srcImg,thumbSx,thumbSy,thumbSs,thumbSs,0,0,200,200);
+const thumbUrl=thumbCanvas.toDataURL('image/webp',0.85);
 const id=_avTarget.id||$('ce-id').value,key=_avTarget.type+'_'+id;
 await dbPut('avatars',{id:key,blob:dataUrl,type:'image/webp',ts:Date.now()});
-if(_avTarget.type==='char'){const c=await dbGet('characters',id);if(c){c.avatar_url=dataUrl;await dbPut('characters',c);}_avUrl=dataUrl;_charAvOx=0;_charAvOy=oyPercent;renderAvEd('char',dataUrl,0,oyPercent);saveAvOff('char_'+id,0,oyPercent);}
-else{const p=await dbGet('profiles',id);if(p){p.avatar_url=dataUrl;await dbPut('profiles',p);}_pfAvUrl=dataUrl;_pfAvOx=0;_pfAvOy=oyPercent;renderAvEd('pf',dataUrl,0,oyPercent);saveAvOff('pf_'+id,0,oyPercent);}
+if(_avTarget.type==='char'){const c=await dbGet('characters',id);if(c){c.avatar_url=dataUrl;c.avatar_thumb=thumbUrl;await dbPut('characters',c);}_avUrl=dataUrl;renderAvEd('char',dataUrl,0,0);}
+else{const p=await dbGet('profiles',id);if(p){p.avatar_url=dataUrl;p.avatar_thumb=thumbUrl;await dbPut('profiles',p);}_pfAvUrl=dataUrl;renderAvEd('pf',dataUrl,0,0);}
 toast('已儲存');closeCrop();loadChars();};srcImg.src=URL.createObjectURL(_cropFile);}
 function renderAvEd(type,url,ox,oy){const wrap=$(type==='char'?'ce-av-wrap':'pf-av-wrap');if(url)wrap.innerHTML='<img src="'+url+'" style="object-position:'+(50+(ox||0))+'% '+(50+(oy||0))+'%">';else wrap.innerHTML=esc('?');}
 let _avOffCache={};function loadAvOff(){_avOffCache=JSON.parse(localStorage.getItem('rp_av_off')||'{}');}function saveAvOff(key,ox,oy){_avOffCache[key]={ox,oy};localStorage.setItem('rp_av_off',JSON.stringify(_avOffCache));}function getAvOff(key){return _avOffCache[key]||{ox:0,oy:0};}
@@ -1017,9 +1024,9 @@ function doClosePfEdit(){if($('pf-vl'))$('pf-vl').style.display='block';if($('pf
 async function savePfDetail(){const id=$('pf-edit-id').value,p=await dbGet('profiles',id)||{id};Object.assign(p,{name:$('pf-edit-name').value.trim()||'未命名',age:$('pf-edit-age').value.trim()||null,gender:$('pf-gen').textContent.trim()||null,job:$('pf-edit-job').value.trim()||null,setting:$('pf-edit-setting').value});await dbPut('profiles',p);saveAvOff('pf_'+id,_pfAvOx,_pfAvOy);_dirty=false;toast('已儲存');await loadPf();}
 async function delPfDetail(){if(!await cfm('確定要刪除此檔案嗎？\n此動作不可恢復！'))return;await dbDel('profiles',_pfEditId);toast('已刪除');closePfEdit();await loadPf();}
 let _chatPlayerId=null;
-function renderPpPop(){const el=$('pp-list');if(!profiles.length){el.innerHTML='<div style="padding:8px;color:var(--tx2);">尚未建立</div>';return;}el.innerHTML=profiles.map(p=>'<div class="popup-item'+(_chatPlayerId===p.id?' active':'')+'" onclick="pickPlayer(\''+p.id+'\',this)"><div class="av" style="width:28px;height:28px;font-size:12px;">'+(p.avatar_url?'<img src="'+p.avatar_url+'">':esc((p.name||'?')[0]))+'</div><span style="flex:1">'+esc(p.name)+'</span><span class="check">✓</span></div>').join('');}
+function renderPpPop(){const el=$('pp-list');if(!profiles.length){el.innerHTML='<div style="padding:8px;color:var(--tx2);">尚未建立</div>';return;}el.innerHTML=profiles.map(p=>{const av=p.avatar_thumb||p.avatar_url;return '<div class="popup-item'+(_chatPlayerId===p.id?' active':'')+'" onclick="pickPlayer(\''+p.id+'\',this)"><div class="av" style="width:28px;height:28px;font-size:12px;">'+(av?'<img src="'+av+'">':esc((p.name||'?')[0]))+'</div><span style="flex:1">'+esc(p.name)+'</span><span class="check">✓</span></div>';}).join('');}
 function pickPlayer(id,el){_chatPlayerId=id;if(_curChat)_curChat.playerId=id;const p=profiles.find(x=>x.id===id);el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');renderSidePlayer();closePopup('pp-pop');if(_curChatId)saveChatStore();}
-function renderSidePlayer(){const p=_chatPlayerId?profiles.find(x=>x.id===_chatPlayerId):null;if(p)$('side-player').innerHTML='<div class="av" style="width:28px;height:28px;font-size:12px;">'+(p.avatar_url?'<img src="'+p.avatar_url+'">':esc(p.name[0]))+'</div><span>'+esc(p.name)+'</span><span class="switch-hint">切換 ▸</span>';else $('side-player').innerHTML='<div class="av" style="width:28px;height:28px;font-size:12px;">?</div><span>未選擇</span><span class="switch-hint">切換 ▸</span>';}
+function renderSidePlayer(){const p=_chatPlayerId?profiles.find(x=>x.id===_chatPlayerId):null;if(p){const av=p.avatar_thumb||p.avatar_url;$('side-player').innerHTML='<div class="av" style="width:28px;height:28px;font-size:12px;">'+(av?'<img src="'+av+'">':esc(p.name[0]))+'</div><span>'+esc(p.name)+'</span><span class="switch-hint">切換 ▸</span>';}else $('side-player').innerHTML='<div class="av" style="width:28px;height:28px;font-size:12px;">?</div><span>未選擇</span><span class="switch-hint">切換 ▸</span>';}
 function pickPfGen(el,v){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');$('pf-gen').childNodes[0].textContent=v;closePopup('pf-gen-pop');}
 
 // === IMPORT / EXPORT ===
@@ -1067,6 +1074,7 @@ if(d.extensions){if(d.extensions.depth_prompt&&d.extensions.depth_prompt.prompt)
 // Reverie custom extensions
 if(d.extensions.reverie_introduction){c.introduction=d.extensions.reverie_introduction;await dbPut('characters',c);}
 if(d.extensions.reverie_avatar){c.avatar_url=d.extensions.reverie_avatar;await dbPut('characters',c);await dbPut('avatars',{id:'char_'+cid,blob:d.extensions.reverie_avatar,type:'image/webp',ts:Date.now()});}
+if(d.extensions.reverie_avatar_thumb){c.avatar_thumb=d.extensions.reverie_avatar_thumb;await dbPut('characters',c);}
 if(d.extensions.reverie_extras&&d.extensions.reverie_extras.length){for(const re of d.extensions.reverie_extras){if(re.title&&re.content){await dbPut('character_extras',{id:uid(),character_id:cid,title:re.title,content:re.content,sort_order:exCount++});}}}
 }
 toast('已匯入「'+c.name+'」');}
@@ -1092,6 +1100,7 @@ const otherExtras=extras.filter(e=>!['對話範例','創作者筆記','系統提
 const card={spec:'chara_card_v2',spec_version:'2.0',data:{name:targetChar.name||'',description:targetChar.setting||'',personality:'',scenario:targetChar.greeting_scenario||'',first_mes:targetChar.greeting_message||'',mes_example:findEx('對話範例'),creator_notes:findEx('創作者筆記'),system_prompt:findEx('系統提示詞'),post_history_instructions:findEx('歷史後指令'),tags:[],creator:'Reverie RP Studio',character_version:'1.0',extensions:{reverie_introduction:targetChar.introduction||'',reverie_age:targetChar.age||'',reverie_gender:targetChar.gender||'',reverie_job:targetChar.job||'',reverie_extras:otherExtras.map(e=>({title:e.title,content:e.content}))},character_book:{entries:bookEntries}}};
 // Embed avatar as base64 if available
 if(targetChar.avatar_url){card.data.extensions.reverie_avatar=targetChar.avatar_url;}
+if(targetChar.avatar_thumb){card.data.extensions.reverie_avatar_thumb=targetChar.avatar_thumb;}
 const dp=findEx('深度提示詞');if(dp){card.data.extensions.depth_prompt={prompt:dp,depth:4};}
 dlJson(card,(card.data.name||'character')+'-card-v2.json');toast('已匯出');}
 
@@ -1140,12 +1149,12 @@ async function saveChatMeta(){if(!_curChatId||!_curChat)return;_chatStore[_curCh
 async function saveMsg(chatId,msg,idx){await dbPut('messages',{id:uid(),chat_id:chatId,role:msg.role,name:msg.name||'',content:msg.content||'',time:msg.time||'',date:msg.date||'',av_url:msg.avUrl||'',bookmarked:msg.bookmarked||false,bmk_title:msg.bmkTitle||'',sort_order:idx});}
 function saveChatStore(){saveChatMeta().catch(e=>console.error(e));}
 function touchChatTime(){if(_curChat)_curChat.updated=Date.now();}
-function openNewChatPicker(){if(!chars||!chars.length){toast('請先建立角色');return;}$('newchat-list').innerHTML=chars.map(c=>{const ao=getAvOff('char_'+c.id);return '<div class="popup-item" onclick="startNewChat(\''+c.id+'\')" style="gap:10px;">'+avH(c.avatar_url,c.name,36,ao.ox,ao.oy)+'<span style="flex:1">'+esc(c.name)+'</span></div>';}).join('');openPopup('newchat-pop');}
+function openNewChatPicker(){if(!chars||!chars.length){toast('請先建立角色');return;}$('newchat-list').innerHTML=chars.map(c=>'<div class="popup-item" onclick="startNewChat(\''+c.id+'\')" style="gap:10px;">'+avH(c.avatar_url,c.name,36,0,0,c.avatar_thumb)+'<span style="flex:1">'+esc(c.name)+'</span></div>').join('');openPopup('newchat-pop');}
 let _pendingChatCharId=null;
 async function startNewChat(cid){closePopup('newchat-pop');_pendingChatCharId=cid;
 const pfEl=$('setup-pf-list');
 if(!profiles.length)pfEl.innerHTML='<div style="padding:6px;color:var(--tx2);font-size:13px;">尚未建立檔案</div>';
-else pfEl.innerHTML=profiles.map(p=>'<div class="popup-item" onclick="pickSetupPf(\''+p.id+'\',this)"><div class="av" style="width:28px;height:28px;font-size:12px;">'+(p.avatar_url?'<img src="'+p.avatar_url+'">':esc((p.name||'?')[0]))+'</div><span style="flex:1">'+esc(p.name)+'</span><span class="check">✓</span></div>').join('');
+else pfEl.innerHTML=profiles.map(p=>{const av=p.avatar_thumb||p.avatar_url;return '<div class="popup-item" onclick="pickSetupPf(\''+p.id+'\',this)"><div class="av" style="width:28px;height:28px;font-size:12px;">'+(av?'<img src="'+av+'">':esc((p.name||'?')[0]))+'</div><span style="flex:1">'+esc(p.name)+'</span><span class="check">✓</span></div>';}).join('');
 const rpEl=$('setup-rp-list');
 if(!prompts.length)rpEl.innerHTML='<div style="padding:6px;color:var(--tx2);font-size:13px;">尚未建立模式</div>';
 else rpEl.innerHTML=prompts.map((p,i)=>'<div class="popup-item'+(i===0?' active':'')+'" onclick="pickSetupRp(\''+p.id+'\',this)"><span>'+esc(p.name)+'</span><span class="check">✓</span></div>').join('');
@@ -1153,7 +1162,7 @@ _chatPlayerId=null;_chatRpId=prompts.length?prompts[0].id:null;openPopup('chat-s
 function pickSetupPf(id,el){_chatPlayerId=id;el.closest('#setup-pf-list').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
 function pickSetupRp(id,el){_chatRpId=id;el.closest('#setup-rp-list').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
 async function confirmChatSetup(){closePopup('chat-setup-pop');const cid=_pendingChatCharId;if(!cid)return;const c=chars.find(x=>x.id===cid);if(!c){toast('角色不存在');return;}
-const id='chat_'+Date.now();_curChatId=id;_curChat={charId:cid,charName:c.name,windowName:c.name,avatarUrl:c.avatar_url||'',msgs:[],memories:[],rpId:_chatRpId,playerId:_chatPlayerId,pinned:false,updated:Date.now(),worldbook_ids:(c.worldbook_ids||[]).slice()};
+const id='chat_'+Date.now();_curChatId=id;_curChat={charId:cid,charName:c.name,windowName:c.name,avatarUrl:c.avatar_url||'',avatarThumb:c.avatar_thumb||'',msgs:[],memories:[],rpId:_chatRpId,playerId:_chatPlayerId,pinned:false,updated:Date.now(),worldbook_ids:(c.worldbook_ids||[]).slice()};
 if(_chatRpId){const p=prompts.find(x=>x.id===_chatRpId);if(p)$('rp-btn').childNodes[0].textContent=p.name;syncRpPopup();}
 _chatStore[id]=_curChat;await saveChatMeta();$('c-name').textContent=c.name;$('c-msgs').innerHTML='';_lazyRendered=0;renderSidePlayer();openChat(c.name);
 if(c.greeting_message)await appendMsgAwait('ai',c.name,c.greeting_message,c.avatar_url);
@@ -1165,8 +1174,8 @@ function renderMsgRow(m,idx){const row=document.createElement('div'),t=m.date?fm
 const bmkSvg=m.bookmarked?'<svg viewBox="0 0 24 24" width="18" height="18" fill="var(--ac)" stroke="var(--ac)" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>':'';
 const meta=(bmkSvg||t)?'<div class="msg-meta">'+bmkSvg+(t?'<div class="mm">'+t+'</div>':'')+'</div>':'';
 if(m.role==='system'){row.className='msg-row ai';row.style.maxWidth='100%';row.innerHTML='<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble" style="background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);font-size:13px;font-style:italic;">'+parsed+'</div></div></div>';}
-else if(m.role==='ai'){row.className='msg-row ai';const liveAv=_curChat?_curChat.avatarUrl:m.avUrl;const _cpfCid=_curChat?_curChat.charId:'';const ah=liveAv?'<div class="msg-av"><img src="'+liveAv+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((m.name||'?')[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-name">'+esc(m.name||'')+'</div><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+meta+'</div></div>';const avEl=row.querySelector('.msg-av');if(avEl)avEl.onclick=function(e){if(_msgDelMode||_ssMode)return;e.stopPropagation();openCharProfile(_cpfCid);};}
-else{row.className='msg-row user';let uav='';if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){const av=pf.avatar_url;uav=av?'<div class="msg-av"><img src="'+av+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((pf.name||'?')[0])+'</div>';}}row.innerHTML=uav+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+meta+'</div></div>';}
+else if(m.role==='ai'){row.className='msg-row ai';const liveThumb=_curChat?(_curChat.avatarThumb||_curChat.avatarUrl):m.avUrl;const _cpfCid=_curChat?_curChat.charId:'';const ah=liveThumb?'<div class="msg-av"><img src="'+liveThumb+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((m.name||'?')[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-name">'+esc(m.name||'')+'</div><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+meta+'</div></div>';const avEl=row.querySelector('.msg-av');if(avEl)avEl.onclick=function(e){if(_msgDelMode||_ssMode)return;e.stopPropagation();openCharProfile(_cpfCid);};}
+else{row.className='msg-row user';let uav='';if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){const av=pf.avatar_thumb||pf.avatar_url;uav=av?'<div class="msg-av"><img src="'+av+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((pf.name||'?')[0])+'</div>';}}row.innerHTML=uav+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+meta+'</div></div>';}
 bindLongPress(row,()=>{if(_ssMode)toggleSSMode();else if(!_msgDelMode)openMsgBs(idx);});row.addEventListener('click',()=>{if(_longPressBlock)return;if(_msgDelMode)toggleMsgDelSel(idx);else if(_ssMode)toggleSS(idx);});return row;}
 function openMsgBs(idx){const m=_curChat&&_curChat.msgs[idx];const isBm=m&&m.bookmarked;$('bs-body').innerHTML='<div class="bs-item" onclick="editMsg('+idx+')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>編輯</div><div class="bs-item" onclick="toggleBookmark('+idx+')"><svg viewBox="0 0 24 24"'+(isBm?' fill="var(--ac)"':'')+'><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>'+(isBm?'取消書籤':'加入書籤')+'</div><div class="bs-item" onclick="copyMsg('+idx+')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>複製</div><div class="bs-item" onclick="closeBs();startScreenshot('+idx+')"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>截圖</div><div class="bs-item danger" onclick="closeBs();startMsgDel('+idx+')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>刪除</div>';$('bs-ov').classList.add('show');}
 function copyMsg(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;navigator.clipboard.writeText(_curChat.msgs[idx].content).then(()=>toast('已複製')).catch(()=>toast('複製失敗'));}
@@ -1225,7 +1234,7 @@ async function appendMsgAwait(role,name,content,avUrl){const t=new Date().toLoca
 const _isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 function handleCInpKey(e){if(e.key==='Enter'&&!e.shiftKey&&!_isMobile){e.preventDefault();sendMsg();}}
 function sendMsg(){const inp=$('c-inp'),txt=inp.value.trim();if(!txt)return;appendMsg('user','你',txt);inp.value='';inp.style.height='auto';inp.style.height='44px';touchChatTime();saveChatStore();callAI(txt);}
-function showTyping(){const cm=$('c-msgs'),row=document.createElement('div');row.className='msg-row ai';row.id='typing-row';const name=_curChat?_curChat.charName:'?';const avUrl=_curChat?_curChat.avatarUrl:'';const ah=avUrl?'<div class="msg-av"><img src="'+avUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc(name[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-name">'+esc(name)+'</div><div style="display:flex;align-items:center;gap:6px;"><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div><div class="stop-btn" onclick="abortAI()"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></div></div></div>';cm.appendChild(row);cm.scrollTop=cm.scrollHeight;}
+function showTyping(){const cm=$('c-msgs'),row=document.createElement('div');row.className='msg-row ai';row.id='typing-row';const name=_curChat?_curChat.charName:'?';const avUrl=_curChat?(_curChat.avatarThumb||_curChat.avatarUrl):'';const ah=avUrl?'<div class="msg-av"><img src="'+avUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc(name[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-name">'+esc(name)+'</div><div style="display:flex;align-items:center;gap:6px;"><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div><div class="stop-btn" onclick="abortAI()"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></div></div></div>';cm.appendChild(row);cm.scrollTop=cm.scrollHeight;}
 function hideTyping(){const r=$('typing-row');if(r)r.remove();}
 let _aiAbort=null;
 function abortAI(){if(_aiAbort){_aiAbort.abort();_aiAbort=null;hideTyping();toast('已停止');}}
@@ -1467,11 +1476,11 @@ if(stateOn){const stateMatch=text.match(/\[STATE_START\]([\s\S]*?)\[STATE_END\]/
 async function renameChatInline(){if(!_curChat||!_curChatId)return;const name=await inp('修改視窗名稱',_curChat.windowName||_curChat.charName);if(name===null)return;_curChat.windowName=name.trim()||_curChat.charName;$('c-name').textContent=_curChat.windowName;saveChatStore();renderChatList();toast('已儲存');}
 function renderChatList(){const el=$('chat-list'),ids=Object.keys(_chatStore).sort((a,b)=>{const pa=_chatStore[a].pinned?1:0,pb=_chatStore[b].pinned?1:0;if(pa!==pb)return pb-pa;return(new Date(_chatStore[b].updated||0).getTime())-(new Date(_chatStore[a].updated||0).getTime());});
 if(!ids.length){el.innerHTML='<div class="empty">點擊「+ 新對話」開始</div>';return;}
-ids.forEach(id=>{const c=_chatStore[id];if(c&&c.charId){const ch=chars.find(x=>x.id===c.charId);if(ch&&ch.avatar_url)c.avatarUrl=ch.avatar_url;}});
+ids.forEach(id=>{const c=_chatStore[id];if(c&&c.charId){const ch=chars.find(x=>x.id===c.charId);if(ch&&ch.avatar_url){c.avatarUrl=ch.avatar_url;c.avatarThumb=ch.avatar_thumb||'';}}});
 el.innerHTML=ids.map(id=>{const c=_chatStore[id],ao=getAvOff('char_'+c.charId);
 const batchDot=_batchMode?'<div class="batch-dot'+(_batchSel.has(id)?' sel':'')+'" id="bd-'+id+'" onclick="toggleBatchSel(\''+id+'\',event)"></div>':'';
 const pinSvg=c.pinned?'<div class="pin-badge"><svg viewBox="0 0 24 24"><path d="M16 2.4a1.2 1.2 0 011.6 0l4 4a1.2 1.2 0 010 1.6l-4.2 4.2a1.5 1.5 0 01-1 .4H12.8l-2.3 2.3V18.5a1 1 0 01-1.7.7L5.3 15.7a1 1 0 01.7-1.7h3.6L12 11.6V8.4a1.5 1.5 0 01.4-1z"/><line x1="3" y1="21" x2="9" y2="15" stroke-width="2" fill="none"/></svg></div>':'';
-const avWrap='<div style="position:relative;flex-shrink:0;">'+avH(c.avatarUrl,c.charName,72,ao.ox,ao.oy).replace('class="av"','class="av av-list"')+pinSvg+'</div>';
+const avWrap='<div style="position:relative;flex-shrink:0;">'+avH(c.avatarUrl,c.charName,72,0,0,c.avatarThumb).replace('class="av"','class="av av-list"')+pinSvg+'</div>';
 return '<div class="li li-chat" id="cli-'+id+'" onclick="'+(_batchMode?"toggleBatchSel('"+id+"',event)":"resumeChat('"+id+"')")+'"><div style="display:flex;align-items:center;gap:12px;width:100%;">'+batchDot+avWrap+'<div class="lb" style="flex:1;min-width:0;overflow:hidden;"><div style="display:flex;align-items:center;gap:6px;"><div class="lt" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(c.windowName||c.charName)+'</div><div class="chat-time" id="ct-'+id+'"></div></div><div class="ls">新對話</div></div></div></div>';}).join('');
 if(!_batchMode){ids.forEach(id=>{const e=document.getElementById('cli-'+id);if(e)bindLongPress(e,(x,y)=>{showCtx(x,y,[{label:'修改視窗名稱',action:"renameChat('"+id+"')"},{label:_chatStore[id].pinned?'取消釘選':'釘選',action:"togglePin('"+id+"')"}]);});});}
 // Load last message previews
@@ -1486,7 +1495,7 @@ const mems=await dbByIndex('memories','chat_id',_curChatId);for(const m of mems)
 await dbDel('chats',_curChatId);delete _chatStore[_curChatId];_curChatId=null;_curChat=null;closeSide();closeChat();toast('已刪除');}
 let _lazyRendered=0,_lazyBatch=20,_lazyLoading=false;
 async function resumeChat(id){const c=_chatStore[id];if(!c)return;_curChatId=id;_curChat=c;_chatRpId=c.rpId||null;_chatPlayerId=c.playerId||null;
-const ch=chars.find(x=>x.id===c.charId);if(ch&&ch.avatar_url)c.avatarUrl=ch.avatar_url;
+const ch=chars.find(x=>x.id===c.charId);if(ch&&ch.avatar_url){c.avatarUrl=ch.avatar_url;c.avatarThumb=ch.avatar_thumb||'';}
 $('c-name').textContent=c.windowName||c.charName;
 if(_chatRpId){const p=prompts.find(x=>x.id===_chatRpId);if(p)$('rp-btn').childNodes[0].textContent=p.name;}syncRpPopup();renderSidePlayer();
 const cinp=$('c-inp');cinp.value=c.draft||'';cinp.style.height='44px';if(c.draft){cinp.style.height='auto';cinp.style.height=Math.min(cinp.scrollHeight,200)+'px';}
