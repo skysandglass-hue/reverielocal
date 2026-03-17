@@ -591,8 +591,14 @@ async function calcStorageInfo(){const el=$('storage-info');el.textContent='計�
 async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'])try{await dbClear(s);}catch(e){}localStorage.removeItem('rp_av_off');toast('已清除');location.reload();}
 // === Core UI ===
 const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){return '<p>'+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
-// Strip list tags from marked output globally
-const _origMarkedParse=marked.parse.bind(marked);marked.parse=function(src,opt){let html=_origMarkedParse(src,opt);html=html.replace(/<\/?ul[^>]*>/gi,'').replace(/<\/?ol[^>]*>/gi,'').replace(/<li[^>]*>/gi,'<p>').replace(/<\/li>/gi,'</p>');return html;};
+// Prevent marked from converting list syntax — escape before parsing, restore after
+const _origMarkedParse=marked.parse.bind(marked);marked.parse=function(src,opt){
+// Escape "- " and "N. " at line starts so marked treats them as plain text
+let escaped=src.replace(/^(\d+)\.\s/gm,'$1\\.\u00A0').replace(/^([-*+]) /gm,'\\$1\u00A0');
+let html=_origMarkedParse(escaped,opt);
+// Restore the escaped characters
+html=html.replace(/\\([-*+])\u00A0/g,'$1 ').replace(/(\d+)\\\.\u00A0/g,'$1. ');
+return html;};
 function tok(s){if(!s)return 0;let t=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);if(c>0x2E7F)t+=1.5;else if(c===32||c===10)t+=0;else t+=0.35;}return Math.ceil(t);}
 function cntF(ta){const l=ta.value.length,t=tok(ta.value);const c=ta.parentElement.querySelector('.ctr');if(c)c.textContent=l+' 字 · ≈ '+t+' tokens';}
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
@@ -1317,7 +1323,17 @@ vecMemories=allMemHits.filter(m=>m.type!=='memo').slice(0,s.vec_memories_count||
 vecMemos=allMemHits.filter(m=>m.type==='memo').slice(0,s.vec_memos_count||5);
 // Worldbook vector search: search across all enabled worldbooks for this chat
 const wbIds=(_curChat.worldbook_ids)||[];if(wbIds.length){const allWBE=[];for(const wid of wbIds){const ens=await dbByIndex('worldbook_entries','worldbook_id',wid);allWBE.push(...ens);}const wbWithEmb=allWBE.filter(e=>e.embedding);if(wbWithEmb.length){vecWB=wbWithEmb.map(x=>({...x,similarity:cosineSim(emb,x.embedding)})).filter(x=>x.similarity>=vt).sort((a,b)=>b.similarity-a.similarity).slice(0,s.vec_wb_count||5);}}}}
-const sysContent=await buildSysPrompt(vecExtras,vecEvents,vecMemories,vecWB,vecMemos);const msgs=buildApiMsgs();
+// Load fallback memories/memos from DB (used when vector search has no results)
+_fallbackMems=[];_fallbackMemos=[];
+if((!vecMemories.length||!vecMemos.length)&&_curChatId){
+try{const allMems=await dbByIndex('memories','chat_id',_curChatId);
+const sorted=allMems.sort((a,b)=>{const ta=a.created_at||a.id,tb=b.created_at||b.id;return ta>tb?-1:ta<tb?1:0;});
+if(!vecMemories.length)_fallbackMems=sorted.filter(m=>m.type!=='memo').slice(0,s.vec_memories_count||5);
+if(!vecMemos.length)_fallbackMemos=sorted.filter(m=>m.type==='memo').slice(0,s.vec_memos_count||5);
+}catch(e){}}
+const sysContent=await buildSysPrompt(vecExtras,vecEvents,vecMemories,vecWB,vecMemos);_fallbackMems=[];_fallbackMemos=[];
+toast('記憶:'+vecMemories.length+' MEMO:'+vecMemos.length+' '+(sysContent.includes('Memories')?'✓':'✗')+'記 '+(sysContent.includes('Memos')?'✓':'✗')+'備 T:'+tok(sysContent));
+const msgs=buildApiMsgs();
 const provider=apiCfg.provider||'anthropic',model=apiCfg.model,maxOut=parseInt(apiCfg.max_output_tokens)||1200,temp=apiCfg.temperature!=null?apiCfg.temperature:0.8,topP=apiCfg.top_p!=null?apiCfg.top_p:null,topK=apiCfg.top_k!=null?apiCfg.top_k:null;
 let resp;
 if(provider==='anthropic')resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiCfg.api_key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model,max_tokens:maxOut,temperature:temp,system:sysContent,messages:msgs}),signal:_aiAbort.signal});
@@ -1358,10 +1374,16 @@ function buildSummarySection(){let s='';if(_curChat.summary&&_curChat.summary.tr
 function buildExtrasSection(allExtras,vecExtras){let s='';if(!allExtras||!allExtras.length)return s;const hasAnyEmb=allExtras.some(e=>e.embedding);
 if(vecExtras.length){s+='\n[Additional Info]\n';vecExtras.forEach(v=>{const ex=allExtras.find(e=>e.id===v.id);if(ex){if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';}});const vecIds=new Set(vecExtras.map(v=>v.id));allExtras.filter(e=>!e.embedding&&!vecIds.has(e.id)).forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}
 else if(!hasAnyEmb){s+='\n[Additional Info]\n';allExtras.forEach(ex=>{if(ex.title)s+='## '+ex.title+'\n';if(ex.content)s+=ex.content+'\n\n';});}return s;}
-function buildMemorySection(vecMemories){let s='';if(vecMemories&&vecMemories.length){s+='\n[Relevant Memories]\n(Timestamps below are real-world system timestamps, NOT in-universe dates. Never use these dates during roleplay. Only reference them if the player explicitly asks out-of-character.)\n';vecMemories.forEach(m=>{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';});}
-if(_curChat.memories&&_curChat.memories.length){s+='\n[Local Memories]\n';_curChat.memories.forEach(m=>{if(typeof m==='string'){s+='- '+m+'\n';}else{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';}});}return s;}
+function buildMemorySection(vecMemories){let s='';
+if(vecMemories&&vecMemories.length){s+='\n[Relevant Memories]\n(Timestamps below are real-world system timestamps, NOT in-universe dates. Never use these dates during roleplay. Only reference them if the player explicitly asks out-of-character.)\n';vecMemories.forEach(m=>{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';});}
+if(_curChat.memories&&_curChat.memories.length){s+='\n[Local Memories]\n';_curChat.memories.forEach(m=>{if(typeof m==='string'){s+='- '+m+'\n';}else{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+(m.important?'⭐ ':'')+m.content+'\n';}});}
+// Fallback: if no vector results, inject recent DB memories for this chat
+if((!vecMemories||!vecMemories.length)&&_curChatId&&_fallbackMems&&_fallbackMems.length){s+='\n[Recent Memories]\n';_fallbackMems.forEach(m=>{const dt=m.date?'('+m.date+') ':'';s+='- '+dt+m.content+'\n';});}
+return s;}
 function buildMemoSection(vecMemos){let sec='';
 if(vecMemos&&vecMemos.length){sec+='\n[Player Memos]\nThe following are personal details about the player recorded from conversations. Use this information naturally without directly referencing the tags:\n';vecMemos.forEach(m=>{sec+='- '+m.content+'\n';});}
+// Fallback: if no vector results, inject recent memos
+if((!vecMemos||!vecMemos.length)&&_fallbackMemos&&_fallbackMemos.length){sec+='\n[Player Memos]\nThe following are personal details about the player recorded from conversations. Use this information naturally without directly referencing the tags:\n';_fallbackMemos.forEach(m=>{sec+='- '+m.content+'\n';});}
 return sec;}
 function buildStateSection(){let sec='';
 const sb=(_curChat&&_curChat.sceneBoard)||{};
@@ -1490,6 +1512,7 @@ if(text&&text.trim()){_curChat.summary=text;saveChatStore();toast('摘要已更�
 
 // ═══ Auto Memory Generation ═══
 let _memGenRunning=false;
+let _fallbackMems=[],_fallbackMemos=[];
 async function autoGenMemory(chat,chatId){if(!chat||_memGenRunning)return;
 const s=getSettings();let apiCfg=getFeatureApiCfg('mem');
 if(!apiCfg||!apiCfg.api_key||!apiCfg.model){console.warn('[Memory] 未設定記憶生成 API，跳過');return;}
