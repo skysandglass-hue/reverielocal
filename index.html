@@ -714,7 +714,7 @@ const thumbSy=(circleTop-iy)/_cropScale;
 const thumbSs=cd/_cropScale;
 const thumbCanvas=document.createElement('canvas');thumbCanvas.width=400;thumbCanvas.height=400;
 const thumbCtx=thumbCanvas.getContext('2d');
-thumbCtx.drawImage(srcImg,thumbSx,thumbSy,thumbSs,thumbSs,0,0,200,200);
+thumbCtx.drawImage(srcImg,thumbSx,thumbSy,thumbSs,thumbSs,0,0,400,400);
 const thumbUrl=thumbCanvas.toDataURL('image/webp',0.85);
 const id=_avTarget.id||$('ce-id').value,key=_avTarget.type+'_'+id;
 await dbPut('avatars',{id:key,blob:dataUrl,type:'image/webp',ts:Date.now()});
