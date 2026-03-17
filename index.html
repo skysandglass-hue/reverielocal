@@ -261,13 +261,14 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-hero-tagline .sep{width:3.5px;height:3.5px;border-radius:50%;background:rgba(255,255,255,.5);flex-shrink:0;}
 .cpf-body{padding:28px 24px 36px;}
 .cpf-intro{position:relative;margin-bottom:28px;}.cpf-intro::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px;background:var(--ac);}
-.cpf-intro-text{font-size:16px;line-height:1.9;color:var(--tx);padding-left:18px;letter-spacing:.02em;}
+.cpf-intro-text{font-size:16px;line-height:2.1;color:var(--tx);padding-left:18px;letter-spacing:.02em;}
 .cpf-div-label{display:flex;align-items:center;gap:12px;margin:28px 0 20px;}
 .cpf-div-label::before,.cpf-div-label::after{content:'';flex:1;height:1px;background:var(--bd);}
 .cpf-div-label span{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);white-space:nowrap;}
 .cpf-hr{height:1px;background:var(--bd);margin:24px 0;}
 .cpf-encounter{position:relative;background:var(--bg3);border-radius:12px;padding:20px;margin-bottom:6px;}
-.cpf-encounter-text{font-size:15px;line-height:1.85;color:var(--tx);word-break:break-word;}
+.cpf-encounter-text{font-size:15px;line-height:2;color:var(--tx);word-break:break-word;}
+.cpf-encounter-text p{margin:0 0 .8em;}.cpf-encounter-text p:last-child{margin:0;}
 .cpf-section-head{font-size:13px;font-weight:600;color:var(--tx3);margin-bottom:10px;display:flex;align-items:center;gap:6px;letter-spacing:.02em;}
 .cpf-section-head svg{width:15px;height:15px;stroke:var(--ac);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .cpf-wb-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
@@ -282,11 +283,19 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-ev-item:active{background:var(--bg3);}
 .cpf-card.no-img .cpf-hero{aspect-ratio:unset;height:220px;background:linear-gradient(160deg,var(--acl) 0%,var(--bgi) 100%);}
 .cpf-empty-intro{color:var(--tx2);font-style:italic;font-size:15px;padding-left:18px;}
-.cpf-ev-detail{position:absolute;inset:0;background:var(--bg2);z-index:3;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.16,1,.3,1);border-radius:14px;}
+.cpf-ev-detail{position:absolute;inset:0;background:var(--bg2);z-index:3;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.16,1,.3,1);border-radius:14px;overflow:hidden;}
 .cpf-ev-detail.show{transform:translateX(0);}
-.cpf-ev-detail-head{padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--bg2);border-radius:14px 14px 0 0;}
-.cpf-ev-detail-title{font-size:17px;font-weight:600;color:var(--tx3);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.cpf-ev-detail-body{flex:1;overflow-y:auto;padding:24px 20px;overscroll-behavior:contain;}
+.cpf-ev-detail-bar{padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--bg2);border-radius:14px 14px 0 0;border-bottom:1px solid var(--bd);}
+.cpf-ev-detail-scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;}
+.cpf-ev-detail-inner{padding:24px 20px;}
+.cpf-ev-detail-name{font-size:22px;font-weight:700;color:var(--tx3);line-height:1.4;}
+.cpf-ev-detail-trigger{font-size:15px;color:var(--ac);margin-top:10px;}
+.cpf-ev-detail-divider{height:1px;background:var(--bd);margin:24px 0;}
+.cpf-ev-detail-content{font-size:16px;line-height:2;color:var(--tx);letter-spacing:.2px;}
+.cpf-ev-detail-content p{margin:0 0 .8em;}.cpf-ev-detail-content p:last-child{margin:0;}
+.cpf-ev-detail-content em{font-style:italic;color:var(--tx2);}
+.cpf-ev-detail-content strong{font-weight:600;}
+.cpf-ev-detail-content blockquote{border-left:3px solid var(--ac);padding-left:10px;margin:.5em 0;color:var(--tx2);}
 </style>
 </head>
 <body>
@@ -503,11 +512,11 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
     </div>
     <!-- Event detail panel (slides over main content) -->
     <div class="cpf-ev-detail" id="cpf-ev-detail">
-      <div class="cpf-ev-detail-head">
+      <div class="cpf-ev-detail-bar">
         <span class="bk" onclick="closeCpfEvDetail()" style="margin:0;cursor:pointer;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-        <div class="cpf-ev-detail-title" id="cpf-ev-detail-title"></div>
+        <div style="font-size:15px;color:var(--tx2);">事件</div>
       </div>
-      <div class="cpf-ev-detail-body" id="cpf-ev-detail-body"></div>
+      <div class="cpf-ev-detail-scroll" id="cpf-ev-detail-body"></div>
     </div>
   </div>
 </div><!-- Full Pages -->
@@ -848,10 +857,9 @@ let cn='',un='';
 if(_cpfCharId){const c=await dbGet('characters',_cpfCharId);if(c)cn=c.name||'';}
 if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf)un=pf.name||'';}
 const cpfTpl2=t=>(t||'').replace(/\{\{user\}\}/gi,un||'玩家').replace(/\{\{char\}\}/gi,cn);
-$('cpf-ev-detail-title').textContent=cpfTpl2(ev.name||'');
 const content=ev.content?marked.parse(cpfTpl2(ev.content)):'<span style="color:var(--tx2);">無內容</span>';
-const trigger=ev.time_or_keyword?'<div style="font-size:14px;color:var(--ac);margin-bottom:16px;">'+esc(cpfTpl2(ev.time_or_keyword))+'</div>':'';
-$('cpf-ev-detail-body').innerHTML=trigger+'<div style="font-size:15px;line-height:1.85;color:var(--tx);">'+content+'</div>';
+const trigger=ev.time_or_keyword?'<div class="cpf-ev-detail-trigger">'+esc(cpfTpl2(ev.time_or_keyword))+'</div>':'';
+$('cpf-ev-detail-body').innerHTML='<div class="cpf-ev-detail-inner"><div class="cpf-ev-detail-name">'+esc(cpfTpl2(ev.name||''))+'</div>'+trigger+'<div class="cpf-ev-detail-divider"></div><div class="cpf-ev-detail-content">'+content+'</div></div>';
 $('cpf-ev-detail').classList.add('show');
 }
 function closeCpfEvDetail(){$('cpf-ev-detail').classList.remove('show');}
