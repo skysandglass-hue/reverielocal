@@ -185,9 +185,10 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .edit-modal-btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--bgi);color:var(--tx3);font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;}.edit-modal-btn:hover{background:var(--bd);}
 /* Drag handle for events */
 .ev-drag{display:none;}
-.ev-toggle-item{display:flex;align-items:center;gap:10px;padding:18px 16px;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;margin-bottom:16px;box-shadow:0 1px 2px var(--sh);}
-.ev-toggle-item .lb{flex:1;min-width:0;cursor:pointer;overflow:visible;}.ev-toggle-item .lt{font-size:17px;font-weight:500;color:var(--tx3);line-height:1.4;}.ev-toggle-item .ls{font-size:15px;color:var(--tx2);margin-top:8px;line-height:1.4;}
-.tog{position:relative;width:34px;height:18px;background:var(--bd);border-radius:9px;cursor:pointer;flex-shrink:0;transition:background .2s;}.tog.on{background:var(--ac);}.tog::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.08);}.tog.on::after{transform:translateX(16px);}
+.ev-toggle-item{display:flex;align-items:center;gap:10px;padding:18px 16px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;margin-bottom:10px;position:relative;min-height:66px;}
+.ev-toggle-item .lb{flex:1;min-width:0;cursor:pointer;overflow:visible;}.ev-toggle-item .lt{font-size:17px;font-weight:500;color:var(--tx3);line-height:1.4;padding-right:40px;}.ev-toggle-item .ls{font-size:15px;color:var(--tx2);margin-top:4px;line-height:1.4;}
+.ev-toggle-item>.tog{position:absolute;top:12px;right:12px;}
+.tog{position:relative;width:30px;height:16px;background:var(--bd);border-radius:8px;cursor:pointer;flex-shrink:0;transition:background .2s;}.tog.on{background:var(--ac);}.tog::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.08);}.tog.on::after{transform:translateX(14px);}
 .pcmd-panel{position:fixed;bottom:0;left:0;right:0;z-index:251;background:var(--bg2);border-top:1px solid var(--bd);box-shadow:0 -4px 16px rgba(0,0,0,.08);border-radius:16px 16px 0 0;height:60vh;overflow:hidden;padding:20px 16px;transition:transform .25s ease;display:none;flex-direction:column;}.pcmd-panel.show{display:flex;}
 .pcmd-panel-handle{width:36px;height:4px;background:var(--bd2);border-radius:2px;margin:0 auto 14px;}
 .pcmd-overlay{display:none;position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.25);}.pcmd-overlay.show{display:block;}
@@ -250,44 +251,51 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-hero{position:relative;width:100%;aspect-ratio:2/3;background:var(--bgi);overflow:hidden;}
 .cpf-hero img{width:100%;height:100%;object-fit:cover;display:block;}
 .cpf-hero-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;font-weight:600;color:var(--ac);opacity:.3;background:linear-gradient(160deg,var(--acl) 0%,var(--bgi) 100%);}
-.cpf-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,rgba(0,0,0,.25) 35%,transparent 100%);pointer-events:none;}
+.cpf-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 35%,transparent 100%);pointer-events:none;}
 .cpf-back{position:absolute;top:max(12px,env(safe-area-inset-top,12px));left:12px;z-index:2;width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
 .cpf-back:active{background:rgba(0,0,0,.5);}
 .cpf-back svg{width:20px;height:20px;}
 .cpf-dl{position:absolute;top:max(12px,env(safe-area-inset-top,12px));right:12px;z-index:2;width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
 .cpf-dl:active{background:rgba(0,0,0,.5);}
 .cpf-dl svg{width:18px;height:18px;}
-.cpf-hero-text{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:0 24px 28px;}
-.cpf-hero-label{font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:6px;}
+.cpf-hero-text{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:0 20px 24px;}
+.cpf-hero-label{font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:8px;}
 .cpf-hero-name{font-size:32px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:.04em;text-shadow:0 2px 12px rgba(0,0,0,.35);margin-bottom:8px;}
-.cpf-hero-tagline{font-size:15px;font-weight:400;color:rgba(255,255,255,.85);text-shadow:0 1px 6px rgba(0,0,0,.35);display:flex;align-items:center;gap:8px;letter-spacing:.02em;padding-bottom:12px;border-bottom:1.5px solid rgba(255,255,255,.25);}
+.cpf-hero-slogan{font-size:15px;font-weight:400;font-style:italic;color:#fff;letter-spacing:.02em;margin-top:12px;line-height:1.7;text-shadow:0 1px 6px rgba(0,0,0,.35);padding:0;border-bottom:1.5px solid rgba(255,255,255,.25);padding-bottom:6px;text-align:center;}
+.cpf-hero-slogan::before{content:'\201C';display:block;font-family:'Cormorant Garamond',serif;font-size:32px;font-style:normal;line-height:1;color:rgba(255,255,255,.45);margin-bottom:2px;text-align:left;}
+.cpf-hero-slogan::after{content:'\201D';display:block;font-family:'Cormorant Garamond',serif;font-size:32px;font-style:normal;line-height:1;color:rgba(255,255,255,.45);text-align:right;margin-top:8px;margin-bottom:4px;}
+.cpf-hero-tagline:has(+.cpf-hero-slogan){padding-bottom:0;border-bottom:none;}
+.cpf-hero-tagline{font-size:15px;font-weight:400;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.35);display:flex;align-items:center;gap:8px;letter-spacing:.02em;padding-bottom:12px;border-bottom:1.5px solid rgba(255,255,255,.25);}
 .cpf-hero-tagline .sep{width:3.5px;height:3.5px;border-radius:50%;background:rgba(255,255,255,.5);flex-shrink:0;}
-.cpf-body{padding:28px 24px 36px;}
-.cpf-intro{position:relative;margin-bottom:28px;}.cpf-intro::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px;background:var(--ac);}
-.cpf-intro-text{font-size:16px;line-height:2.1;color:var(--tx);padding-left:18px;letter-spacing:.02em;}
+.cpf-body{padding:32px 28px 48px;}
+.cpf-intro{position:relative;margin-bottom:32px;}.cpf-intro::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:2px;border-radius:1px;background:var(--ac);opacity:.6;}
+.cpf-intro-text{font-size:16.5px;line-height:2;color:var(--tx);padding-left:20px;letter-spacing:.02em;}
 .cpf-intro-text p{margin:0 0 .8em;}.cpf-intro-text p:last-child{margin:0;}
-.cpf-div-label{display:flex;align-items:center;gap:12px;margin:28px 0 20px;}
+.cpf-div-label{display:flex;align-items:center;gap:14px;margin:36px 0 24px;}
 .cpf-div-label::before,.cpf-div-label::after{content:'';flex:1;height:1px;background:var(--bd);}
 .cpf-div-label span{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);white-space:nowrap;}
-.cpf-hr{height:1px;background:var(--bd);margin:24px 0;}
-.cpf-encounter{position:relative;background:var(--bg3);border-radius:12px;padding:28px 20px 20px;margin-bottom:6px;}
-.cpf-encounter::before{content:'\201C';font-family:'Cormorant Garamond',serif;position:absolute;top:8px;left:16px;font-size:48px;line-height:1;color:var(--ac);opacity:.35;pointer-events:none;}
-.cpf-encounter-text{font-size:15px;line-height:2;color:var(--tx);word-break:break-word;}
+.cpf-hr{height:1px;background:var(--bd);margin:32px 0;}
+.cpf-encounter{position:relative;background:var(--bg3);border-radius:12px;padding:24px 24px 20px;margin-bottom:6px;}
+.cpf-encounter-text{font-size:15.5px;line-height:2;color:var(--tx);word-break:break-word;}
 .cpf-encounter-text p{margin:0 0 .8em;}.cpf-encounter-text p:last-child{margin:0;}
-.cpf-section-head{font-size:13px;font-weight:600;color:var(--tx3);margin-bottom:10px;display:flex;align-items:center;gap:6px;letter-spacing:.02em;}
-.cpf-section-head svg{width:15px;height:15px;stroke:var(--ac);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.cpf-wb-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
-.cpf-wb-tag{padding:6px 14px;border-radius:20px;background:var(--acl);color:var(--ach);font-size:13.5px;font-weight:500;}
-.cpf-events{margin-bottom:8px;}
-.cpf-ev-item{border:1px solid var(--bd);border-radius:10px;margin-bottom:8px;overflow:hidden;background:var(--bg2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.cpf-ev-header{display:flex;align-items:center;gap:10px;padding:12px 14px;}.cpf-ev-header:active{background:var(--bg3);}
+.cpf-section-head{font-size:14px;font-weight:600;color:var(--tx3);margin-bottom:12px;display:flex;align-items:center;gap:7px;letter-spacing:.02em;}
+.cpf-section-head svg{width:16px;height:16px;stroke:var(--ac);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.cpf-wb-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+.cpf-wb-tag{padding:7px 16px;border-radius:20px;background:var(--acl);color:var(--ach);font-size:14px;font-weight:500;}
+.cpf-events{margin-bottom:0;}
+.cpf-ev-item{border:1px solid var(--bd);border-radius:10px;margin-bottom:10px;overflow:hidden;background:var(--bg2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.cpf-ev-header{display:flex;align-items:center;gap:10px;padding:16px 18px;}.cpf-ev-header:active{background:var(--bg3);}
 .cpf-ev-info{flex:1;min-width:0;}
-.cpf-ev-name{font-size:14.5px;font-weight:500;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.cpf-ev-trigger{font-size:12.5px;color:var(--tx2);margin-top:1px;}
-.cpf-ev-chevron{width:20px;height:20px;color:var(--tx2);flex-shrink:0;}
+.cpf-ev-name{font-size:16px;font-weight:500;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cpf-ev-trigger{font-size:14px;color:var(--tx2);margin-top:4px;}
+.cpf-ev-chevron{width:18px;height:18px;color:var(--tx2);flex-shrink:0;opacity:.5;}
 .cpf-ev-item:active{background:var(--bg3);}
 .cpf-card.no-img .cpf-hero{aspect-ratio:unset;height:220px;background:linear-gradient(160deg,var(--acl) 0%,var(--bgi) 100%);}
-.cpf-empty-intro{color:var(--tx2);font-style:italic;font-size:15px;padding-left:18px;}
+.cpf-empty-intro{color:var(--tx2);font-style:italic;font-size:15px;padding-left:20px;}
+.cpf-ev-count{margin-left:auto;font-size:12px;font-weight:600;color:var(--ac);background:var(--acl);padding:2px 8px;border-radius:10px;line-height:1.4;}
+.cpf-footer{margin-top:40px;padding-top:20px;text-align:center;}
+.cpf-footer-line{width:40px;height:1.5px;background:var(--ac);opacity:.4;margin:0 auto 12px;}
+.cpf-footer-text{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--tx2);opacity:.4;}
 .cpf-ev-detail{position:absolute;inset:0;background:var(--bg2);z-index:3;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.16,1,.3,1);border-radius:14px;overflow:hidden;}
 .cpf-ev-detail.show{transform:translateX(0);}
 .cpf-ev-detail-bar{padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--bg2);border-radius:14px 14px 0 0;border-bottom:1px solid var(--bd);}
@@ -347,7 +355,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="pnl" id="p-wb"><div class="scr">
   <div id="wb-vl"><div class="sh"><div class="sht">世界書</div><button class="btn bp bs2" onclick="createWB()">+ 新增</button></div><div id="wb-list"></div></div>
   <div id="wb-vd" style="display:none;">
-    <div class="sh" style="position:sticky;top:-16px;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;">
+    <div class="sh" style="position:sticky;top:0;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;">
       <span class="bk" onclick="closeWBEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
       <div style="flex:1;"></div><button class="btn bp bs2" onclick="saveWB()">儲存</button>
     </div>
@@ -365,26 +373,27 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="pnl" id="p-chars"><div class="scr">
   <div id="vl"><div class="sh"><div class="sht">角色</div><button class="btn bp bs2" onclick="createChar()">+ 新增</button></div><div id="char-list"></div></div>
   <div id="vd" style="display:none;">
-    <div class="sh" style="position:sticky;top:-16px;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;"><span class="bk" onclick="closeCharEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div style="flex:1;"></div><button class="btn bp bs2" onclick="saveChar()">儲存</button></div>
+    <div class="sh" style="position:sticky;top:0;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;"><span class="bk" onclick="closeCharEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div style="flex:1;"></div><button class="btn bp bs2" onclick="saveChar()">儲存</button></div>
     <div class="av-editor"><div class="av-ed-wrap" id="ce-av-wrap">?</div><span class="av-ed-badge" onclick="event.stopPropagation();startAvUp('char')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span></div>
     <input type="hidden" id="ce-id">
     <div class="card"><div class="ct">角色卡主體</div>
       <div class="f"><label>姓名</label><input type="text" id="ce-name" oninput="markDirty()"></div>
       <div class="f"><label>年齡</label><input type="text" id="ce-age" placeholder="例：25、不詳" oninput="markDirty()"></div><div class="f"><label>性別</label><div class="rp-sel" id="ce-gen" onclick="openPopup('gen-pop')" style="height:44px;display:flex;align-items:center;">未設置</div></div><div class="f"><label>職業</label><input type="text" id="ce-job" placeholder="例：劍士、醫師..." oninput="markDirty()"></div>
-      <div class="f"><label>角色設定</label><textarea rows="14" id="ce-set" oninput="cntF(this);markDirty()"></textarea><div class="ctr">0 字 · ≈ 0 tokens</div></div>
+      <div class="f"><label>一句話 <span style="font-weight:400;color:var(--tx2);font-size:12px;">（展示用，座右銘或代表台詞）</span></label><input type="text" id="ce-slogan" placeholder="例：「你不需要被任何人定義。」" oninput="markDirty()"></div>
       <div class="f"><label>角色介紹 <span style="font-weight:400;color:var(--tx2);font-size:12px;">（展示用，不注入 prompt）</span></label><textarea rows="10" id="ce-intro" oninput="cntF(this);markDirty()" placeholder="給玩家看的角色簡介，會顯示在角色展示頁"></textarea><div class="ctr">0 字</div></div>
+      <div class="f"><label>角色設定</label><textarea rows="14" id="ce-set" oninput="cntF(this);markDirty()"></textarea><div class="ctr">0 字 · ≈ 0 tokens</div></div>
     </div>
     <div class="card"><div class="ct">附加設定</div><div id="ce-ex"></div><button class="btn bs2" onclick="addExUI()" style="margin-top:8px;">+ 新增</button></div>
     <div class="card"><div class="ct">綁定世界書</div><div class="f"><div class="rp-sel" id="ce-wb-btn" onclick="openWBBindPopup()" style="height:44px;display:flex;align-items:center;">未選擇</div></div><div style="font-size:12px;color:var(--tx2);line-height:1.5;">開始新對話時，會自動套用已勾選的世界書。</div></div>
     <div class="card"><div class="ct">第一則訊息</div><div class="f"><label>角色開場白</label><textarea rows="10" id="ce-grt" oninput="cntF(this);markDirty()" placeholder="新對話開始時，角色的第一則訊息"></textarea><div class="ctr">0 字</div></div></div>
-    <div style="padding:20px 0 40px;text-align:center;"><button class="btn bdel" onclick="delChar()" style="font-size:14px;padding:8px 20px;">刪除角色</button></div>
+    <div style="padding:32px 0 48px;"><button class="btn" onclick="delChar()" style="width:100%;font-size:16px;padding:14px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;letter-spacing:.02em;">刪除角色</button></div>
   </div>
 </div></div>
 <!-- 檔案 -->
 <div class="pnl" id="p-prof"><div class="scr">
   <div id="pf-vl"><div class="sh"><div class="sht">檔案</div><button class="btn bp bs2" onclick="createPf()">+ 新增</button></div><div id="pf-list"></div></div>
   <div id="pf-vd" style="display:none;">
-    <div class="sh" style="position:sticky;top:-16px;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;"><span class="bk" onclick="closePfEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div style="flex:1;"></div><button class="btn bp bs2" onclick="savePfDetail()">儲存</button></div>
+    <div class="sh" style="position:sticky;top:0;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;"><span class="bk" onclick="closePfEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div style="flex:1;"></div><button class="btn bp bs2" onclick="savePfDetail()">儲存</button></div>
     <div class="av-editor"><div class="av-ed-wrap" id="pf-av-wrap" style="width:160px;height:160px;border-radius:50%;">?</div><span class="av-ed-badge" onclick="event.stopPropagation();startAvUp('profile',_pfEditId)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span></div>
     <input type="hidden" id="pf-edit-id">
     <div class="card"><div class="ct">基本資料</div><div class="f"><label>名稱</label><input type="text" id="pf-edit-name" oninput="markDirty()"></div><div class="f"><label>年齡</label><input type="text" id="pf-edit-age" placeholder="例：25、不詳" oninput="markDirty()"></div><div class="f"><label>性別</label><div class="rp-sel" id="pf-gen" onclick="openPopup('pf-gen-pop')" style="height:44px;display:flex;align-items:center;">未設置</div></div><div class="f"><label>職業</label><input type="text" id="pf-edit-job" placeholder="例：冒險者..." oninput="markDirty()"></div><div class="f"><label>設定</label><textarea rows="10" id="pf-edit-setting" oninput="cntF(this);markDirty()"></textarea><div class="ctr">0 字</div></div></div>
@@ -588,13 +597,13 @@ async function rebuildAllEmb(){if(!getSettings().emb_local){toast('請先啟用'
 
 // === Storage Info ===
 async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
-async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'])try{await dbClear(s);}catch(e){}localStorage.removeItem('rp_av_off');toast('已清除');location.reload();}
+async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'])try{await dbClear(s);}catch(e){}toast('已清除');location.reload();}
 // === Core UI ===
-const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){return '<p>'+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
+const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){const lvl=tok.depth||1;const prefix='#'.repeat(lvl)+' ';return '<p>'+prefix+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
 // Prevent marked from converting list syntax — escape before parsing, restore after
 const _origMarkedParse=marked.parse.bind(marked);marked.parse=function(src,opt){
 // Escape "- " and "N. " at line starts so marked treats them as plain text
-let escaped=src.replace(/^(\d+)\.\s/gm,'$1\\.\u00A0').replace(/^([-*+]) /gm,'\\$1\u00A0');
+let escaped=src.replace(/^(\d+)\.\s/gm,'$1\\.\u00A0').replace(/^([-*+])( |$)/gm,'\\$1\u00A0');
 let html=_origMarkedParse(escaped,opt);
 // Restore the escaped characters
 html=html.replace(/\\([-*+])\u00A0/g,'$1 ').replace(/(\d+)\\\.\u00A0/g,'$1. ');
@@ -642,9 +651,9 @@ let _longPressBlock=false;
 function bindLongPress(el,fn){let t=null,mv=false;el.addEventListener('touchstart',e=>{mv=false;t=setTimeout(()=>{if(!mv){_longPressBlock=true;e.preventDefault();fn(e.touches[0].clientX,e.touches[0].clientY);setTimeout(()=>{_longPressBlock=false;},300);}},500);},{passive:false});el.addEventListener('touchmove',()=>{mv=true;clearTimeout(t);});el.addEventListener('touchend',()=>{clearTimeout(t);});el.addEventListener('contextmenu',e=>{e.preventDefault();_longPressBlock=true;fn(e.clientX,e.clientY);setTimeout(()=>{_longPressBlock=false;},300);});}
 
 // === Avatar Upload ===
-let _avTarget=null,_avUrl=null,_charAvOx=0,_charAvOy=0,_pfAvUrl=null,_pfAvOx=0,_pfAvOy=0;
+let _avTarget=null,_avUrl=null,_pfAvUrl=null;
 function startAvUp(type,id){_avTarget={type,id:id||null};$('av-input').click();}
-let _cropFile=null,_cropScale=1,_cropX=0,_cropY=0,_cropDragging=false,_cropStartX=0,_cropStartY=0,_cropOrigX=0,_cropOrigY=0,_circleDragging=false,_circleStartY=0,_circleOrigY=0;
+let _cropFile=null,_cropScale=1,_cropDragging=false,_cropStartX=0,_cropStartY=0,_cropOrigX=0,_cropOrigY=0,_circleDragging=false,_circleStartY=0,_circleOrigY=0;
 function onAvUpload(inp){if(!inp.files[0]||!_avTarget)return;_cropFile=inp.files[0];inp.value='';openCrop();}
 function openCrop(){const ov=$('crop-ov'),area=$('crop-area'),img=$('crop-img'),frame=$('crop-frame');
 const url=URL.createObjectURL(_cropFile);img.onload=()=>{
@@ -728,11 +737,10 @@ thumbCtx.drawImage(srcImg,thumbSx,thumbSy,thumbSs,thumbSs,0,0,400,400);
 const thumbUrl=thumbCanvas.toDataURL('image/webp',0.85);
 const id=_avTarget.id||$('ce-id').value,key=_avTarget.type+'_'+id;
 await dbPut('avatars',{id:key,blob:dataUrl,type:'image/webp',ts:Date.now()});
-if(_avTarget.type==='char'){const c=await dbGet('characters',id);if(c){c.avatar_url=dataUrl;c.avatar_thumb=thumbUrl;await dbPut('characters',c);}_avUrl=dataUrl;renderAvEd('char',thumbUrl,0,0);}
-else{const p=await dbGet('profiles',id);if(p){p.avatar_url=dataUrl;p.avatar_thumb=thumbUrl;await dbPut('profiles',p);}_pfAvUrl=dataUrl;renderAvEd('pf',thumbUrl,0,0);}
+if(_avTarget.type==='char'){const c=await dbGet('characters',id);if(c){c.avatar_url=dataUrl;c.avatar_thumb=thumbUrl;await dbPut('characters',c);}_avUrl=dataUrl;renderAvEd('char',thumbUrl);}
+else{const p=await dbGet('profiles',id);if(p){p.avatar_url=dataUrl;p.avatar_thumb=thumbUrl;await dbPut('profiles',p);}_pfAvUrl=dataUrl;renderAvEd('pf',thumbUrl);}
 toast('已儲存');closeCrop();loadChars();};srcImg.src=URL.createObjectURL(_cropFile);}
 function renderAvEd(type,url){const wrap=$(type==='char'?'ce-av-wrap':'pf-av-wrap');if(url)wrap.innerHTML='<img src="'+url+'">';else wrap.innerHTML=esc('?');}
-let _avOffCache={};function loadAvOff(){_avOffCache=JSON.parse(localStorage.getItem('rp_av_off')||'{}');}function saveAvOff(key,ox,oy){_avOffCache[key]={ox,oy};localStorage.setItem('rp_av_off',JSON.stringify(_avOffCache));}function getAvOff(key){return _avOffCache[key]||{ox:0,oy:0};}
 function pickGen(el,v){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');$('ce-gen').childNodes[0].textContent=v;closePopup('gen-pop');}
 function pickSel(hid,val,label,el,popId){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');$(hid).value=val;const btn=$(hid+'-btn');if(btn)btn.childNodes[0].textContent=label;closePopup(popId);}
 // ═══ Universal Long-Press Drag System ═══
@@ -796,18 +804,34 @@ function initPcmdDrag(container){initLPDrag(container,'.ev-toggle-item[data-pcid
 let chars=[],_charDataCache=null;
 async function getCharData(cid){if(_charDataCache&&_charDataCache.charId===cid)return _charDataCache;const[c,extras,cEvs]=await Promise.all([dbGet('characters',cid),dbByIndex('character_extras','character_id',cid),dbByIndex('character_events','character_id',cid)]);_charDataCache={charId:cid,char:c,extras:sortBy(extras,'sort_order'),events:sortBy(cEvs,'sort_order')};return _charDataCache;}
 async function loadChars(){chars=sortBy(await dbAll('characters'),'sort_order');renderCL();}
-function renderCL(){const el=$('char-list');if(!chars.length){el.innerHTML='<div class="empty">尚未建立角色</div>';el.className='';return;}el.className='char-grid';el.innerHTML=chars.map(c=>{const cover=c.avatar_url?'<div class="char-card-cover"><img src="'+c.avatar_url+'"></div>':'<div class="char-card-cover"><span class="char-card-initial">'+esc((c.name||'?')[0])+'</span></div>';const noImg=c.avatar_url?'':'char-card-no-img';const subHtml='<div class="char-card-sub">'+esc(c.age||'—')+'</div><div class="char-card-sub">'+esc(c.job||'—')+'</div>';return '<div class="char-card '+noImg+'" data-charid="'+c.id+'" onclick="openCharProfile(\''+c.id+'\')"><div class="char-card-menu" onclick="event.stopPropagation();openCharCardMenu(\''+c.id+'\',\''+esc(c.name)+'\')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></div>'+cover+'<div class="char-card-info"><div class="char-card-name">'+esc(c.name)+'</div>'+subHtml+'</div></div>';}).join('');initCharDrag(el);}
-function openCharCardMenu(id,name){$('bs-body').innerHTML='<div class="bs-item" onclick="closeBs();editChar(\''+id+'\')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>編輯角色</div><div class="bs-item" onclick="closeBs();openCEvs(\''+id+'\',\''+name+'\')"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="8" y1="2" x2="6" y2="8"/><line x1="16" y1="2" x2="14" y2="8"/></svg>管理事件</div>';$('bs-ov').classList.add('show');}
+function renderCL(){const el=$('char-list');if(!chars.length){el.innerHTML='<div class="empty">尚未建立角色</div>';el.className='';return;}el.className='char-grid';el.innerHTML=chars.map(c=>{const cover=c.avatar_url?'<div class="char-card-cover"><img src="'+c.avatar_url+'"></div>':'<div class="char-card-cover"><span class="char-card-initial">'+esc((c.name||'?')[0])+'</span></div>';const noImg=c.avatar_url?'':'char-card-no-img';const subHtml='<div class="char-card-sub">'+esc(c.age||'—')+'</div><div class="char-card-sub">'+esc(c.job||'—')+'</div>';return '<div class="char-card '+noImg+'" data-charid="'+c.id+'" onclick="openCharProfile(\''+c.id+'\')"><div class="char-card-menu" onclick="event.stopPropagation();openCharCardMenu(\''+c.id+'\',\''+esc(c.name)+'\',event)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></div>'+cover+'<div class="char-card-info"><div class="char-card-name">'+esc(c.name)+'</div>'+subHtml+'</div></div>';}).join('');initCharDrag(el);}
+function openCharCardMenu(id,name,ev){
+const items=[
+{label:'編輯角色',action:"editChar('"+id+"')"},
+{label:'管理事件',action:"openCEvs('"+id+"','"+esc(name)+"')"},
+{label:'刪除角色',action:"delCharById('"+id+"')",cls:'danger'}
+];
+const btn=ev?ev.target.closest('.char-card-menu'):null;
+if(btn){
+const rect=btn.getBoundingClientRect();
+const m=$('ctx-menu');m.innerHTML=items.map(i=>'<div class="ctx-item'+(i.cls?' '+i.cls:'')+'" onclick="'+i.action+'">'+i.label+'</div>').join('');
+m.style.left='0';m.style.top='0';m.classList.remove('hidden');
+const mw=m.offsetWidth||150;
+let lx=rect.left-mw-4;if(lx<8)lx=rect.right+4;
+m.style.left=lx+'px';m.style.top=(rect.bottom+4)+'px';
+}else{showCtx(innerWidth/2,innerHeight/2,items);}
+}
 async function createChar(){const c={id:uid(),name:'新角色',sort_order:chars.length,created_at:new Date().toISOString()};await dbPut('characters',c);toast('已新增');await loadChars();openCEditUI(c,[]);}
 async function editChar(id){const c=await dbGet('characters',id);let extras=[];try{extras=await dbByIndex('character_extras','character_id',id);}catch(e){const all=await dbAll('character_extras');extras=all.filter(x=>x.character_id===id);}openCEditUI(c,sortBy(extras,'sort_order'));}
-function openCEditUI(c,extras){_avUrl=c.avatar_url||null;const ao=getAvOff('char_'+c.id);_charAvOx=ao.ox;_charAvOy=ao.oy;$('vl').style.display='none';$('vd').style.display='block';$('vd').closest('.scr').scrollTop=0;hideNav();pushH('charDetail');$('ce-id').value=c.id;$('ce-name').value=c.name||'';$('ce-age').value=c.age||'';$('ce-job').value=c.job||'';$('ce-gen').childNodes[0].textContent=c.gender||'未設置';$('ce-set').value=c.setting||'';$('ce-intro').value=c.introduction||'';let grt=c.greeting_message||'';if(c.greeting_scenario&&!grt.includes(c.greeting_scenario))grt=(c.greeting_scenario+'\n\n'+grt).trim();$('ce-grt').value=grt;renderAvEd('char',c.avatar_thumb||_avUrl,0,0);$('ce-av-wrap').onclick=()=>startAvUp('char',c.id);cntF($('ce-set'));cntF($('ce-intro'));cntF($('ce-grt'));const el=$('ce-ex');el.innerHTML='';extras.forEach(ex=>addExUI(ex));initDrag(el);renderCharWBBindings(c.id);}
+function openCEditUI(c,extras){_avUrl=c.avatar_url||null;$('vl').style.display='none';$('vd').style.display='block';$('vd').closest('.scr').scrollTop=0;hideNav();pushH('charDetail');$('ce-id').value=c.id;$('ce-name').value=c.name||'';$('ce-age').value=c.age||'';$('ce-job').value=c.job||'';$('ce-slogan').value=c.slogan||'';$('ce-gen').childNodes[0].textContent=c.gender||'未設置';$('ce-set').value=c.setting||'';$('ce-intro').value=c.introduction||'';let grt=c.greeting_message||'';if(c.greeting_scenario&&!grt.includes(c.greeting_scenario))grt=(c.greeting_scenario+'\n\n'+grt).trim();$('ce-grt').value=grt;renderAvEd('char',c.avatar_thumb||_avUrl);$('ce-av-wrap').onclick=()=>startAvUp('char',c.id);cntF($('ce-set'));cntF($('ce-intro'));cntF($('ce-grt'));const el=$('ce-ex');el.innerHTML='';extras.forEach(ex=>addExUI(ex));initDrag(el);renderCharWBBindings(c.id);}
 function addExUI(ex){ex=ex||{};const el=$('ce-ex'),n=el.children.length+1,d=document.createElement('div');d.className='card';d.style.marginBottom='8px';d.dataset.exId=ex.id||'';d.innerHTML='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span class="drag-h">⠿</span><div class="f" style="margin:0;flex:1;"><label>#'+n+'</label><input type="text" value="'+esc(ex.title||'')+'" placeholder="標題"></div><button class="btn bs2" style="color:var(--del);border:0;" onclick="rmEx(this)">✕</button></div><div class="f" style="margin:0;"><textarea rows="10" oninput="cntF(this)" placeholder="內容">'+esc(ex.content||'')+'</textarea><div class="ctr">0 字 · ≈ 0 tokens</div></div>';el.appendChild(d);const ta=d.querySelector('textarea');if(ta&&ta.value)cntF(ta);}
 async function rmEx(btn){const c=btn.closest('.card'),eid=c.dataset.exId;if(!await cfm('確定刪除？'))return;if(eid)await dbDel('character_extras',eid);c.remove();}
-async function saveChar(){const id=$('ce-id').value;const c=await dbGet('characters',id)||{id};Object.assign(c,{name:$('ce-name').value.trim()||'未命名',age:$('ce-age').value.trim()||null,gender:$('ce-gen').textContent.trim(),job:$('ce-job').value.trim()||null,setting:$('ce-set').value,introduction:$('ce-intro').value,greeting_scenario:'',greeting_message:$('ce-grt').value,worldbook_ids:getCharWBIds()});await dbPut('characters',c);saveAvOff('char_'+id,_charAvOx,_charAvOy);
+async function saveChar(){const id=$('ce-id').value;const c=await dbGet('characters',id)||{id};Object.assign(c,{name:$('ce-name').value.trim()||'未命名',age:$('ce-age').value.trim()||null,gender:$('ce-gen').textContent.trim(),job:$('ce-job').value.trim()||null,slogan:$('ce-slogan').value.trim()||null,setting:$('ce-set').value,introduction:$('ce-intro').value,greeting_scenario:'',greeting_message:$('ce-grt').value,worldbook_ids:getCharWBIds()});await dbPut('characters',c);
 const cards=$('ce-ex').querySelectorAll('.card');
 for(let i=0;i<cards.length;i++){const cd=cards[i],eid=cd.dataset.exId,ti=cd.querySelector('input[type="text"]').value,co=cd.querySelector('textarea').value;if(eid){const ex=await dbGet('character_extras',eid)||{id:eid};Object.assign(ex,{character_id:id,title:ti,content:co,sort_order:i});await dbPut('character_extras',ex);embedAndPatch('character_extras',eid,ti+' '+co);}else{const nid=uid();cd.dataset.exId=nid;await dbPut('character_extras',{id:nid,character_id:id,title:ti,content:co,sort_order:i});embedAndPatch('character_extras',nid,ti+' '+co);}}
 toast('已儲存');_dirty=false;loadChars();_charDataCache=null;}
 async function delChar(){if(!await cfm('確定要刪除此角色嗎？\n此動作不可恢復！'))return;const id=$('ce-id').value;await dbDel('characters',id);for(const x of await dbByIndex('character_extras','character_id',id))await dbDel('character_extras',x.id);for(const x of await dbByIndex('character_events','character_id',id))await dbDel('character_events',x.id);toast('已刪除');closeCharEdit();await loadChars();_charDataCache=null;}
+async function delCharById(id){hideCtx();if(!await cfm('確定要刪除此角色嗎？\n此動作不可恢復！'))return;await dbDel('characters',id);for(const x of await dbByIndex('character_extras','character_id',id))await dbDel('character_extras',x.id);for(const x of await dbByIndex('character_events','character_id',id))await dbDel('character_events',x.id);toast('已刪除');await loadChars();_charDataCache=null;}
 let _dirty=false;
 function markDirty(){_dirty=true;}
 async function checkDirty(){if(!_dirty)return true;const ok=await cfm('尚未儲存，確定離開？');if(ok)_dirty=false;return ok;}
@@ -831,7 +855,8 @@ const card=$('cpf-card');
 if(c.avatar_url){hero.innerHTML+='<img src="'+c.avatar_url+'">';card.classList.remove('no-img');}
 else{hero.innerHTML+='<div class="cpf-hero-empty">'+esc((c.name||'?')[0])+'</div>';card.classList.add('no-img');}
 // Name & tagline
-hero.innerHTML+='<div class="cpf-hero-text"><div class="cpf-hero-label">Character File</div><div class="cpf-hero-name">'+esc(c.name)+'</div><div class="cpf-hero-tagline" id="cpf-tagline"></div></div>';
+// Name & tagline
+hero.innerHTML+='<div class="cpf-hero-text"><div class="cpf-hero-label">Character File</div><div class="cpf-hero-name">'+esc(c.name)+'</div><div class="cpf-hero-tagline" id="cpf-tagline"></div>'+(c.slogan&&c.slogan.trim()?'<div class="cpf-hero-slogan">'+esc(c.slogan)+'</div>':'')+'</div>';
 const tl=$('cpf-tagline');
 const parts=[];
 if(c.age)parts.push(esc(c.age));
@@ -859,13 +884,15 @@ html+='</div>';
 }
 // Events — click opens full view page
 if(evs.length){
-html+='<div class="cpf-hr"></div><div class="cpf-section-head"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="8" y1="2" x2="6" y2="8"/><line x1="16" y1="2" x2="14" y2="8"/></svg>事件</div><div class="cpf-events">';
+html+='<div class="cpf-hr"></div><div class="cpf-section-head"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="8" y1="2" x2="6" y2="8"/><line x1="16" y1="2" x2="14" y2="8"/></svg>事件<span class="cpf-ev-count">'+evs.length+'</span></div><div class="cpf-events">';
 evs.forEach((ev,i)=>{
 const trigger=ev.time_or_keyword?esc(cpfTpl(ev.time_or_keyword)):'—';
 html+='<div class="cpf-ev-item" onclick="openCpfEvDetail(\''+ev.id+'\')"><div class="cpf-ev-header"><div class="cpf-ev-info"><div class="cpf-ev-name">'+esc(ev.name)+'</div><div class="cpf-ev-trigger">'+trigger+'</div></div><svg class="cpf-ev-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
 });
 html+='</div>';
 }
+// Decorative footer
+html+='<div class="cpf-footer"><div class="cpf-footer-line"></div><div class="cpf-footer-text">Reverie</div></div>';
 $('cpf-body').innerHTML=html;
 $('cpf-overlay').classList.add('show');
 pushH('cpf');
@@ -951,7 +978,7 @@ function closeCpfEvDetail(){$('cpf-ev-detail').classList.remove('show');}
 
 // === Character Events ===
 let _cevCid=null;
-async function openCEvs(cid,name){_cevCid=cid;$('cev-t').textContent=(name||'')+' 預設事件';let evs=[];try{evs=sortBy(await dbByIndex('character_events','character_id',cid),'sort_order');}catch(e){console.error('openCEvs index fail, fallback:',e);evs=sortBy((await dbAll('character_events')).filter(x=>x.character_id===cid),'sort_order');}const b=$('cev-body');b.innerHTML='';if(!evs.length){b.innerHTML='<div class="empty">尚未建立</div>';openFP('fp-cev');return;}evs.forEach(ev=>{b.innerHTML+='<div class="ev-toggle-item" data-evid="'+ev.id+'" style="cursor:pointer;" onclick="openCEvD(\''+ev.id+'\')"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;"><span class="drag-h">⠿</span><div style="flex:1;min-width:0;"><div class="lt">'+esc(ev.name)+'</div><div class="ls">'+(ev.time_or_keyword?esc(ev.time_or_keyword):'-')+'</div></div><div style="font-size:13px;color:var(--tx2);flex-shrink:0;">'+(ev.content||'').length+' 字</div></div></div>';});initEvDrag(b,'character_events','data-evid');openFP('fp-cev');}
+async function openCEvs(cid,name){_cevCid=cid;$('cev-t').textContent=(name||'')+' 預設事件';let evs=[];try{evs=sortBy(await dbByIndex('character_events','character_id',cid),'sort_order');}catch(e){console.error('openCEvs index fail, fallback:',e);evs=sortBy((await dbAll('character_events')).filter(x=>x.character_id===cid),'sort_order');}const b=$('cev-body');b.innerHTML='';if(!evs.length){b.innerHTML='<div class="empty">尚未建立</div>';openFP('fp-cev');return;}evs.forEach(ev=>{b.innerHTML+='<div class="ev-toggle-item" data-evid="'+ev.id+'" style="cursor:pointer;" onclick="openCEvD(\''+ev.id+'\')"><span class="drag-h">⠿</span><div class="lb"><div class="lt">'+esc(ev.name)+'</div><div class="ls">'+(ev.time_or_keyword?esc(ev.time_or_keyword):'—')+'</div></div><svg style="width:18px;height:18px;color:var(--tx2);stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>';});initEvDrag(b,'character_events','data-evid');openFP('fp-cev');}
 function newCEv(){$('ev-id').value='';$('ev-n').value='';$('ev-t').value='';$('ev-c').value='';openFP('fp-cev-d');}
 async function openCEvD(id){const ev=await dbGet('character_events',id);$('ev-id').value=ev.id;$('ev-n').value=ev.name;$('ev-t').value=ev.time_or_keyword||'';$('ev-c').value=ev.content||'';cntF($('ev-c'));openFP('fp-cev-d');}
 async function saveCEv(){const eid=$('ev-id').value,data={character_id:_cevCid,name:$('ev-n').value.trim()||'未命名',time_or_keyword:$('ev-t').value,content:$('ev-c').value};if(eid){const ev=await dbGet('character_events',eid)||{id:eid};Object.assign(ev,data);await dbPut('character_events',ev);embedAndPatch('character_events',eid,data.name+' '+data.time_or_keyword+' '+data.content);}else{data.id=uid();const existing=await dbByIndex('character_events','character_id',_cevCid);data.sort_order=existing.length;await dbPut('character_events',data);embedAndPatch('character_events',data.id,data.name+' '+data.time_or_keyword+' '+data.content);}toast('已儲存');closeFP('fp-cev-d');closeFP('fp-cev');openCEvs(_cevCid);_charDataCache=null;}
@@ -1092,10 +1119,10 @@ let profiles=[],_pfEditId=null;
 async function loadPf(){profiles=sortBy(await dbAll('profiles'),'sort_order');renderPf();}
 function renderPf(){const el=$('pf-list');if(!profiles.length){el.innerHTML='<div class="empty">尚未建立</div>';el.className='';return;}el.className='char-grid';el.innerHTML=profiles.map(p=>{const cover=p.avatar_url?'<div class="char-card-cover"><img src="'+p.avatar_url+'"></div>':'<div class="char-card-cover"><span class="char-card-initial">'+esc((p.name||'?')[0])+'</span></div>';const noImg=p.avatar_url?'':'char-card-no-img';const subHtml='<div class="char-card-sub">'+esc(p.age||'—')+'</div><div class="char-card-sub">'+esc(p.job||'—')+'</div>';return '<div class="char-card '+noImg+'" data-pfid="'+p.id+'" onclick="openPfEdit(\''+p.id+'\')">'+cover+'<div class="char-card-info"><div class="char-card-name">'+esc(p.name)+'</div>'+subHtml+'</div></div>';}).join('');initPfDrag(el);renderPpPop();}
 async function createPf(){const p={id:uid(),name:'新檔案',sort_order:profiles.length};await dbPut('profiles',p);toast('已新增');await loadPf();openPfEdit(p.id);}
-function openPfEdit(id){_pfEditId=id;const p=profiles.find(x=>x.id===id);if(!p)return;_pfAvUrl=p.avatar_url||null;const ao=getAvOff('pf_'+id);_pfAvOx=ao.ox;_pfAvOy=ao.oy;$('pf-vl').style.display='none';$('pf-vd').style.display='block';hideNav();pushH('pfDetail');$('pf-edit-id').value=id;$('pf-edit-name').value=p.name||'';$('pf-edit-age').value=p.age||'';$('pf-edit-job').value=p.job||'';$('pf-gen').childNodes[0].textContent=p.gender||'未設置';$('pf-edit-setting').value=p.setting||'';renderAvEd('pf',p.avatar_thumb||_pfAvUrl,0,0);$('pf-av-wrap').onclick=()=>startAvUp('profile',id);cntF($('pf-edit-setting'));}
+function openPfEdit(id){_pfEditId=id;const p=profiles.find(x=>x.id===id);if(!p)return;_pfAvUrl=p.avatar_url||null;$('pf-vl').style.display='none';$('pf-vd').style.display='block';hideNav();pushH('pfDetail');$('pf-edit-id').value=id;$('pf-edit-name').value=p.name||'';$('pf-edit-age').value=p.age||'';$('pf-edit-job').value=p.job||'';$('pf-gen').childNodes[0].textContent=p.gender||'未設置';$('pf-edit-setting').value=p.setting||'';renderAvEd('pf',p.avatar_thumb||_pfAvUrl);$('pf-av-wrap').onclick=()=>startAvUp('profile',id);cntF($('pf-edit-setting'));}
 function closePfEdit(){if(_dirty){checkDirty().then(ok=>{if(ok){_dirty=false;doClosePfEdit();}});return;}doClosePfEdit();}
 function doClosePfEdit(){if($('pf-vl'))$('pf-vl').style.display='block';if($('pf-vd'))$('pf-vd').style.display='none';_pfEditId=null;_dirty=false;}
-async function savePfDetail(){const id=$('pf-edit-id').value,p=await dbGet('profiles',id)||{id};Object.assign(p,{name:$('pf-edit-name').value.trim()||'未命名',age:$('pf-edit-age').value.trim()||null,gender:$('pf-gen').textContent.trim()||null,job:$('pf-edit-job').value.trim()||null,setting:$('pf-edit-setting').value});await dbPut('profiles',p);saveAvOff('pf_'+id,_pfAvOx,_pfAvOy);_dirty=false;toast('已儲存');await loadPf();}
+async function savePfDetail(){const id=$('pf-edit-id').value,p=await dbGet('profiles',id)||{id};Object.assign(p,{name:$('pf-edit-name').value.trim()||'未命名',age:$('pf-edit-age').value.trim()||null,gender:$('pf-gen').textContent.trim()||null,job:$('pf-edit-job').value.trim()||null,setting:$('pf-edit-setting').value});await dbPut('profiles',p);_dirty=false;toast('已儲存');await loadPf();}
 async function delPfDetail(){if(!await cfm('確定要刪除此檔案嗎？\n此動作不可恢復！'))return;await dbDel('profiles',_pfEditId);toast('已刪除');closePfEdit();await loadPf();}
 let _chatPlayerId=null;
 function renderPpPop(){const el=$('pp-list');if(!profiles.length){el.innerHTML='<div style="padding:8px;color:var(--tx2);">尚未建立</div>';return;}el.innerHTML=profiles.map(p=>{const av=p.avatar_thumb||p.avatar_url;return '<div class="popup-item'+(_chatPlayerId===p.id?' active':'')+'" onclick="pickPlayer(\''+p.id+'\',this)"><div class="av" style="width:28px;height:28px;font-size:12px;">'+(av?'<img src="'+av+'">':esc((p.name||'?')[0]))+'</div><span style="flex:1">'+esc(p.name)+'</span><span class="check">✓</span></div>';}).join('');}
@@ -1147,6 +1174,7 @@ if(d.character_book&&d.character_book.entries&&d.character_book.entries.length){
 if(d.extensions){if(d.extensions.depth_prompt&&d.extensions.depth_prompt.prompt){await dbPut('character_extras',{id:uid(),character_id:cid,title:'深度提示詞',content:d.extensions.depth_prompt.prompt,sort_order:exCount++});}
 // Reverie custom extensions
 if(d.extensions.reverie_introduction){c.introduction=d.extensions.reverie_introduction;await dbPut('characters',c);}
+if(d.extensions.reverie_slogan){c.slogan=d.extensions.reverie_slogan;await dbPut('characters',c);}
 if(d.extensions.reverie_avatar){c.avatar_url=d.extensions.reverie_avatar;await dbPut('characters',c);await dbPut('avatars',{id:'char_'+cid,blob:d.extensions.reverie_avatar,type:'image/webp',ts:Date.now()});}
 if(d.extensions.reverie_avatar_thumb){c.avatar_thumb=d.extensions.reverie_avatar_thumb;await dbPut('characters',c);}
 if(d.extensions.reverie_extras&&d.extensions.reverie_extras.length){for(const re of d.extensions.reverie_extras){if(re.title&&re.content){await dbPut('character_extras',{id:uid(),character_id:cid,title:re.title,content:re.content,sort_order:exCount++});}}}
@@ -1171,7 +1199,7 @@ const bookEntries=events.map((ev,i)=>({keys:(ev.time_or_keyword||'').split(',').
 // Build extras fields — match by known ST V2 field titles, rest go into extensions
 const findEx=(title)=>(extras.find(e=>e.title===title)||{}).content||'';
 const otherExtras=extras.filter(e=>!['對話範例','創作者筆記','系統提示詞','歷史後指令','深度提示詞'].includes(e.title));
-const card={spec:'chara_card_v2',spec_version:'2.0',data:{name:targetChar.name||'',description:targetChar.setting||'',personality:'',scenario:targetChar.greeting_scenario||'',first_mes:targetChar.greeting_message||'',mes_example:findEx('對話範例'),creator_notes:findEx('創作者筆記'),system_prompt:findEx('系統提示詞'),post_history_instructions:findEx('歷史後指令'),tags:[],creator:'Reverie RP Studio',character_version:'1.0',extensions:{reverie_introduction:targetChar.introduction||'',reverie_age:targetChar.age||'',reverie_gender:targetChar.gender||'',reverie_job:targetChar.job||'',reverie_extras:otherExtras.map(e=>({title:e.title,content:e.content}))},character_book:{entries:bookEntries}}};
+const card={spec:'chara_card_v2',spec_version:'2.0',data:{name:targetChar.name||'',description:targetChar.setting||'',personality:'',scenario:targetChar.greeting_scenario||'',first_mes:targetChar.greeting_message||'',mes_example:findEx('對話範例'),creator_notes:findEx('創作者筆記'),system_prompt:findEx('系統提示詞'),post_history_instructions:findEx('歷史後指令'),tags:[],creator:'Reverie RP Studio',character_version:'1.0',extensions:{reverie_introduction:targetChar.introduction||'',reverie_slogan:targetChar.slogan||'',reverie_age:targetChar.age||'',reverie_gender:targetChar.gender||'',reverie_job:targetChar.job||'',reverie_extras:otherExtras.map(e=>({title:e.title,content:e.content}))},character_book:{entries:bookEntries}}};
 // Embed avatar as base64 if available
 if(targetChar.avatar_url){card.data.extensions.reverie_avatar=targetChar.avatar_url;}
 if(targetChar.avatar_thumb){card.data.extensions.reverie_avatar_thumb=targetChar.avatar_thumb;}
@@ -1208,7 +1236,7 @@ async function initApp(){
     loadWBs().catch(e=>console.warn('loadWBs',e))
   ]);
   await loadChatIndex().catch(e=>console.warn('loadChatIndex',e));
-  try{loadAvOff();}catch(e){}
+
   try{loadMemRules();}catch(e){}
   try{renderChatList();}catch(e){console.warn('renderChatList',e);}
 }
@@ -1240,7 +1268,6 @@ const id='chat_'+Date.now();_curChatId=id;_curChat={charId:cid,charName:c.name,w
 if(_chatRpId){const p=prompts.find(x=>x.id===_chatRpId);if(p)$('rp-btn').childNodes[0].textContent=p.name;syncRpPopup();}
 _chatStore[id]=_curChat;await saveChatMeta();$('c-name').textContent=c.name;$('c-msgs').innerHTML='';_lazyRendered=0;renderSidePlayer();openChat(c.name);
 if(c.greeting_message)await appendMsgAwait('ai',c.name,c.greeting_message,c.avatar_url);
-if(!c.greeting_message)await appendMsgAwait('system','系統','對話已開始');
 renderChatList();_pendingChatCharId=null;}
 function tplReplace(text){if(!text||!_curChat)return text||'';let s=text;const cn=_curChat.charName||'';let un='';if(_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf)un=pf.name||'';}return s.replace(/\{\{user\}\}/gi,un||'玩家').replace(/\{\{char\}\}/gi,cn);}
 function fmt24(t){if(!t)return '';const m=t.match(/^(上午|下午)\s*(\d{1,2}):(\d{2})$/);if(!m)return t;let h=parseInt(m[2]);if(m[1]==='下午'&&h<12)h+=12;if(m[1]==='上午'&&h===12)h=0;return String(h).padStart(2,'0')+':'+m[3];}
@@ -1349,7 +1376,7 @@ else aiText=data.choices&&data.choices[0]?data.choices[0].message.content:'';
 let displayText=aiText;
 appendMsg('ai',_curChat.charName,displayText,_curChat.avatarUrl);touchChatTime();saveChatStore();
 try{const li=document.getElementById('cli-'+_curChatId);if(li){const ls=li.querySelector('.ls');if(ls)ls.textContent=tplReplace(displayText).replace(/[*#_`>\n]+/g,' ').substring(0,80);const ct=document.getElementById('ct-'+_curChatId);if(ct)ct.textContent=fmtChatTime(new Date().toISOString());}}catch(e){}
-try{console.log('[摘要debug]','auto_summary:',s.auto_summary,'interval:',s.summary_interval,'ai_count:',(_curChat.msgs||[]).filter(m=>m.role==='ai').length,'lastSumAt:',_curChat.lastSumGenAt||0);if(s.auto_summary){const iv=parseInt(s.summary_interval)||10;const ac=(_curChat.msgs||[]).filter(m=>m.role==='ai').length;const lastSumAt=_curChat.lastSumGenAt||0;if(ac-lastSumAt>=iv){_curChat.lastSumGenAt=ac;saveChatStore();toast('自動生成摘要…');await autoGenSummary(vecEvents);}}}catch(e){console.error('autoSummary error:',e);}
+try{if(s.auto_summary){const iv=parseInt(s.summary_interval)||10;const ac=(_curChat.msgs||[]).filter(m=>m.role==='ai').length;const lastSumAt=_curChat.lastSumGenAt||0;if(ac-lastSumAt>=iv){_curChat.lastSumGenAt=ac;saveChatStore();toast('自動生成摘要…');await autoGenSummary(vecEvents);}}}catch(e){}
 try{await autoGenMemory(_curChat,_curChatId);}catch(e){}
 try{await autoTracker(_curChat,_curChatId);}catch(e){}
 }catch(e){hideTyping();_aiAbort=null;if(e.name==='AbortError')return;toast('請求失敗');console.error(e);}}
@@ -1514,7 +1541,7 @@ let _memGenRunning=false;
 let _fallbackMems=[],_fallbackMemos=[];
 async function autoGenMemory(chat,chatId){if(!chat||_memGenRunning)return;
 const s=getSettings();let apiCfg=getFeatureApiCfg('mem');
-if(!apiCfg||!apiCfg.api_key||!apiCfg.model){console.warn('[Memory] 未設定記憶生成 API，跳過');return;}
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const interval=parseInt(s.mem_rule)||10;
 const msgCount=(chat.msgs||[]).filter(m=>m.role==='ai').length;
 const lastAt=chat.lastMemGenAt||0;
@@ -1537,7 +1564,7 @@ async function autoTracker(chat,chatId){if(!chat)return;
 const s=getSettings();const memoOn=s.memo_on,stateOn=s.state_on;
 if(!memoOn&&!stateOn)return;
 let apiCfg=getFeatureApiCfg('trk');
-if(!apiCfg||!apiCfg.api_key||!apiCfg.model){console.warn('[Tracker] 未設定追蹤器 API/模型，跳過',apiCfg);return;}
+if(!apiCfg||!apiCfg.api_key||!apiCfg.model)return;
 const msgs=chat.msgs||[];if(!msgs.length)return;
 // Resolve names
 const charName=chat.charName||'Character';
@@ -1556,7 +1583,6 @@ if(stateOn){const sb=(chat.sceneBoard)||{};if(sb.autoUpdate!==false){const sbPro
 const transcript=stateTranscript||((lastPlayerMsg)?playerName+': '+lastPlayerMsg.content:'');
 if(!transcript.trim())return;
 const text=await callApiSimple(apiCfg,sysPr,transcript,600,0.2);
-console.log('[Tracker] response:',text?text.substring(0,200):'(empty)');
 if(!text||!text.trim())return;
 // Parse MEMO (only first one per turn)
 if(memoOn){const memoMatch=text.match(/^\[MEMO\]\s*(.+)$/m);if(memoMatch){const mt=memoMatch[1].trim();if(mt){const mid=uid();await dbPut('memories',{id:mid,chat_id:chatId,content:mt,date:localDateStr(),created_at:new Date().toISOString(),type:'memo'});embedAndPatch('memories',mid,mt);}}}
@@ -1568,7 +1594,7 @@ async function renameChatInline(){if(!_curChat||!_curChatId)return;const name=aw
 function renderChatList(){const el=$('chat-list'),ids=Object.keys(_chatStore).sort((a,b)=>{const pa=_chatStore[a].pinned?1:0,pb=_chatStore[b].pinned?1:0;if(pa!==pb)return pb-pa;return(new Date(_chatStore[b].updated||0).getTime())-(new Date(_chatStore[a].updated||0).getTime());});
 if(!ids.length){el.innerHTML='<div class="empty">點擊「+ 新對話」開始</div>';return;}
 ids.forEach(id=>{const c=_chatStore[id];if(c&&c.charId){const ch=chars.find(x=>x.id===c.charId);if(ch&&ch.avatar_url){c.avatarUrl=ch.avatar_url;c.avatarThumb=ch.avatar_thumb||'';}}});
-el.innerHTML=ids.map(id=>{const c=_chatStore[id],ao=getAvOff('char_'+c.charId);
+el.innerHTML=ids.map(id=>{const c=_chatStore[id];
 const batchDot=_batchMode?'<div class="batch-dot'+(_batchSel.has(id)?' sel':'')+'" id="bd-'+id+'" onclick="toggleBatchSel(\''+id+'\',event)"></div>':'';
 const pinSvg=c.pinned?'<div class="pin-badge"><svg viewBox="0 0 24 24"><path d="M16 2.4a1.2 1.2 0 011.6 0l4 4a1.2 1.2 0 010 1.6l-4.2 4.2a1.5 1.5 0 01-1 .4H12.8l-2.3 2.3V18.5a1 1 0 01-1.7.7L5.3 15.7a1 1 0 01.7-1.7h3.6L12 11.6V8.4a1.5 1.5 0 01.4-1z"/><line x1="3" y1="21" x2="9" y2="15" stroke-width="2" fill="none"/></svg></div>':'';
 const avWrap='<div style="position:relative;flex-shrink:0;">'+avH(c.avatarUrl,c.charName,72,0,0,c.avatarThumb).replace('class="av"','class="av av-list"')+pinSvg+'</div>';
@@ -1619,11 +1645,11 @@ cm.scrollTop=cm.scrollHeight-prevH;_lazyLoading=false;}
 async function openChatEvents(){if(!_curChat)return;const b=$('chat-ev-body');b.innerHTML='';
 const cd=await getCharData(_curChat.charId);const cEvs=cd.events;
 let creatorToggles={};try{(await dbByIndex('chat_creator_event_toggles','chat_id',_curChatId)).forEach(r=>{creatorToggles[r.event_id]=r.enabled;});}catch(e){}
-if(cEvs.length){b.innerHTML+='<div class="stt" style="margin-top:4px;">創作者事件</div>';cEvs.forEach(ev=>{const on=creatorToggles[ev.id]!==false;b.innerHTML+='<div class="ev-toggle-item" style="border-left:3px solid var(--ac);"><div class="lb" onclick="viewCreatorEv(\''+ev.id+'\')" style="cursor:pointer;"><div class="lt">'+esc(tplReplace(ev.name))+'</div><div class="ls">'+(ev.time_or_keyword?esc(tplReplace(ev.time_or_keyword)):'-')+(ev.content?' · '+((ev.content||'').length)+' 字':'')+'</div></div><div class="tog'+(on?' on':'')+'" onclick="toggleCrEv(\''+ev.id+'\',this)"></div></div>';});}
+if(cEvs.length){b.innerHTML+='<div class="stt" style="margin-top:4px;">創作者事件</div>';cEvs.forEach(ev=>{const on=creatorToggles[ev.id]!==false;b.innerHTML+='<div class="ev-toggle-item"><div class="lb" onclick="viewCreatorEv(\''+ev.id+'\')" style="cursor:pointer;"><div class="lt">'+esc(tplReplace(ev.name))+'</div><div class="ls">'+(ev.time_or_keyword?esc(tplReplace(ev.time_or_keyword)):'—')+'</div></div><div class="tog'+(on?' on':'')+'" onclick="event.stopPropagation();toggleCrEv(\''+ev.id+'\',this)"></div></div>';});}
 let playerEvs=sortBy(await dbByIndex('chat_events','chat_id',_curChatId),'sort_order');
 b.innerHTML+='<div class="stt" style="margin-top:32px;display:flex;align-items:center;justify-content:space-between;">玩家事件<button class="btn bp bs2" onclick="newChatEv()">+ 新增</button></div>';
 if(!playerEvs.length)b.innerHTML+='<div style="color:var(--tx2);font-size:13px;padding:12px;">尚未新增</div>';
-else{b.innerHTML+='<div id="pl-ev-drag">';playerEvs.forEach(ev=>{b.innerHTML+='<div class="ev-toggle-item" data-evid="'+ev.id+'"><div class="lb" onclick="openChatEvD(\''+ev.id+'\')" style="cursor:pointer;"><div class="lt">'+esc(tplReplace(ev.name))+'</div><div class="ls">'+(ev.keyword?esc(tplReplace(ev.keyword)):'-')+'</div></div><div class="tog'+(ev.enabled!==false?' on':'')+'" onclick="togglePlEv(\''+ev.id+'\',this)"></div></div>';});b.innerHTML+='</div>';setTimeout(()=>{const dc=$('pl-ev-drag');if(dc)initEvDrag(dc,'chat_events','data-evid');},0);}
+else{b.innerHTML+='<div id="pl-ev-drag">';playerEvs.forEach(ev=>{b.innerHTML+='<div class="ev-toggle-item" data-evid="'+ev.id+'"><div class="lb" onclick="openChatEvD(\''+ev.id+'\')" style="cursor:pointer;"><div class="lt">'+esc(tplReplace(ev.name))+'</div><div class="ls">'+(ev.keyword?esc(tplReplace(ev.keyword)):'—')+'</div></div><div class="tog'+(ev.enabled!==false?' on':'')+'" onclick="event.stopPropagation();togglePlEv(\''+ev.id+'\',this)"></div></div>';});b.innerHTML+='</div>';setTimeout(()=>{const dc=$('pl-ev-drag');if(dc)initEvDrag(dc,'chat_events','data-evid');},0);}
 openFP('fp-chat-ev');}
 async function toggleCrEv(evId,el){if(!_curChatId)return;const nowOn=el.classList.contains('on');el.classList.toggle('on');
 await dbPut('chat_creator_event_toggles',{id:_curChatId+'_'+evId,chat_id:_curChatId,event_id:evId,enabled:!nowOn});}
