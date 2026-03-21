@@ -76,6 +76,24 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:4px;font-weigh
 .char-card-menu svg{width:18px;height:18px;}
 .char-card-no-img .char-card-menu{color:var(--tx2);background:var(--bgi);}
 .pin-badge{position:absolute;bottom:2px;right:2px;width:20px;height:20px;background:var(--ac);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg2);box-shadow:0 1px 3px rgba(0,0,0,.15);}
+.wb-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.wb-card{display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--bd);border-radius:14px;cursor:pointer;box-shadow:0 1px 2px var(--sh);position:relative;overflow:hidden;aspect-ratio:1/1.45;}
+.wb-card-cover{width:100%;flex:1;min-height:0;background:var(--acl);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.wb-card-cover::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 22px,var(--bd) 22px,var(--bd) 23px);opacity:.25;pointer-events:none;}
+.wb-card-cover::after{content:'';position:absolute;left:28px;top:0;bottom:0;width:1px;background:var(--ac);opacity:.2;pointer-events:none;}
+.wb-card-has-cover::before,.wb-card-has-cover::after{display:none;}
+.wb-card-has-cover img{width:100%;height:100%;object-fit:cover;object-position:top;position:relative;z-index:1;}
+.wb-card-icon{position:relative;z-index:1;margin-bottom:6px;opacity:.55;}
+.wb-card-ch-count{position:relative;z-index:1;font-size:12px;color:var(--ach);opacity:.7;font-weight:500;}
+.wb-card-spine{position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--ac);opacity:.35;border-radius:14px 0 0 14px;}
+.wb-card-info{padding:12px 14px 14px;text-align:center;width:100%;box-sizing:border-box;}
+.wb-card-name{font-size:17px;font-weight:600;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.wb-card-desc{font-size:14px;color:var(--tx2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.5;}
+.wb-cover-editor{display:flex;justify-content:center;margin-bottom:16px;margin-top:4px;}
+.wb-cover-wrap{width:160px;aspect-ratio:1/1.45;border-radius:12px;overflow:hidden;border:2px dashed var(--bd2);background:var(--bgi);cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:border-color .15s;}.wb-cover-wrap:hover{border-color:var(--ac);}
+.wb-cover-wrap.has-img{border-style:solid;border-color:var(--bd);}
+.wb-cover-wrap img{width:100%;height:100%;object-fit:cover;pointer-events:none;}
+.wb-cover-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .pin-badge svg{width:11px;height:11px;fill:#fff;stroke:#fff;stroke-width:1;}
 .lb{flex:1;min-width:0;}.lt{font-size:17px;font-weight:500;color:var(--tx3);}.ls{font-size:15px;color:var(--tx2);margin-top:6px;line-height:1.5;max-width:80%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .li-actions{display:flex;gap:8px;width:100%;margin-top:8px;}
@@ -361,13 +379,14 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
       <div style="flex:1;"></div><button class="btn bp bs2" onclick="saveWB()">儲存</button>
     </div>
     <input type="hidden" id="wb-edit-id">
+    <div class="wb-cover-editor"><div class="wb-cover-wrap" id="wb-cover-wrap" onclick="startAvUp('wb',_curWBId)"><div class="wb-cover-empty"><svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="var(--ac)" stroke-linecap="round" stroke-linejoin="round" opacity=".5"><path d="M20 10c-3-2.5-7-4-11-4H5v24h4c4 0 8 1.5 11 4 3-2.5 7-4 11-4h4V6h-4c-4 0-8 1.5-11 4z" stroke-width="1.5"/><path d="M20 10v24" stroke-width="1.2"/></svg><div style="font-size:13px;color:var(--tx2);margin-top:6px;">點擊上傳封面</div></div></div></div>
     <div class="card"><div class="ct">世界書資訊</div>
       <div class="f"><label>名稱</label><input type="text" id="wb-edit-name" placeholder="例：中世紀奇幻世界" oninput="markDirty()"></div>
       <div class="f"><label>描述</label><textarea rows="3" id="wb-edit-desc" oninput="cntF(this);markDirty()" placeholder="這本世界書的簡要描述..."></textarea><div class="ctr">0 字</div></div>
     </div>
     <div class="card"><div class="ct">章節</div><div id="wb-chapters"></div><button class="btn bs2" onclick="addChUI()" style="margin-top:8px;">+ 新增</button>
     </div>
-    <div style="padding:20px 0 40px;text-align:center;"><button class="btn bdel" onclick="delWB()" style="font-size:14px;padding:8px 20px;">刪除世界書</button></div>
+    <div style="padding:32px 0 48px;"><button class="btn" onclick="delWB()" style="width:100%;font-size:16px;padding:14px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;letter-spacing:.02em;">刪除世界書</button></div>
   </div>
 </div></div>
 <!-- 角色 -->
@@ -565,7 +584,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 </div></div>
 <script>
 // === IndexedDB Data Layer ===
-const DB_NAME='reverie_local',DB_VER=4;let _db=null;
+const DB_NAME='reverie_local',DB_VER=5;let _db=null;
 // ═══ Default Prompts ═══
 const DEFAULT_RP_PROMPT='你是一位專業的角色扮演敘事者。請根據角色設定與場景，以豐富的文學筆觸推進劇情。\n\n## 回覆規則\n- 以第三人稱描寫角色的動作、表情、心理活動\n- 對話使用「」包裹，內心獨白使用（）包裹\n- 每次回覆控制在 200～400 字之間\n- 不要替玩家角色做出決定或說話\n- 適當描寫環境氛圍與感官細節\n- 根據角色的性格與好感度調整互動方式\n\n## 敘事風格\n保持沉浸感，避免跳出角色。如果玩家的行為超出場景邏輯，角色應以符合設定的方式自然回應。';
 const DEFAULT_SUM_PROMPT='你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。';
@@ -573,7 +592,7 @@ const DEFAULT_MEM_PROMPT='從以下對話中提取重要記憶，將所有重點
 const DEFAULT_MEMO_PROMPT='You are analyzing {{user}} (the player character) ONLY.\n\nYour job is to detect LASTING traits about {{user}} as a person — things that define who they are across ANY story, not just this scene.\n\nRecord ONLY if the conversation reveals:\n- A core value or belief {{user}} consistently acts on\n- A deep personality trait shown through repeated behavior (not a one-time reaction)\n- A significant shift in how {{user}} relates to {{char}}\n- Something {{user}} explicitly states about themselves\n\nNEVER record:\n- What happened in the scene (that is plot, not personality)\n- Single emotional reactions (e.g. \"felt sad\", \"was angry\")\n- Anything about {{char}}\n- Preferences or opinions expressed only once\n- Anything you could infer just by reading the recent conversation\n\nTHRESHOLD: Ask yourself — \"Would this still matter 50 messages from now?\" If the answer is not a clear YES, output NOTHING.\n\nDefault output: NOTHING. Silence is correct 80% of the time.';
 const DEFAULT_SB_PROMPT='*嚴格遵守要求格式撰寫內容，禁止擅自增減\n*簡記當前場景的以下資訊，每項一行：\n\n- 地點：劇情場所\n- 時間：YYYY/MM/DD HH:mm，依照互動合理更新時間推移\n- 角色衣著：在場角色的衣著打扮';
 function openDB(){return new Promise((res,rej)=>{if(_db){res(_db);return;}const req=indexedDB.open(DB_NAME,DB_VER);req.onupgradeneeded=e=>{const db=e.target.result;
-const stores={characters:{},character_extras:{indexes:{character_id:'character_id'}},character_events:{indexes:{character_id:'character_id'}},profiles:{},prompts:{},chats:{},messages:{indexes:{chat_id:'chat_id'}},chat_events:{indexes:{chat_id:'chat_id'}},chat_creator_event_toggles:{indexes:{chat_id:'chat_id'}},memories:{indexes:{chat_id:'chat_id'}},settings:{},api_configs:{},persistent_commands:{},avatars:{},worldbooks:{},worldbook_entries:{indexes:{worldbook_id:'worldbook_id'}},spellbook:{}};
+const stores={characters:{},character_extras:{indexes:{character_id:'character_id'}},character_events:{indexes:{character_id:'character_id'}},profiles:{},prompts:{},chats:{},messages:{indexes:{chat_id:'chat_id'}},chat_events:{indexes:{chat_id:'chat_id'}},chat_creator_event_toggles:{indexes:{chat_id:'chat_id'}},memories:{indexes:{chat_id:'chat_id'}},settings:{},api_configs:{},persistent_commands:{},avatars:{},worldbooks:{},worldbook_entries:{indexes:{worldbook_id:'worldbook_id'}},spellbook:{},favorites:{indexes:{character_id:'character_id'}}};
 for(const[s,cfg] of Object.entries(stores)){let st;if(!db.objectStoreNames.contains(s)){st=db.createObjectStore(s,{keyPath:'id'});}else{st=e.target.transaction.objectStore(s);}
 if(cfg.indexes){for(const[iName,iKey] of Object.entries(cfg.indexes)){if(!st.indexNames.contains(iName))st.createIndex(iName,iKey);}}}
 };req.onsuccess=e=>{_db=e.target.result;res(_db);};req.onerror=e=>rej(e.target.error);req.onblocked=()=>{console.warn('DB upgrade blocked - close other tabs');toast('請關閉其他分頁後重新整理');};});}
@@ -597,7 +616,7 @@ async function vectorSearch(store,indexField,indexVal,queryEmb,count,threshold){
 async function rebuildAllEmb(){if(!getSettings().emb_local){toast('請先啟用');return;}if(!await cfm('重新生成所有向量？'))return;const pipe=await loadEmbeddingModel();if(!pipe)return;let c=0;toast('處理中...');for(const x of await dbAll('character_extras')){await embedAndPatch('character_extras',x.id,(x.title||'')+' '+(x.content||''));c++;}for(const x of await dbAll('character_events')){await embedAndPatch('character_events',x.id,(x.name||'')+' '+(x.time_or_keyword||'')+' '+(x.content||''));c++;}for(const x of await dbAll('memories')){await embedAndPatch('memories',x.id,x.content||'');c++;}for(const x of await dbAll('worldbook_entries')){await embedAndPatch('worldbook_entries',x.id,(x.name||'')+' '+(x.keywords||'')+' '+(x.content||''));c++;}toast('已完成 '+c+' 筆');}
 
 // === Storage Info ===
-async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
+async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook','favorites'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
 async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'])try{await dbClear(s);}catch(e){}toast('已清除');location.reload();}
 // === Core UI ===
 const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){const lvl=tok.depth||1;const prefix='#'.repeat(lvl)+' ';return '<p>'+prefix+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
@@ -739,8 +758,10 @@ const thumbUrl=thumbCanvas.toDataURL('image/webp',0.85);
 const id=_avTarget.id||$('ce-id').value,key=_avTarget.type+'_'+id;
 await dbPut('avatars',{id:key,blob:dataUrl,type:'image/webp',ts:Date.now()});
 if(_avTarget.type==='char'){const c=await dbGet('characters',id);if(c){c.avatar_url=dataUrl;c.avatar_thumb=thumbUrl;await dbPut('characters',c);}_avUrl=dataUrl;renderAvEd('char',thumbUrl);}
+else if(_avTarget.type==='wb'){const w=await dbGet('worldbooks',id);if(w){w.cover_url=dataUrl;await dbPut('worldbooks',w);}renderWBCover(dataUrl);await loadWBs();}
 else{const p=await dbGet('profiles',id);if(p){p.avatar_url=dataUrl;p.avatar_thumb=thumbUrl;await dbPut('profiles',p);}_pfAvUrl=dataUrl;renderAvEd('pf',thumbUrl);}
 toast('已儲存');closeCrop();loadChars();};srcImg.src=URL.createObjectURL(_cropFile);}
+function renderWBCover(url){const wrap=$('wb-cover-wrap');if(url){wrap.innerHTML='<img src="'+url+'">';wrap.classList.add('has-img');}else{wrap.innerHTML='<div class="wb-cover-empty"><svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="var(--ac)" stroke-linecap="round" stroke-linejoin="round" opacity=".5"><path d="M20 10c-3-2.5-7-4-11-4H5v24h4c4 0 8 1.5 11 4 3-2.5 7-4 11-4h4V6h-4c-4 0-8 1.5-11 4z" stroke-width="1.5"/><path d="M20 10v24" stroke-width="1.2"/></svg><div style="font-size:13px;color:var(--tx2);margin-top:6px;">點擊上傳封面</div></div>';wrap.classList.remove('has-img');}}
 function renderAvEd(type,url){const wrap=$(type==='char'?'ce-av-wrap':'pf-av-wrap');if(url)wrap.innerHTML='<img src="'+url+'">';else wrap.innerHTML=esc('?');}
 function pickGen(el,v){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');$('ce-gen').childNodes[0].textContent=v;closePopup('gen-pop');}
 function pickSel(hid,val,label,el,popId){el.closest('.popup').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');$(hid).value=val;const btn=$(hid+'-btn');if(btn)btn.childNodes[0].textContent=label;closePopup(popId);}
@@ -1003,15 +1024,14 @@ async function delCEv(){const eid=$('ev-id').value;if(!eid){closeFP('fp-cev-d');
 // === WORLD BOOKS ===
 let _wbs=[];let _curWBId=null;
 async function loadWBs(){_wbs=sortBy(await dbAll('worldbooks'),'sort_order');renderWBList();}
-function renderWBList(){const el=$('wb-list');if(!_wbs.length){el.innerHTML='<div class="empty">尚未建立世界書</div>';return;}
-el.innerHTML=_wbs.map(w=>'<div class="li" data-wbid="'+w.id+'" onclick="openWBDetail(\''+w.id+'\')"><div style="width:44px;height:44px;border-radius:12px;background:var(--acl);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--bd);border-left:4px solid var(--ac);"><svg viewBox="0 0 28 24" width="24" height="20" fill="none" stroke="var(--ac)" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5c-2-2-5-3-8-3H2v16h4c3 0 6 1 8 3 2-2 5-3 8-3h4V2h-4c-3 0-6 1-8 3z" stroke-width="1.5"/><path d="M14 5v16" stroke-width="1.2"/><path d="M2 18h4c3 0 6 1 8 3 2-2 5-3 8-3h4" stroke-width="1.5" opacity="0.3" transform="translate(0,1.5)"/><path d="M6 8h5" stroke-width="1" opacity="0.35"/><path d="M6 11h4" stroke-width="1" opacity="0.25"/><path d="M17 8h5" stroke-width="1" opacity="0.35"/><path d="M17 11h4" stroke-width="1" opacity="0.25"/></svg></div><div class="lb"><div class="lt">'+esc(w.name)+'</div><div class="ls">'+(w.description?esc(w.description):'-')+'</div></div></div>').join('');
-initWBDrag(el);}
-function initWBDrag(container){initLPDrag(container,'.li[data-wbid]',saveWBOrder);}
-async function saveWBOrder(c){const items=c.querySelectorAll('.li[data-wbid]');const nw=[];for(let i=0;i<items.length;i++){const id=items[i].dataset.wbid,w=_wbs.find(x=>x.id===id);if(w){nw.push(w);w.sort_order=i;const o=await dbGet('worldbooks',id);if(o){o.sort_order=i;await dbPut('worldbooks',o);}}}_wbs=nw;}
+function renderWBList(){const el=$('wb-list');if(!_wbs.length){el.innerHTML='<div class="empty">尚未建立世界書</div>';el.className='';return;}
+el.className='wb-grid';Promise.all(_wbs.map(w=>dbByIndex('worldbook_entries','worldbook_id',w.id).then(e=>e.length).catch(()=>0))).then(counts=>{el.innerHTML=_wbs.map((w,i)=>{const hasCover=!!w.cover_url;const coverHtml=hasCover?'<div class="wb-card-cover wb-card-has-cover"><div class="wb-card-spine"></div><img src="'+w.cover_url+'"></div>':'<div class="wb-card-cover"><div class="wb-card-spine"></div><svg class="wb-card-icon" viewBox="0 0 40 40" width="44" height="44" fill="none" stroke="var(--ac)" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c-3-2.5-7-4-11-4H5v24h4c4 0 8 1.5 11 4 3-2.5 7-4 11-4h4V6h-4c-4 0-8 1.5-11 4z" stroke-width="1.5"/><path d="M20 10v24" stroke-width="1.2"/></svg><div class="wb-card-ch-count">'+counts[i]+' 章節</div></div>';return '<div class="wb-card" data-wbid="'+w.id+'" onclick="openWBDetail(\''+w.id+'\')">'+coverHtml+'<div class="wb-card-info"><div class="wb-card-name">'+esc(w.name)+'</div><div class="wb-card-desc">'+(w.description?esc(w.description):'—')+'</div></div></div>';}).join('');initWBDrag(el);});}
+function initWBDrag(container){initLPDrag(container,'.wb-card[data-wbid]',saveWBOrder);}
+async function saveWBOrder(c){const items=c.querySelectorAll('.wb-card[data-wbid]');const nw=[];for(let i=0;i<items.length;i++){const id=items[i].dataset.wbid,w=_wbs.find(x=>x.id===id);if(w){nw.push(w);w.sort_order=i;const o=await dbGet('worldbooks',id);if(o){o.sort_order=i;await dbPut('worldbooks',o);}}}_wbs=nw;}
 async function createWB(){const w={id:uid(),name:'新世界書',sort_order:_wbs.length,created_at:new Date().toISOString()};await dbPut('worldbooks',w);_wbs.push(w);toast('已新增');openWBDetail(w.id);}
 
 // --- WB Detail ---
-async function openWBDetail(id){_curWBId=id;const w=await dbGet('worldbooks',id);if(!w)return;$('wb-vl').style.display='none';$('wb-vd').style.display='block';hideNav();pushH('wbDetail');$('wb-edit-id').value=w.id;$('wb-edit-name').value=w.name||'';$('wb-edit-desc').value=w.description||'';cntF($('wb-edit-desc'));
+async function openWBDetail(id){_curWBId=id;const w=await dbGet('worldbooks',id);if(!w)return;$('wb-vl').style.display='none';$('wb-vd').style.display='block';hideNav();pushH('wbDetail');$('wb-edit-id').value=w.id;$('wb-edit-name').value=w.name||'';$('wb-edit-desc').value=w.description||'';cntF($('wb-edit-desc'));renderWBCover(w.cover_url||null);
 // Load chapters as inline cards
 const el=$('wb-chapters');el.innerHTML='';
 let entries=[];try{entries=sortBy(await dbByIndex('worldbook_entries','worldbook_id',id),'sort_order');}catch(e){entries=sortBy((await dbAll('worldbook_entries')).filter(x=>x.worldbook_id===id),'sort_order');}
