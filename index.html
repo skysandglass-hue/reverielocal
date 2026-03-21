@@ -252,6 +252,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-hero img{width:100%;height:100%;object-fit:cover;display:block;}
 .cpf-hero-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;font-weight:600;color:var(--ac);opacity:.3;background:linear-gradient(160deg,var(--acl) 0%,var(--bgi) 100%);}
 .cpf-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 35%,transparent 100%);pointer-events:none;}
+.cpf-hero.no-after::after{display:none;}
 .cpf-back{position:absolute;top:max(12px,env(safe-area-inset-top,12px));left:12px;z-index:2;width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
 .cpf-back:active{background:rgba(0,0,0,.5);}
 .cpf-back svg{width:20px;height:20px;}
@@ -917,7 +918,13 @@ const origScrollBR=scrollEl?scrollEl.style.borderRadius:'';
 card.style.borderRadius='0';card.style.overflow='visible';
 if(scrollEl)scrollEl.style.borderRadius='0';
 hero.style.borderRadius='0';
+hero.classList.add('no-after');
+const scrim=document.createElement('div');
+scrim.style.cssText='position:absolute;top:40%;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 35%,transparent 100%);pointer-events:none;z-index:1;';
+hero.appendChild(scrim);
 const canvas=await h2c(hero,{scale:2,useCORS:true,logging:false,backgroundColor:null});
+hero.removeChild(scrim);
+hero.classList.remove('no-after');
 card.style.borderRadius=origBR;card.style.overflow=origOF;
 if(scrollEl)scrollEl.style.borderRadius=origScrollBR;
 hero.style.borderRadius='';
@@ -937,6 +944,8 @@ const{default:h2c}=await import('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/
 // Hide buttons
 const btns=scroll.querySelectorAll('.cpf-back,.cpf-dl');
 btns.forEach(b=>b.style.display='none');
+const hideSections=scroll.querySelectorAll('.cpf-hr,.cpf-section-head,.cpf-wb-tags,.cpf-events');
+hideSections.forEach(el=>el.style.display='none');
 // Remove card border-radius and expand scroll to full content height
 const origCardBR=card.style.borderRadius;const origCardOF=card.style.overflow;const origCardH=card.style.height;
 card.style.borderRadius='0';card.style.overflow='visible';card.style.height='auto';
@@ -944,12 +953,19 @@ const origH=scroll.style.height;const origOF=scroll.style.overflow;const origMax
 scroll.style.height='auto';scroll.style.overflow='visible';scroll.style.maxHeight='none';scroll.style.flex='none';scroll.style.borderRadius='0';
 const hero=scroll.querySelector('.cpf-hero');const origHeroBR=hero?hero.style.borderRadius:'';
 if(hero)hero.style.borderRadius='0';
+let scrim=null;
+if(hero){hero.classList.add('no-after');
+scrim=document.createElement('div');
+scrim.style.cssText='position:absolute;top:40%;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 35%,transparent 100%);pointer-events:none;z-index:1;';
+hero.appendChild(scrim);}
 // Scroll to top before capture
 scroll.scrollTop=0;
 const canvas=await h2c(scroll,{scale:2,useCORS:true,logging:false,
 backgroundColor:getComputedStyle(document.body).getPropertyValue('--bg2').trim()||'#fff',
 height:scroll.scrollHeight,windowHeight:scroll.scrollHeight});
 // Restore
+if(hero){if(scrim)hero.removeChild(scrim);hero.classList.remove('no-after');}
+hideSections.forEach(el=>el.style.display='');
 scroll.style.height=origH;scroll.style.overflow=origOF;scroll.style.maxHeight=origMax;scroll.style.flex=origFlex;scroll.style.borderRadius=origScrollBR;
 if(hero)hero.style.borderRadius=origHeroBR;
 card.style.borderRadius=origCardBR;card.style.overflow=origCardOF;card.style.height=origCardH;
@@ -1463,10 +1479,9 @@ el.addEventListener('touchmove',()=>{mv=true;clearTimeout(t);});
 el.addEventListener('touchend',()=>{clearTimeout(t);});})();async function execScreenshot(){if(!_ssSel.size)return;toast('生成中...');
 const sorted=[..._ssSel].sort((a,b)=>a-b);
 const wrap=document.createElement('div');
-const cs=getComputedStyle(document.documentElement);
+const cs=getComputedStyle(document.body);
 const bgColor=cs.getPropertyValue('--bg').trim();
 const txColor=cs.getPropertyValue('--tx').trim();
-const tx2Color=cs.getPropertyValue('--tx2').trim();
 wrap.style.cssText='position:fixed;left:-9999px;top:0;width:'+Math.min(window.innerWidth,500)+'px;padding:16px;display:flex;flex-direction:column;gap:28px;background:'+bgColor+';color:'+txColor+';';
 document.body.appendChild(wrap);
 for(const idx of sorted){
@@ -1475,18 +1490,17 @@ for(const idx of sorted){
   const clone=row.cloneNode(true);
   clone.classList.remove('msg-ss-sel');
   clone.style.maxWidth='100%';
-  // Bake computed colors into bubbles for html2canvas
-  const origBub=row.querySelector('.msg-bubble');
-  const cloneBub=clone.querySelector('.msg-bubble');
-  if(origBub&&cloneBub){const s=getComputedStyle(origBub);cloneBub.style.backgroundColor=s.backgroundColor;cloneBub.style.borderColor=s.borderColor;cloneBub.style.color=s.color;cloneBub.style.fontStyle=s.fontStyle;}
-  // Bake avatar bg
-  const origAv=row.querySelector('.msg-av');
-  const cloneAv=clone.querySelector('.msg-av');
-  if(origAv&&cloneAv){const s=getComputedStyle(origAv);cloneAv.style.backgroundColor=s.backgroundColor;cloneAv.style.borderColor=s.borderColor;cloneAv.style.color=s.color;}
-  // Bake time color
-  const origMm=row.querySelector('.mm');
-  const cloneMm=clone.querySelector('.mm');
-  if(origMm&&cloneMm){cloneMm.style.color=getComputedStyle(origMm).color;}
+  // Bake all computed colors from live DOM to clone
+  const liveEls=row.querySelectorAll('*');
+  const cloneEls=clone.querySelectorAll('*');
+  for(let i=0;i<liveEls.length&&i<cloneEls.length;i++){
+  const s=getComputedStyle(liveEls[i]);
+  const c=cloneEls[i];
+  if(s.backgroundColor&&s.backgroundColor!=='rgba(0, 0, 0, 0)')c.style.backgroundColor=s.backgroundColor;
+  c.style.color=s.color;
+  if(s.borderColor&&s.borderColor!=='rgba(0, 0, 0, 0)')c.style.borderColor=s.borderColor;
+  if(s.fontStyle&&s.fontStyle!=='normal')c.style.fontStyle=s.fontStyle;
+  }
   wrap.appendChild(clone);
 }
 try{
