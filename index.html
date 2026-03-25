@@ -76,7 +76,7 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:4px;font-weigh
 .char-card-menu svg{width:18px;height:18px;}
 .char-card-no-img .char-card-menu{color:var(--tx2);background:var(--bgi);}
 .wb-card .char-card-menu{color:var(--tx2);background:var(--bgi);}
-.wb-card-has-cover~.wb-card-info{}.wb-card .wb-card-has-cover~.char-card-menu,.wb-card:has(.wb-card-has-cover) .char-card-menu{color:#fff;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+.wb-card:has(.wb-card-has-cover) .char-card-menu{color:#fff;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
 .pin-badge{position:absolute;bottom:2px;right:2px;width:20px;height:20px;background:var(--ac);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg2);box-shadow:0 1px 3px rgba(0,0,0,.15);}
 .wb-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .wb-card{display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--bd);border-radius:14px;cursor:pointer;box-shadow:0 1px 2px var(--sh);position:relative;overflow:hidden;aspect-ratio:2/3;}
@@ -98,9 +98,6 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:4px;font-weigh
 .wb-cover-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .pin-badge svg{width:11px;height:11px;fill:#fff;stroke:#fff;stroke-width:1;}
 .lb{flex:1;min-width:0;}.lt{font-size:17px;font-weight:500;color:var(--tx3);}.ls{font-size:15px;color:var(--tx2);margin-top:6px;line-height:1.5;max-width:80%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.li-actions{display:flex;gap:8px;width:100%;margin-top:8px;}
-.li-act{flex:1;padding:10px 0;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);font-size:15px;color:var(--tx2);cursor:pointer;font-family:inherit;text-align:center;display:flex;align-items:center;justify-content:center;gap:5px;}.li-act:hover{border-color:var(--ac);color:var(--ac);}
-.li-act svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .sr{display:flex;align-items:center;gap:10px;}.sr input[type="range"]{flex:1;accent-color:var(--ac);}.svl{width:40px;text-align:right;font-size:15px;color:var(--ac);font-weight:500;}
 .stt{font-size:17px;font-weight:600;color:var(--tx3);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--bd);}
 .pl{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
@@ -124,9 +121,7 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:4px;font-weigh
 .msg-row.user .msg-body{padding-top:0;}
 .mm{font-size:11px;color:var(--tx2);flex-shrink:0;white-space:nowrap;line-height:1;padding-bottom:2px;}
 .msg-meta{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding:4px 0 2px;}.msg-meta .mm{margin-top:auto;}
-.hbtn{padding:4px;cursor:pointer;color:var(--tx2);display:flex;align-items:center;}
-.msg-bubble p{margin:0 0 .6em;}.msg-bubble p:last-child{margin:0;}.msg-bubble em{font-style:italic;color:var(--tx2);}.msg-bubble strong{font-weight:600;}.msg-bubble blockquote{border-left:3px solid var(--ac);padding-left:10px;margin:.5em 0;color:var(--tx2);}
-.cev-view-content p{margin:0 0 .8em;}.cev-view-content p:last-child{margin:0;}.cev-view-content em{font-style:italic;color:var(--tx2);}.cev-view-content strong{font-weight:600;}.cev-view-content blockquote{border-left:3px solid var(--ac);padding-left:10px;margin:.5em 0;color:var(--tx2);}
+.msg-bubble p,.cev-view-content p{margin:0 0 .6em;}.cev-view-content p{margin-bottom:.8em;}.msg-bubble p:last-child,.cev-view-content p:last-child{margin:0;}.msg-bubble em,.cev-view-content em{font-style:italic;color:var(--tx2);}.msg-bubble strong,.cev-view-content strong{font-weight:600;}.msg-bubble blockquote,.cev-view-content blockquote{border-left:3px solid var(--ac);padding-left:10px;margin:.5em 0;color:var(--tx2);}
 .msg-bubble ol,.msg-bubble ul{margin:0 0 .6em;padding-left:1.6em;}.msg-bubble li{margin-bottom:.3em;}
 .msg-bubble table{border-collapse:collapse;margin:.6em 0;width:100%;font-size:15px;}.msg-bubble th,.msg-bubble td{border:1px solid var(--bd2);padding:6px 10px;text-align:left;line-height:1.6;height:1.6em;}.msg-bubble th{font-weight:600;}
 .ci{padding:10px 16px;display:flex;gap:10px;flex-shrink:0;background:var(--bg);align-items:flex-end;border-top:1px solid transparent;border-image:linear-gradient(to right,transparent,var(--bd),transparent) 1;}
@@ -158,9 +153,9 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:4px;font-weigh
 .side-profile-active{padding:11px 12px;border:1px solid var(--ac);border-radius:8px;margin-bottom:6px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:15px;background:var(--acl);color:var(--tx3);}.side-profile-active:hover{opacity:.85;}.side-profile-active .switch-hint{font-size:12px;color:var(--ac);margin-left:auto;}
 .fp{display:none;position:fixed;inset:0;z-index:260;background:var(--bg);flex-direction:column;}.fp.show{display:flex;}
 .fp-head{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;background:var(--bg2);flex-shrink:0;}.fp-title{font-size:17px;font-weight:600;color:var(--tx3);flex:1;}
+.fp-btn{background:none;border:none;color:var(--ac);font-size:16px;font-weight:600;cursor:pointer;padding:6px 2px;font-family:inherit;}.fp-btn:active{opacity:.5;}
 .fp-body{flex:1;overflow-y:auto;padding:16px;}.fp-body.full{padding:16px 0;display:flex;flex-direction:column;}.fp-body.full .f{padding:0 16px;}.fp-body.full .f:last-of-type{flex:1;display:flex;flex-direction:column;}.fp-body.full .f:last-of-type textarea{flex:1;min-height:120px;}
 .drag-h{cursor:grab;color:var(--bd2);font-size:16px;padding:0 4px;user-select:none;touch-action:none;}.drag-h:active{cursor:grabbing;color:var(--ac);}
-.drag-placeholder{opacity:.2;}
 .theme-row{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;}.theme-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid var(--bd);transition:all .15s;}.theme-dot:hover{transform:scale(1.1);}.theme-dot.active{border-color:var(--tx3);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--tx3);}
 .toast{position:fixed;top:20px;left:16px;right:16px;transform:none;background:var(--bg2);color:var(--tx);padding:14px 20px;border-radius:12px;font-size:16px;font-weight:500;z-index:600;opacity:0;transition:opacity .3s;pointer-events:none;text-align:center;border:1px solid var(--bd);box-shadow:0 4px 16px var(--sh);}.toast.show{opacity:1;}
 .empty{text-align:center;padding:40px 20px;color:var(--tx2);font-size:16px;}
@@ -199,12 +194,9 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .edit-modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:500;align-items:center;justify-content:center;padding:16px;}.edit-modal-ov.show{display:flex;}
 .edit-modal{background:var(--bg2);border-radius:16px;width:100%;max-width:500px;height:calc(66dvh);max-height:520px;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.18);display:flex;flex-direction:column;}
 .edit-modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-shrink:0;}.edit-modal-title{font-size:16px;font-weight:600;color:var(--tx3);}
-.edit-modal-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--bgi);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--tx2);}.edit-modal-close:hover{background:var(--bd);}
 .edit-modal textarea{flex:1;min-height:0;resize:none;}
 .edit-modal .ctr{margin-bottom:12px;}
 .edit-modal-btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--bgi);color:var(--tx3);font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;}.edit-modal-btn:hover{background:var(--bd);}
-/* Drag handle for events */
-.ev-drag{display:none;}
 .ev-toggle-item{display:flex;align-items:center;gap:10px;padding:18px 16px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;margin-bottom:10px;position:relative;min-height:66px;}
 .ev-toggle-item .lb{flex:1;min-width:0;cursor:pointer;overflow:visible;}.ev-toggle-item .lt{font-size:17px;font-weight:500;color:var(--tx3);line-height:1.4;padding-right:40px;}.ev-toggle-item .ls{font-size:15px;color:var(--tx2);margin-top:4px;line-height:1.4;}
 .ev-toggle-item>.tog{position:absolute;top:12px;right:12px;}
@@ -212,7 +204,6 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .pcmd-panel{position:fixed;bottom:0;left:0;right:0;z-index:251;background:var(--bg2);border-top:1px solid var(--bd);box-shadow:0 -4px 16px rgba(0,0,0,.08);border-radius:16px 16px 0 0;height:60vh;overflow:hidden;padding:20px 16px;transition:transform .25s ease;display:none;flex-direction:column;}.pcmd-panel.show{display:flex;}
 .pcmd-panel-handle{width:36px;height:4px;background:var(--bd2);border-radius:2px;margin:0 auto 14px;}
 .pcmd-overlay{display:none;position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.25);}.pcmd-overlay.show{display:block;}
-.pcmd-card{padding:14px;border:1px solid var(--bd);border-radius:10px;margin-bottom:8px;background:var(--bg3);}.pcmd-card .lt{font-size:16px;font-weight:500;margin-bottom:6px;}.pcmd-card .ls{font-size:16px;color:var(--tx2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .batch-del-bar{display:none;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--bd);gap:10px;align-items:center;justify-content:space-between;}.batch-del-bar.show{display:flex;}
 .batch-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--bd2);background:transparent;flex-shrink:0;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}.batch-dot.sel{border-color:var(--ac);background:var(--ac);}
 .batch-dot.sel::after{content:'✓';color:#fff;font-size:12px;font-weight:700;}
@@ -239,14 +230,12 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .splash-dot.d2{width:18px;height:18px;bottom:48px;left:18%;animation:sDotPop 2.4s ease .4s infinite;}
 @keyframes sDotPop{0%{opacity:0;}10%{opacity:1;}40%{opacity:1;}55%{opacity:0;}100%{opacity:0;}}
 @keyframes sCloudIn{0%{opacity:0;transform:translateX(-50%);}35%{opacity:0;transform:translateX(-50%);}45%{opacity:1;transform:translateX(-50%);}80%{opacity:1;transform:translateX(-50%);}92%{opacity:0;transform:translateX(-50%);}100%{opacity:0;transform:translateX(-50%);}}
-.splash-sub{font-size:14px;color:var(--tx2);margin-top:8px;}
 .splash-dots{display:flex;gap:6px;margin-top:24px;}.splash-dots span{width:6px;height:6px;background:var(--ac);border-radius:50%;animation:sDot 1.2s infinite;opacity:.3;}.splash-dots span:nth-child(2){animation-delay:.2s;}.splash-dots span:nth-child(3){animation-delay:.4s;}
 @keyframes sDot{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.3);}}
 .sb-fab{position:absolute;top:64px;left:12px;z-index:20;width:40px;height:40px;border-radius:50%;background:var(--ac);color:#fff;display:none;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.18);cursor:pointer;transition:transform .15s,opacity .15s;opacity:.7;}
 .sb-fab:active{transform:scale(.9);}
 .sb-fab:hover{opacity:.95;}
 .sb-fab svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.sb-fab.has-content{opacity:.85;}
 .sf-editor{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;}
 .sf-editor.show{display:flex;}
 .sf-editor-panel{background:var(--bg2);border-radius:16px;width:100%;max-width:500px;max-height:75vh;min-height:420px;overflow-y:auto;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.18);display:flex;flex-direction:column;animation:sfPop .2s ease;}
@@ -271,7 +260,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-hero{position:relative;width:100%;aspect-ratio:2/3;background:var(--bgi);overflow:hidden;}
 .cpf-hero img{width:100%;height:100%;object-fit:cover;display:block;}
 .cpf-hero-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;font-weight:600;color:var(--ac);opacity:.3;background:linear-gradient(160deg,var(--acl) 0%,var(--bgi) 100%);}
-.cpf-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 35%,transparent 100%);pointer-events:none;}
+.cpf-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 35%,rgba(0,0,0,0) 100%);pointer-events:none;}
 .cpf-hero.no-after::after{display:none;}
 .cpf-back{position:absolute;top:max(12px,env(safe-area-inset-top,12px));left:12px;z-index:2;width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
 .cpf-back:active{background:rgba(0,0,0,.5);}
@@ -285,8 +274,8 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .cpf-hero-slogan{font-size:15px;font-weight:400;font-style:italic;color:#fff;letter-spacing:.02em;margin-top:12px;line-height:1.7;text-shadow:0 1px 6px rgba(0,0,0,.35);padding:0;border-bottom:1.5px solid rgba(255,255,255,.25);padding-bottom:6px;text-align:center;}
 .cpf-hero-slogan::before{content:'\201C';display:block;font-family:'Cormorant Garamond',serif;font-size:32px;font-style:normal;line-height:1;color:rgba(255,255,255,.45);margin-bottom:2px;text-align:left;}
 .cpf-hero-slogan::after{content:'\201D';display:block;font-family:'Cormorant Garamond',serif;font-size:32px;font-style:normal;line-height:1;color:rgba(255,255,255,.45);text-align:right;margin-top:8px;margin-bottom:4px;}
-.cpf-hero-tagline:has(+.cpf-hero-slogan){padding-bottom:0;border-bottom:none;}
 .cpf-hero-tagline{font-size:15px;font-weight:400;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.35);display:flex;align-items:center;gap:8px;letter-spacing:.02em;padding-bottom:12px;border-bottom:1.5px solid rgba(255,255,255,.25);}
+.cpf-hero-tagline:has(+.cpf-hero-slogan){padding-bottom:0;border-bottom:none;}
 .cpf-hero-tagline .sep{width:3.5px;height:3.5px;border-radius:50%;background:rgba(255,255,255,.5);flex-shrink:0;}
 .cpf-body{padding:32px 28px 48px;}
 .cpf-intro{position:relative;margin-bottom:32px;}.cpf-intro::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:2px;border-radius:1px;background:var(--ac);opacity:.6;}
@@ -361,7 +350,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div class="scr" id="cl"><div class="sh"><div class="sht">聊天</div><div class="ham" onclick="openChatListMenu()"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div></div><div class="batch-del-bar" id="batch-del-bar"><span style="font-size:14px;color:var(--tx2);" id="batch-del-count">已選 0 個</span><div style="display:flex;gap:6px;"><button class="btn bs2" onclick="toggleBatchDel()">取消</button><button class="btn bdel bs2" onclick="execBatchDel()">刪除選取</button></div></div><div id="chat-list"><div class="empty">點擊「+ 新對話」開始</div></div></div>
   <div class="cw" id="cv">
     <div class="ch"><span class="bk" onclick="closeChat()" style="margin:0;font-size:16px;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="chn" id="c-name" style="display:none;">對話</div><div style="flex:1;"></div><div class="ch-icon" onclick="openMsgSearch()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="rp-sel rp-sel-sm" id="rp-btn" onclick="openPopup('rp-popup')">標準 RP</div><div class="ham" onclick="openSide()"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
-    <div class="msg-del-banner" id="msg-del-banner">請選擇要刪除的訊息。</div>
+    <div class="msg-del-banner" id="msg-del-banner">範圍模式：點選起點與終點 <span style="opacity:.7;font-size:12px;">（長按切換自由模式）</span></div>
     <div class="msg-ss-banner" id="msg-ss-banner">範圍模式：點選起點與終點 <span style="opacity:.7;font-size:12px;">（長按切換自由模式）</span></div>
     <div class="cm" id="c-msgs"></div>
     <div class="sb-fab" id="sb-fab" onclick="openSceneEditor()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg></div>
@@ -374,11 +363,11 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 </div>
 <!-- 世界書 -->
 <div class="pnl" id="p-wb"><div class="scr">
-  <div id="wb-vl"><div class="sh"><div class="sht">世界書</div><button class="btn bp bs2" onclick="createWB()">+ 新增</button></div><div id="wb-list"></div></div>
+  <div id="wb-vl"><div class="sh"><div class="sht">世界書</div><button class="fp-btn" onclick="createWB()">+ 新增</button></div><div id="wb-list"></div></div>
   <div id="wb-vd" style="display:none;">
     <div class="sh" style="position:sticky;top:0;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;">
       <span class="bk" onclick="closeWBEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-      <div style="flex:1;"></div><button class="btn bp bs2" onclick="saveWB()">儲存</button>
+      <div style="flex:1;"></div><button class="fp-btn" onclick="saveWB()">儲存</button>
     </div>
     <input type="hidden" id="wb-edit-id">
     <div class="wb-cover-editor"><div class="wb-cover-wrap" id="wb-cover-wrap" onclick="startAvUp('wb',_curWBId)"><div class="wb-cover-empty"><svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="var(--ac)" stroke-linecap="round" stroke-linejoin="round" opacity=".5"><path d="M20 10c-3-2.5-7-4-11-4H5v24h4c4 0 8 1.5 11 4 3-2.5 7-4 11-4h4V6h-4c-4 0-8 1.5-11 4z" stroke-width="1.5"/><path d="M20 10v24" stroke-width="1.2"/></svg><div style="font-size:13px;color:var(--tx2);margin-top:6px;">點擊上傳封面</div></div></div></div>
@@ -388,14 +377,14 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
     </div>
     <div class="card"><div class="ct">章節</div><div id="wb-chapters"></div><button class="btn bs2" onclick="addChUI()" style="margin-top:8px;">+ 新增</button>
     </div>
-    <div style="padding:32px 0 48px;"><button class="btn" onclick="delWB()" style="width:100%;font-size:16px;padding:14px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;letter-spacing:.02em;">刪除世界書</button></div>
+    <div style="padding:4px 0 0;flex-shrink:0;"><button class="btn" onclick="delWB()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除世界書</button></div>
   </div>
 </div></div>
 <!-- 角色 -->
 <div class="pnl" id="p-chars"><div class="scr">
-  <div id="vl"><div class="sh"><div class="sht">角色</div><button class="btn bp bs2" onclick="createChar()">+ 新增</button></div><div id="char-list"></div></div>
+  <div id="vl"><div class="sh"><div class="sht">角色</div><button class="fp-btn" onclick="createChar()">+ 新增</button></div><div id="char-list"></div></div>
   <div id="vd" style="display:none;">
-    <div class="sh" style="position:sticky;top:0;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;"><span class="bk" onclick="closeCharEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div style="flex:1;"></div><button class="btn bp bs2" onclick="saveChar()">儲存</button></div>
+    <div class="sh" style="position:sticky;top:0;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;"><span class="bk" onclick="closeCharEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div style="flex:1;"></div><button class="fp-btn" onclick="saveChar()">儲存</button></div>
     <div class="av-editor"><div class="av-ed-wrap" id="ce-av-wrap">?</div><span class="av-ed-badge" onclick="event.stopPropagation();startAvUp('char')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span></div>
     <input type="hidden" id="ce-id">
     <div class="card"><div class="ct">角色卡主體</div>
@@ -408,18 +397,18 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
     <div class="card"><div class="ct">附加設定</div><div id="ce-ex"></div><button class="btn bs2" onclick="addExUI()" style="margin-top:8px;">+ 新增</button></div>
     <div class="card"><div class="ct">綁定世界書</div><div class="f"><div class="rp-sel" id="ce-wb-btn" onclick="openWBBindPopup()" style="height:44px;display:flex;align-items:center;">未選擇</div></div><div style="font-size:12px;color:var(--tx2);line-height:1.5;">開始新對話時，會自動套用已勾選的世界書。</div></div>
     <div class="card"><div class="ct">第一則訊息</div><div class="f"><label>角色開場白</label><textarea rows="10" id="ce-grt" oninput="cntF(this);markDirty()" placeholder="新對話開始時，角色的第一則訊息"></textarea><div class="ctr">0 字</div></div></div>
-    <div style="padding:32px 0 48px;"><button class="btn" onclick="delChar()" style="width:100%;font-size:16px;padding:14px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;letter-spacing:.02em;">刪除角色</button></div>
+    <div style="padding:4px 0 0;flex-shrink:0;"><button class="btn" onclick="delChar()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除角色</button></div>
   </div>
 </div></div>
 <!-- 檔案 -->
 <div class="pnl" id="p-prof"><div class="scr">
-  <div id="pf-vl"><div class="sh"><div class="sht">檔案</div><button class="btn bp bs2" onclick="createPf()">+ 新增</button></div><div id="pf-list"></div></div>
+  <div id="pf-vl"><div class="sh"><div class="sht">檔案</div><button class="fp-btn" onclick="createPf()">+ 新增</button></div><div id="pf-list"></div></div>
   <div id="pf-vd" style="display:none;">
-    <div class="sh" style="position:sticky;top:0;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;"><span class="bk" onclick="closePfEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div style="flex:1;"></div><button class="btn bp bs2" onclick="savePfDetail()">儲存</button></div>
+    <div class="sh" style="position:sticky;top:0;z-index:10;background:var(--bg);padding:16px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:12px;"><span class="bk" onclick="closePfEdit()" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div style="flex:1;"></div><button class="fp-btn" onclick="savePfDetail()">儲存</button></div>
     <div class="av-editor"><div class="av-ed-wrap" id="pf-av-wrap" style="width:160px;height:160px;border-radius:50%;">?</div><span class="av-ed-badge" onclick="event.stopPropagation();startAvUp('profile',_pfEditId)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span></div>
     <input type="hidden" id="pf-edit-id">
     <div class="card"><div class="ct">基本資料</div><div class="f"><label>名稱</label><input type="text" id="pf-edit-name" oninput="markDirty()"></div><div class="f"><label>年齡</label><input type="text" id="pf-edit-age" placeholder="例：25、不詳" oninput="markDirty()"></div><div class="f"><label>性別</label><div class="rp-sel" id="pf-gen" onclick="openPopup('pf-gen-pop')" style="height:44px;display:flex;align-items:center;">未設置</div></div><div class="f"><label>職業</label><input type="text" id="pf-edit-job" placeholder="例：冒險者..." oninput="markDirty()"></div><div class="f"><label>設定</label><textarea rows="10" id="pf-edit-setting" oninput="cntF(this);markDirty()"></textarea><div class="ctr">0 字</div></div></div>
-    <div style="padding:32px 0 48px;"><button class="btn" onclick="delPfDetail()" style="width:100%;font-size:16px;padding:14px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;letter-spacing:.02em;">刪除檔案</button></div>
+    <div style="padding:4px 0 0;flex-shrink:0;"><button class="btn" onclick="delPfDetail()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除檔案</button></div>
   </div>
 </div></div>
 <!-- 系統 -->
@@ -428,22 +417,22 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div class="snv" style="padding:0 16px;position:static;flex-shrink:0;"><div class="sbb a" onclick="ss(this,0)">設定</div><div class="sbb" onclick="ss(this,1)">提示詞</div><div class="sbb" onclick="ss(this,2)">記憶</div><div class="sbb" onclick="ss(this,3)">資料</div><div class="sbb" onclick="ss(this,4)">關於</div></div>
   <div class="scr" style="flex:1;min-height:0;">
   <div class="sp a" id="s0">
-    <div class="card"><div class="stt">API 設定</div><div id="api-cfg-list"></div><button class="btn bs2" onclick="addApiCfg()" style="margin-top:8px;">+ 新增</button></div>
+    <div class="card"><div class="stt">API 設定</div><div id="api-cfg-list"></div><button class="btn bs2" onclick="addApiCfg()" style="margin-top:8px;width:100%;padding:12px;">+ 新增</button></div>
     <div class="card"><div class="stt">本地向量 Embedding</div><div style="font-size:14px;color:var(--tx2);line-height:1.6;margin-bottom:12px;">使用 transformers.js 在瀏覽器本地運行（約 23MB）。首次需下載模型，之後快取。</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用本地向量搜尋</label><div class="tog" id="set-emb-local" onclick="this.classList.toggle('on')"></div></div><div class="stt" style="margin-top:10px;">搜尋參數</div><div class="f"><label>相似度門檻（越低撈越多）</label><div class="sr"><input type="range" id="set-vec-threshold" min="0" max="90" value="30" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">0.30</span></div></div><div class="fr"><div class="f"><label>附加設定筆數</label><input type="number" id="set-vec-extras" value="3" min="1" max="20"></div><div class="f"><label>事件筆數</label><input type="number" id="set-vec-events" value="3" min="1" max="20"></div><div class="f"><label>記憶筆數</label><input type="number" id="set-vec-memories" value="5" min="1" max="30"></div></div><div class="fr" style="margin-top:0;"><div class="f"><label>世界書章節數</label><input type="number" id="set-vec-wb" value="5" min="1" max="30"></div><div class="f"><label>MEMO 筆數</label><input type="number" id="set-vec-memos" value="5" min="1" max="30"></div></div><button class="btn bs2" onclick="rebuildAllEmb()" style="width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>重新生成所有向量</button></div>
     <div class="card"><div class="stt">主題顏色</div><div class="theme-row"><div class="theme-dot" data-theme="" style="background:linear-gradient(135deg,#7c9eb2,#e4eef3);" onclick="setTh('',this)"></div><div class="theme-dot" data-theme="theme-warm" style="background:linear-gradient(135deg,#c0705a,#f0ddd6);" onclick="setTh('theme-warm',this)"></div><div class="theme-dot" data-theme="theme-sage" style="background:linear-gradient(135deg,#6b9080,#dce8e2);" onclick="setTh('theme-sage',this)"></div><div class="theme-dot" data-theme="theme-lavender" style="background:linear-gradient(135deg,#8b7fb5,#e2dff0);" onclick="setTh('theme-lavender',this)"></div><div class="theme-dot" data-theme="theme-rose" style="background:linear-gradient(135deg,#b5707e,#f0dde2);" onclick="setTh('theme-rose',this)"></div><div class="theme-dot" data-theme="theme-grey" style="background:linear-gradient(135deg,#7a8590,#e0e3e6);" onclick="setTh('theme-grey',this)"></div><div class="theme-dot" data-theme="theme-brown" style="background:linear-gradient(135deg,#8b7355,#e8dfd4);" onclick="setTh('theme-brown',this)"></div><div class="theme-dot" data-theme="theme-ocean" style="background:linear-gradient(135deg,#5088a8,#d4e4f0);" onclick="setTh('theme-ocean',this)"></div></div><div class="theme-row" style="margin-top:8px;"><div class="theme-dot" data-theme="theme-dark" style="background:linear-gradient(135deg,#1a1a2e,#7c9eb2);" onclick="setTh('theme-dark',this)"></div><div class="theme-dot" data-theme="theme-dark-warm" style="background:linear-gradient(135deg,#1e1a18,#d4886e);" onclick="setTh('theme-dark-warm',this)"></div><div class="theme-dot" data-theme="theme-dark-green" style="background:linear-gradient(135deg,#161e1a,#6b9080);" onclick="setTh('theme-dark-green',this)"></div><div class="theme-dot" data-theme="theme-midnight" style="background:linear-gradient(135deg,#0f1118,#8b7fb5);" onclick="setTh('theme-midnight',this)"></div><div class="theme-dot" data-theme="theme-dark-rose" style="background:linear-gradient(135deg,#1e1618,#d4889a);" onclick="setTh('theme-dark-rose',this)"></div><div class="theme-dot" data-theme="theme-dark-grey" style="background:linear-gradient(135deg,#1a1b1e,#a0a8b4);" onclick="setTh('theme-dark-grey',this)"></div><div class="theme-dot" data-theme="theme-dark-brown" style="background:linear-gradient(135deg,#1a1816,#c8a882);" onclick="setTh('theme-dark-brown',this)"></div><div class="theme-dot" data-theme="theme-black" style="background:linear-gradient(135deg,#000000,#333333);" onclick="setTh('theme-black',this)"></div></div></div>
-    <div style="margin-top:12px;"><button class="btn bp" onclick="saveSettings()">儲存</button></div>
+    <div style="margin-top:12px;"><button class="btn bp" onclick="saveSettings()" style="width:100%;padding:10px;font-size:15px;">儲存</button></div>
   </div>
-  <div class="sp" id="s1"><div class="pl" id="pl"></div><button class="btn bs2" onclick="createPr()" style="margin-bottom:12px;">+ 新增</button><div class="card" id="pr-edit" style="display:none;"><input type="hidden" id="pe-id"><div class="f"><label>名稱</label><input type="text" id="pn"></div><div class="f"><label>使用 API</label><div class="rp-sel" id="pr-api-btn" onclick="openPopup('pr-api-pop')">未選擇</div><input type="hidden" id="pr-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="pr-model-btn" onclick="openPopup('pr-model-pop')">未選擇</div><input type="hidden" id="pr-model-id" value=""></div><div class="f"><label>內容</label><textarea rows="10" id="tp2" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="savePr()">儲存</button><button class="btn bdel bs2" onclick="delPr()">刪除</button></div></div></div>
+  <div class="sp" id="s1"><div class="pl" id="pl"></div><button class="btn bs2" onclick="createPr()" style="margin-bottom:12px;width:100%;padding:12px;">+ 新增</button><div class="card" id="pr-edit" style="display:none;"><input type="hidden" id="pe-id"><div class="f"><label>名稱</label><input type="text" id="pn"></div><div class="f"><label>使用 API</label><div class="rp-sel" id="pr-api-btn" onclick="openPopup('pr-api-pop')">未選擇</div><input type="hidden" id="pr-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="pr-model-btn" onclick="openPopup('pr-model-pop')">未選擇</div><input type="hidden" id="pr-model-id" value=""></div><div class="f"><label>內容</label><textarea rows="10" id="tp2" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;"><button class="btn bp bs2" onclick="savePr()" style="width:100%;padding:10px;font-size:15px;">儲存</button><button class="btn bdel bs2" onclick="delPr()" style="width:100%;padding:10px;font-size:15px;">刪除</button></div></div></div>
   <div class="sp" id="s2">
   <div class="card"><div class="stt">自動摘要</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用自動摘要</label><div class="tog" id="set-sum-auto" onclick="this.classList.toggle('on')"></div></div><div class="f"><label>使用 API</label><div class="rp-sel" id="sum-api-btn" onclick="openPopup('sum-api-pop')">未選擇</div><input type="hidden" id="sum-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="sum-model-btn" onclick="openPopup('sum-model-pop')">未選擇</div><input type="hidden" id="sum-model-id" value=""></div><div class="f"><label>摘要提示詞</label><textarea rows="10" id="sum-prompt" oninput="cntF(this)">你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。</textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發間隔（每 N 次 AI 回覆）</label><div class="sr"><input type="range" id="set-sum-interval" min="3" max="50" value="10" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">10</span></div></div><div class="f"><label>Max Tokens</label><div class="sr"><input type="range" id="set-sum-tokens" min="100" max="2000" step="50" value="500" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">500</span></div></div></div>
   <div class="card"><div class="stt">記憶生成</div><div class="f"><label>使用 API</label><div class="rp-sel" id="mem-api-btn" onclick="openPopup('mem-api-pop')">未選擇</div><input type="hidden" id="mem-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="mem-model-btn" onclick="openPopup('mem-model-pop')">未選擇</div><input type="hidden" id="mem-model-id" value=""></div><div class="f"><label>生成指令</label><textarea rows="10" id="mem-prompt" oninput="cntF(this)">從以下對話中提取重要記憶，將所有重點整合為一段簡潔的文字。包含：角色間的關係變化、重要承諾或約定、角色透露的個人資訊、情感轉折點、關鍵劇情事件。使用繁體中文。只輸出記憶內容，不要任何前綴或解釋。</textarea><div class="ctr">0 字</div></div><div class="f"><label>觸發間隔（每 N 次 AI 回覆）</label><div class="sr"><input type="range" id="mem-rule" min="3" max="50" value="10" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">10</span></div></div><div class="f"><label>Max Tokens</label><div class="sr"><input type="range" id="set-mem-tokens" min="100" max="2000" step="50" value="500" oninput="this.nextElementSibling.textContent=this.value"><span class="svl">500</span></div></div></div>
   <div class="card"><div class="stt">追蹤器（MEMO + 場景狀態）</div><div style="font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:10px;">啟用後，AI 回覆完成後會背景呼叫指定的模型，自動擷取玩家備忘（MEMO）和更新場景狀態（STATE）。不佔用主聊天的 token。</div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用 MEMO</label><div class="tog" id="set-memo-on" onclick="this.classList.toggle('on')"></div></div><div class="f" style="display:flex;align-items:center;gap:10px;"><label style="flex:1;">啟用場景狀態</label><div class="tog" id="set-state-on" onclick="this.classList.toggle('on')"></div></div><div class="f"><label>使用 API</label><div class="rp-sel" id="trk-api-btn" onclick="openPopup('trk-api-pop')">未選擇</div><input type="hidden" id="trk-api-id" value=""></div><div class="f"><label>選擇模型</label><div class="rp-sel" id="trk-model-btn" onclick="openPopup('trk-model-pop')">未選擇</div><input type="hidden" id="trk-model-id" value=""></div><div class="f"><label>MEMO 擷取指令</label><textarea rows="8" id="memo-prompt" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="font-size:12px;color:var(--tx2);line-height:1.5;margin-top:8px;padding:0 2px;">系統會自動將 {{user}} 和 {{char}} 替換為玩家與角色名稱。場景追蹤的格式在每個對話視窗的場景板中設定。</div></div>
-  <div style="margin-top:12px;"><button class="btn bp" onclick="saveMemSettings()">儲存</button></div>
+  <div style="margin-top:12px;"><button class="btn bp" onclick="saveMemSettings()" style="width:100%;padding:10px;font-size:15px;">儲存</button></div>
   </div>
   <div class="sp" id="s3">
   <div class="card"><div class="stt">本地儲存狀態</div>
   <div style="font-size:14px;color:var(--tx);line-height:1.8;" id="storage-info">計算中...</div>
-  <button class="btn bs2" onclick="calcStorageInfo()" style="margin-top:8px;">重新計算</button>
+  <button class="btn bs2" onclick="calcStorageInfo()" style="margin-top:8px;width:100%;padding:10px;">重新計算</button>
   </div>
   <div class="card" style="background:transparent;border:none;box-shadow:none;padding:0;"><div style="font-size:13px;color:var(--tx2);line-height:1.6;">所有資料儲存在瀏覽器 IndexedDB 中，無需網路連線。<br>清除瀏覽器資料會清除所有 RP 資料，請定期匯出備份。</div></div>
   <div class="card"><div class="stt">匯出 / 匯入</div>
@@ -458,7 +447,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div style="font-size:12px;color:var(--tx2);line-height:1.5;">支援格式：Reverie 備份 JSON（雲端版/本地版通用）、Character Card V2 JSON/PNG。</div>
   </div></div>
   <div class="card"><div class="stt" style="color:var(--del);">危險區域</div>
-  <button class="btn bdel bs2" onclick="clearAllData()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>清除所有資料</button>
+  <button class="btn" onclick="clearAllData()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>清除所有資料</button>
   <div style="font-size:12px;color:var(--tx2);margin-top:8px;">此操作不可復原，請先匯出備份。</div>
   </div>
   </div>
@@ -527,8 +516,6 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="popup-ov" id="mem-model-pop" onclick="if(event.target===this)closePopup('mem-model-pop')"><div class="popup"><div class="popup-title">記憶模型</div><div id="mem-model-list"></div></div></div>
 <div class="popup-ov" id="trk-api-pop" onclick="if(event.target===this)closePopup('trk-api-pop')"><div class="popup"><div class="popup-title">追蹤器 API</div><div id="trk-api-list"></div></div></div>
 <div class="popup-ov" id="trk-model-pop" onclick="if(event.target===this)closePopup('trk-model-pop')"><div class="popup"><div class="popup-title">追蹤器模型</div><div id="trk-model-list"></div></div></div>
-<div class="popup-ov" id="emb-api-pop" onclick="if(event.target===this)closePopup('emb-api-pop')"><div class="popup"><div class="popup-title">Embedding API</div><div id="emb-api-list"></div></div></div>
-<div class="popup-ov" id="emb-model-pop" onclick="if(event.target===this)closePopup('emb-model-pop')"><div class="popup"><div class="popup-title">Embedding 模型</div><div id="emb-model-list"></div></div></div>
 <div class="popup-ov" id="provider-pop" onclick="if(event.target===this)closePopup('provider-pop')"><div class="popup"><div class="popup-title">選擇供應商</div><div class="popup-item active" onclick="pickSel('acfg-provider','anthropic','Anthropic',this,'provider-pop');syncProviderParams()"><span>Anthropic</span><span class="check">✓</span></div><div class="popup-item" onclick="pickSel('acfg-provider','openai','OpenAI',this,'provider-pop');syncProviderParams()"><span>OpenAI</span><span class="check">✓</span></div><div class="popup-item" onclick="pickSel('acfg-provider','google','Google',this,'provider-pop');syncProviderParams()"><span>Google</span><span class="check">✓</span></div><div class="popup-item" onclick="pickSel('acfg-provider','openrouter','OpenRouter',this,'provider-pop');syncProviderParams()"><span>OpenRouter</span><span class="check">✓</span></div></div></div>
 <div class="popup-ov" id="wb-bind-pop" onclick="if(event.target===this){closePopup('wb-bind-pop');syncWBBindLabel();}"><div class="popup"><div class="popup-title">綁定世界書</div><div id="wb-bind-list"></div></div></div>
 
@@ -537,12 +524,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
   <div class="cpf-card" id="cpf-card">
     <div class="cpf-scroll">
       <div class="cpf-hero" id="cpf-hero">
-        <button class="cpf-back" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <div class="cpf-hero-text">
-          <div class="cpf-hero-label">Character File</div>
-          <div class="cpf-hero-name" id="cpf-name"></div>
-          <div class="cpf-hero-tagline" id="cpf-tagline"></div>
-        </div>
+        <!-- Content rebuilt dynamically by openCharProfile() -->
       </div>
       <div class="cpf-body" id="cpf-body"></div>
     </div>
@@ -558,7 +540,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div class="fp" id="fp-sum"><div class="fp-head"><span class="bk" onclick="closeFP('fp-sum')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">歷史摘要</div><button class="btn bp bs2" onclick="genSummary()">生成</button></div><div class="fp-body full"><div class="f"><label>摘要內容</label><textarea rows="30" id="sum-ta" oninput="cntF(this)" style="min-height:50vh;" placeholder="點擊「生成摘要」或手動編輯..."></textarea><div class="ctr">0 字</div></div><div style="padding:0 16px;"><button class="btn bp bs2" onclick="saveSummary()">儲存</button></div></div></div>
 <div class="fp" id="fp-chat-ev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-ev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">事件管理</div></div><div class="fp-body" id="chat-ev-body"></div></div>
 <div class="fp" id="fp-cev-view"><div class="fp-head" style="border:none;"><span class="bk" onclick="closeFP('fp-cev-view')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title"></div></div><div class="fp-body" id="cev-view-body" style="padding:24px 20px;"></div></div>
-<div class="fp" id="fp-chat-ev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-ev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveChatEv()">儲存</button><button class="btn bdel bs2" onclick="delChatEv()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="cev2-id"><div class="f"><label>標題</label><input type="text" id="cev2-n"></div><div class="f"><label>觸發關鍵字 / 時間</label><input type="text" id="cev2-t"></div><div class="f"><label>內容</label><textarea rows="8" id="cev2-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div></div></div>
+<div class="fp" id="fp-chat-ev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-ev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><button class="fp-btn" onclick="saveChatEv()">儲存</button></div><div class="fp-body full"><input type="hidden" id="cev2-id"><div class="f"><label>標題</label><input type="text" id="cev2-n"></div><div class="f"><label>觸發關鍵字 / 時間</label><input type="text" id="cev2-t"></div><div class="f"><label>內容</label><textarea rows="8" id="cev2-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="padding:4px 16px 16px;flex-shrink:0;"><button class="btn" onclick="delChatEv()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除事件</button></div></div></div>
 <div class="fp" id="fp-chat-mem"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-mem')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">記憶體</div><button class="btn bp bs2" onclick="newChatMem()">+ 新增</button></div><div class="fp-body" id="chat-mem-body"></div></div>
 <div class="popup-ov" id="mem-edit-pop" onclick="if(event.target===this)closePopup('mem-edit-pop')"><div class="popup" style="width:90%;max-width:400px;"><div class="popup-title" id="mem-edit-title">新增記憶</div><input type="hidden" id="cmem-id"><input type="hidden" id="cmem-src" value="local"><div class="f" style="padding:0 4px;"><textarea rows="6" id="cmem-c" oninput="cntF(this)" style="min-height:120px;width:100%;box-sizing:border-box;" placeholder="輸入記憶內容…"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:8px;padding:8px 4px 0;"><button class="btn bp" style="flex:1;" onclick="saveChatMem()">儲存</button></div></div></div>
 <div class="fp" id="fp-chat-memo"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-memo')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">MEMO</div><button class="btn bp bs2" onclick="newMemo()">+ 新增</button></div><div class="fp-body" id="chat-memo-body"></div></div>
@@ -570,11 +552,11 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 <div id="sb-tab-1" style="display:none;"><div class="sb-hint">告訴 AI 你想追蹤什麼、用什麼格式呈現。AI 會在每次回覆後根據這段指示更新場景內容。</div><textarea class="sb-prompt-area" id="sb-prompt" placeholder="例：&#10;請按照以下格式總結：&#10;- 背景：目前季節、時間和地點&#10;- 情況：用一行話總結當前情況&#10;- 在場人物：列出目前在場的所有角色" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea></div>
 </div></div>
 <div class="fp" id="fp-cev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title" id="cev-t">預設事件</div><button class="btn bp bs2" onclick="newCEv()">+ 新增</button></div><div class="fp-body" id="cev-body"></div></div>
-<div class="fp" id="fp-cev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveCEv()">儲存</button><button class="btn bdel bs2" onclick="delCEv()">刪除</button></div></div><div class="fp-body full"><input type="hidden" id="ev-id"><div class="f"><label>標題</label><input type="text" id="ev-n"></div><div class="f"><label>時間 / 關鍵字</label><input type="text" id="ev-t"></div><div class="f"><label>內容</label><textarea rows="8" id="ev-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div></div></div>
+<div class="fp" id="fp-cev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><button class="fp-btn" onclick="saveCEv()">儲存</button></div><div class="fp-body full"><input type="hidden" id="ev-id"><div class="f"><label>標題</label><input type="text" id="ev-n"></div><div class="f"><label>時間 / 關鍵字</label><input type="text" id="ev-t"></div><div class="f"><label>內容</label><textarea rows="8" id="ev-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="padding:4px 16px 16px;flex-shrink:0;"><button class="btn" onclick="delCEv()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除事件</button></div></div></div>
 <!-- 聊天視窗世界書管理 -->
 <div class="fp" id="fp-chat-wb"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-wb')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">世界書</div></div><div class="fp-body" id="chat-wb-body"></div></div>
-<!-- pcmd edit via popup -->
-<div class="fp" id="fp-api-cfg"><div class="fp-head"><span class="bk" onclick="closeFP('fp-api-cfg')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯 API</div><div style="display:flex;gap:6px;"><button class="btn bp bs2" onclick="saveApiCfg()">儲存</button><button class="btn bdel bs2" onclick="delApiCfg()">刪除</button></div></div><div class="fp-body full" style="padding:16px 20px;"><input type="hidden" id="acfg-id"><div class="f"><label>名稱</label><input type="text" id="acfg-name" placeholder="例：Anthropic 主力"></div><div class="f"><label>供應商</label><div class="rp-sel" id="acfg-provider-btn" onclick="openPopup('provider-pop')">Anthropic</div><input type="hidden" id="acfg-provider" value="anthropic"></div><div class="f"><label>API Key</label><input type="password" id="acfg-key" placeholder="sk-..." style="font-family:monospace;"></div><div style="padding-top:4px;"><button class="btn bs2" onclick="testApiConn()" id="acfg-test-btn" style="width:100%;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);">測試連線</button><div id="acfg-test-result" style="margin-top:8px;font-size:13px;display:none;"></div></div><div class="stt" style="margin-top:20px;">聊天參數</div><div class="f"><label>Temperature</label><div class="sr"><input type="range" id="acfg-temp" min="0" max="100" value="80" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">0.80</span></div></div><div id="acfg-sampling-extra"></div><div class="fr"><div class="f"><label>Max Input</label><input type="number" id="acfg-maxin" value="20000" min="1000"></div><div class="f"><label>Max Output</label><input type="number" id="acfg-maxout" value="1200" min="100"></div></div></div></div>
+<!-- API 設定面板 -->
+<div class="fp" id="fp-api-cfg"><div class="fp-head"><span class="bk" onclick="closeFP('fp-api-cfg')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯 API</div><button class="fp-btn" onclick="saveApiCfg()">儲存</button></div><div class="fp-body full" style="padding:16px 20px;"><input type="hidden" id="acfg-id"><div class="f"><label>名稱</label><input type="text" id="acfg-name" placeholder="例：Anthropic 主力"></div><div class="f"><label>供應商</label><div class="rp-sel" id="acfg-provider-btn" onclick="openPopup('provider-pop')">Anthropic</div><input type="hidden" id="acfg-provider" value="anthropic"></div><div class="f"><label>API Key</label><input type="password" id="acfg-key" placeholder="sk-..." style="font-family:monospace;"></div><div style="padding-top:4px;"><button class="btn bs2" onclick="testApiConn()" id="acfg-test-btn" style="width:100%;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);">測試連線</button><div id="acfg-test-result" style="margin-top:8px;font-size:13px;display:none;"></div></div><div class="stt" style="margin-top:20px;">聊天參數</div><div class="f"><label>Temperature</label><div class="sr"><input type="range" id="acfg-temp" min="0" max="100" value="80" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">0.80</span></div></div><div id="acfg-sampling-extra"></div><div class="fr"><div class="f"><label>Max Input</label><input type="number" id="acfg-maxin" value="20000" min="1000"></div><div class="f"><label>Max Output</label><input type="number" id="acfg-maxout" value="1200" min="100"></div></div><div style="padding:4px 0 0;flex-shrink:0;"><button class="btn" onclick="delApiCfg()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除 API</button></div></div></div>
 </div><!-- /main -->
 <!-- Nav -->
 <div class="nav-w" id="navw"><div class="nav-i">
@@ -586,7 +568,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 </div></div>
 <script>
 // === IndexedDB Data Layer ===
-const DB_NAME='reverie_local',DB_VER=5;let _db=null;
+const DB_NAME='reverie_local',DB_VER=7;let _db=null;
 // ═══ Default Prompts ═══
 const DEFAULT_RP_PROMPT='你是一位專業的角色扮演敘事者。請根據角色設定與場景，以豐富的文學筆觸推進劇情。\n\n## 回覆規則\n- 以第三人稱描寫角色的動作、表情、心理活動\n- 對話使用「」包裹，內心獨白使用（）包裹\n- 每次回覆控制在 200～400 字之間\n- 不要替玩家角色做出決定或說話\n- 適當描寫環境氛圍與感官細節\n- 根據角色的性格與好感度調整互動方式\n\n## 敘事風格\n保持沉浸感，避免跳出角色。如果玩家的行為超出場景邏輯，角色應以符合設定的方式自然回應。';
 const DEFAULT_SUM_PROMPT='你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。';
@@ -880,7 +862,6 @@ const card=$('cpf-card');
 if(c.avatar_url){hero.innerHTML+='<img src="'+c.avatar_url+'">';card.classList.remove('no-img');}
 else{hero.innerHTML+='<div class="cpf-hero-empty">'+esc((c.name||'?')[0])+'</div>';card.classList.add('no-img');}
 // Name & tagline
-// Name & tagline
 hero.innerHTML+='<div class="cpf-hero-text"><div class="cpf-hero-label">Character File</div><div class="cpf-hero-name">'+esc(c.name)+'</div><div class="cpf-hero-tagline" id="cpf-tagline"></div>'+(c.slogan&&c.slogan.trim()?'<div class="cpf-hero-slogan">'+esc(c.slogan)+'</div>':'')+'</div>';
 const tl=$('cpf-tagline');
 const parts=[];
@@ -927,13 +908,25 @@ function openCpfMenu(){
 $('bs-body').innerHTML='<div class="bs-item" onclick="closeBs();dlHeroCover()"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>下載封面</div><div class="bs-item" onclick="closeBs();dlHeroFull()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>下載角色頁</div>';
 $('bs-ov').classList.add('show');
 }
+// ═══ Shared: fix object-fit:cover for html2canvas in cloned DOM ═══
+// Must pass pre-measured container dimensions since cloned DOM has no layout
+function fixCoverImgInClone(clonedEl,selector,containerW,containerH){
+const imgs=clonedEl.querySelectorAll(selector||'img');
+imgs.forEach(img=>{
+const pw=containerW,ph=containerH;
+const nw=img.naturalWidth,nh=img.naturalHeight;
+if(!nw||!nh||!pw||!ph)return;
+const s=Math.max(pw/nw,ph/nh);
+const rw=Math.round(nw*s),rh=Math.round(nh*s);
+const ox=Math.round((pw-rw)/2),oy=Math.round((ph-rh)/2);
+img.style.cssText='position:absolute;top:'+oy+'px;left:'+ox+'px;width:'+rw+'px;height:'+rh+'px;object-fit:none;max-width:none;max-height:none;';
+});}
 async function dlHeroCover(){
 if(!_cpfCharId)return;
 const hero=$('cpf-hero');if(!hero)return;
 toast('生成中…');
 try{
 const{default:h2c}=await import('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm');
-// Hide buttons, remove border-radius during capture
 const btns=hero.querySelectorAll('.cpf-back,.cpf-dl');
 btns.forEach(b=>b.style.display='none');
 const card=$('cpf-card');const scrollEl=card.querySelector('.cpf-scroll');
@@ -944,9 +937,11 @@ if(scrollEl)scrollEl.style.borderRadius='0';
 hero.style.borderRadius='0';
 hero.classList.add('no-after');
 const scrim=document.createElement('div');
-scrim.style.cssText='position:absolute;top:40%;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 35%,transparent 100%);pointer-events:none;z-index:1;';
+scrim.style.cssText='position:absolute;top:0;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 21%,rgba(0,0,0,0) 60%);pointer-events:none;z-index:1;';
 hero.appendChild(scrim);
-const canvas=await h2c(hero,{scale:2,useCORS:true,logging:false,backgroundColor:null});
+const heroW=hero.offsetWidth,heroH=hero.offsetHeight;
+const canvas=await h2c(hero,{scale:2,useCORS:true,logging:false,backgroundColor:null,height:heroH,windowHeight:heroH,
+onclone:function(_doc,clonedHero){fixCoverImgInClone(clonedHero,'.cpf-hero>img',heroW,heroH);}});
 hero.removeChild(scrim);
 hero.classList.remove('no-after');
 card.style.borderRadius=origBR;card.style.overflow=origOF;
@@ -965,12 +960,10 @@ const card=$('cpf-card');
 toast('生成中…');
 try{
 const{default:h2c}=await import('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm');
-// Hide buttons
 const btns=scroll.querySelectorAll('.cpf-back,.cpf-dl');
 btns.forEach(b=>b.style.display='none');
 const hideSections=scroll.querySelectorAll('.cpf-hr,.cpf-section-head,.cpf-wb-tags,.cpf-events');
 hideSections.forEach(el=>el.style.display='none');
-// Remove card border-radius and expand scroll to full content height
 const origCardBR=card.style.borderRadius;const origCardOF=card.style.overflow;const origCardH=card.style.height;
 card.style.borderRadius='0';card.style.overflow='visible';card.style.height='auto';
 const origH=scroll.style.height;const origOF=scroll.style.overflow;const origMax=scroll.style.maxHeight;const origFlex=scroll.style.flex;const origScrollBR=scroll.style.borderRadius;
@@ -980,13 +973,14 @@ if(hero)hero.style.borderRadius='0';
 let scrim=null;
 if(hero){hero.classList.add('no-after');
 scrim=document.createElement('div');
-scrim.style.cssText='position:absolute;top:40%;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 35%,transparent 100%);pointer-events:none;z-index:1;';
+scrim.style.cssText='position:absolute;top:0;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 21%,rgba(0,0,0,0) 60%);pointer-events:none;z-index:1;';
 hero.appendChild(scrim);}
-// Scroll to top before capture
+const heroW2=hero?hero.offsetWidth:0,heroH2=hero?hero.offsetHeight:0;
 scroll.scrollTop=0;
 const canvas=await h2c(scroll,{scale:2,useCORS:true,logging:false,
 backgroundColor:getComputedStyle(document.body).getPropertyValue('--bg2').trim()||'#fff',
-height:scroll.scrollHeight,windowHeight:scroll.scrollHeight});
+height:scroll.scrollHeight,windowHeight:scroll.scrollHeight,
+onclone:function(_doc,clonedScroll){fixCoverImgInClone(clonedScroll,'.cpf-hero>img',heroW2,heroH2);}});
 // Restore
 if(hero){if(scrim)hero.removeChild(scrim);hero.classList.remove('no-after');}
 hideSections.forEach(el=>el.style.display='');
@@ -1098,10 +1092,7 @@ mem_api_id:$('mem-api-id').value||null,mem_model:$('mem-model-id').value||null,
 memo_on:$('set-memo-on').classList.contains('on'),
 memo_prompt:memoPr,
 state_on:$('set-state-on').classList.contains('on'),
-trk_api_id:$('trk-api-id').value||null,trk_model:$('trk-model-id').value||null,
-emb_local:$('set-emb-local').classList.contains('on'),
-vec_threshold:parseFloat((parseInt($('set-vec-threshold').value)/100).toFixed(2)),
-vec_extras_count:parseInt($('set-vec-extras').value)||3,vec_events_count:parseInt($('set-vec-events').value)||3,vec_memories_count:parseInt($('set-vec-memories').value)||5,vec_wb_count:parseInt($('set-vec-wb').value)||5,vec_memos_count:parseInt($('set-vec-memos').value)||5});toast('已儲存');}
+trk_api_id:$('trk-api-id').value||null,trk_model:$('trk-model-id').value||null});toast('已儲存');}
 async function loadMemRules(){const s=_settings;if(!s)return;
 if(s.mem_prompt)$('mem-prompt').value=s.mem_prompt;if(s.mem_rule){$('mem-rule').value=s.mem_rule;$('mem-rule').nextElementSibling.textContent=s.mem_rule;}
 if(s.mem_tokens){$('set-mem-tokens').value=s.mem_tokens;$('set-mem-tokens').nextElementSibling.textContent=s.mem_tokens;}
@@ -1320,7 +1311,7 @@ const meta=(bmkSvg||t)?'<div class="msg-meta">'+bmkSvg+(t?'<div class="mm">'+t+'
 if(m.role==='system'){row.className='msg-row ai';row.style.maxWidth='100%';row.innerHTML='<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble" style="background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);font-size:13px;font-style:italic;">'+parsed+'</div></div></div>';}
 else if(m.role==='ai'){row.className='msg-row ai';const liveThumb=_curChat?(_curChat.avatarThumb||_curChat.avatarUrl):m.avUrl;const _cpfCid=_curChat?_curChat.charId:'';const ah=liveThumb?'<div class="msg-av"><img src="'+liveThumb+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((m.name||'?')[0])+'</div>';row.innerHTML=ah+'<div class="msg-body"><div class="msg-name">'+esc(m.name||'')+'</div><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+meta+'</div></div>';const avEl=row.querySelector('.msg-av');if(avEl)avEl.onclick=function(e){if(_msgDelMode||_ssMode)return;e.stopPropagation();openCharProfile(_cpfCid);};}
 else{row.className='msg-row user';let uav='';if(_curChat&&_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf){const av=pf.avatar_thumb||pf.avatar_url;uav=av?'<div class="msg-av"><img src="'+av+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>':'<div class="msg-av">'+esc((pf.name||'?')[0])+'</div>';}}row.innerHTML=uav+'<div class="msg-body"><div class="msg-content-row"><div class="msg-bubble">'+parsed+'</div>'+meta+'</div></div>';}
-bindLongPress(row,()=>{if(_ssMode)toggleSSMode();else if(!_msgDelMode)openMsgBs(idx);});row.addEventListener('click',()=>{if(_longPressBlock)return;if(_msgDelMode)toggleMsgDelSel(idx);else if(_ssMode)toggleSS(idx);});return row;}
+bindLongPress(row,()=>{if(_ssMode)toggleSSMode();else if(_msgDelMode)toggleMsgDelMode();else openMsgBs(idx);});row.addEventListener('click',()=>{if(_longPressBlock)return;if(_msgDelMode)toggleMsgDelSel(idx);else if(_ssMode)toggleSS(idx);});return row;}
 function openMsgBs(idx){const m=_curChat&&_curChat.msgs[idx];const isBm=m&&m.bookmarked;$('bs-body').innerHTML='<div class="bs-item" onclick="editMsg('+idx+')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>編輯</div><div class="bs-item" onclick="toggleBookmark('+idx+')"><svg viewBox="0 0 24 24"'+(isBm?' fill="var(--ac)"':'')+'><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>'+(isBm?'取消書籤':'加入書籤')+'</div><div class="bs-item" onclick="copyMsg('+idx+')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>複製</div><div class="bs-item" onclick="closeBs();startScreenshot('+idx+')"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>截圖</div><div class="bs-item danger" onclick="closeBs();startMsgDel('+idx+')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>刪除</div>';$('bs-ov').classList.add('show');}
 function copyMsg(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;navigator.clipboard.writeText(_curChat.msgs[idx].content).then(()=>toast('已複製')).catch(()=>toast('複製失敗'));}
 function closeBs(){$('bs-ov').classList.remove('show');$('bs-body').classList.remove('wide');}
@@ -1332,7 +1323,7 @@ if(_curChatId){const rows=sortBy(await dbByIndex('messages','chat_id',_curChatId
 const oldRow=document.querySelector('.msg-row[data-msg-idx="'+_emIdx+'"]');
 if(oldRow){const newRow=renderMsgRow(_curChat.msgs[_emIdx],_emIdx);oldRow.replaceWith(newRow);}
 closeEditModal();}
-let _msgDelMode=false,_msgDelSel=new Set();
+let _msgDelMode=false,_msgDelSel=new Set(),_msgDelFree=false,_msgDelStart=-1,_msgDelEnd=-1;
 // ═══ Bookmarks ═══
 async function toggleBookmark(idx){closeBs();if(!_curChat||!_curChat.msgs[idx])return;
 _curChat.msgs[idx].bookmarked=!_curChat.msgs[idx].bookmarked;
@@ -1355,9 +1346,11 @@ if(!hits.length){resEl.innerHTML='<div style="padding:16px;text-align:center;col
 resEl.innerHTML=hits.slice(0,30).map(h=>{let who;if(h.m.role==='ai'){who=_curChat.charName||'AI';}else{let pn='玩家';if(_curChat.playerId){const pf=profiles.find(x=>x.id===_curChat.playerId);if(pf)pn=pf.name||'玩家';}who=pn;}const raw=h.m.content.replace(/[*#_`>\n]+/g,' ');const ki=raw.toLowerCase().indexOf(kw);const start=Math.max(0,ki-15);const snip=raw.substring(start,start+60);return '<div class="bs-item" onclick="closeBs();scrollToMsg('+h.idx+')" style="padding:12px 0;"><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;color:var(--ac);margin-bottom:2px;">'+esc(who)+' #'+(h.idx+1)+'</div><div style="font-size:14px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(snip)+'</div></div></div>';}).join('')+(hits.length>30?'<div style="padding:8px;text-align:center;color:var(--tx2);font-size:12px;">還有 '+(hits.length-30)+' 筆結果</div>':'');}
 function scrollToMsg(idx){if(idx<_lazyRendered){const cm=$('c-msgs');while(_lazyRendered>0&&idx<_lazyRendered)loadMoreMsgs();}
 const row=document.querySelector('.msg-row[data-msg-idx="'+idx+'"]');if(row){row.scrollIntoView({behavior:'smooth',block:'center'});row.style.transition='background .3s';row.style.background='var(--ac-bg)';setTimeout(()=>{row.style.background='';},1500);}}
-function startMsgDel(initIdx){_msgDelMode=true;_msgDelSel.clear();_msgDelSel.add(initIdx);$('cv').classList.add('msg-del-mode');$('msg-del-bar').classList.add('show');$('msg-del-banner').classList.add('show');$('ci').style.display='none';updateMsgDelUI();}
-function cancelMsgDel(){_msgDelMode=false;_msgDelSel.clear();$('cv').classList.remove('msg-del-mode');$('msg-del-bar').classList.remove('show');$('msg-del-banner').classList.remove('show');$('ci').style.display='flex';document.querySelectorAll('.msg-row.msg-del-sel').forEach(r=>r.classList.remove('msg-del-sel'));}
-function toggleMsgDelSel(idx){if(_msgDelSel.has(idx))_msgDelSel.delete(idx);else _msgDelSel.add(idx);updateMsgDelUI();}
+function startMsgDel(initIdx){_msgDelMode=true;_msgDelFree=false;_msgDelSel.clear();_msgDelStart=initIdx;_msgDelEnd=initIdx;_msgDelSel.add(initIdx);$('cv').classList.add('msg-del-mode');$('msg-del-bar').classList.add('show');$('msg-del-banner').classList.add('show');$('ci').style.display='none';updateMsgDelBanner();updateMsgDelUI();}
+function cancelMsgDel(){_msgDelMode=false;_msgDelFree=false;_msgDelSel.clear();_msgDelStart=-1;_msgDelEnd=-1;$('cv').classList.remove('msg-del-mode');$('msg-del-bar').classList.remove('show');$('msg-del-banner').classList.remove('show');$('ci').style.display='flex';document.querySelectorAll('.msg-row.msg-del-sel').forEach(r=>r.classList.remove('msg-del-sel'));}
+function toggleMsgDelMode(){_msgDelFree=!_msgDelFree;if(!_msgDelFree&&_msgDelSel.size){const arr=[..._msgDelSel].sort((a,b)=>a-b);_msgDelStart=arr[0];_msgDelEnd=arr[arr.length-1];_msgDelSel.clear();for(let i=_msgDelStart;i<=_msgDelEnd;i++)_msgDelSel.add(i);}updateMsgDelBanner();updateMsgDelUI();}
+function updateMsgDelBanner(){$('msg-del-banner').innerHTML=_msgDelFree?'自由模式：點選個別訊息 <span style="opacity:.7;font-size:12px;">（長按切換範圍模式）</span>':'範圍模式：點選起點與終點 <span style="opacity:.7;font-size:12px;">（長按切換自由模式）</span>';}
+function toggleMsgDelSel(idx){if(_msgDelFree){if(_msgDelSel.has(idx))_msgDelSel.delete(idx);else _msgDelSel.add(idx);}else{if(_msgDelStart===idx&&_msgDelEnd===idx){_msgDelEnd=idx;}else if(idx<_msgDelStart){_msgDelStart=idx;}else{_msgDelEnd=idx;}_msgDelSel.clear();const lo=Math.min(_msgDelStart,_msgDelEnd),hi=Math.max(_msgDelStart,_msgDelEnd);for(let i=lo;i<=hi;i++)_msgDelSel.add(i);}updateMsgDelUI();}
 function updateMsgDelUI(){const n=_msgDelSel.size;$('msg-del-exec').textContent='刪除'+(n?' ('+n+')':'');document.querySelectorAll('.msg-row[data-msg-idx]').forEach(r=>{r.classList.toggle('msg-del-sel',_msgDelSel.has(parseInt(r.dataset.msgIdx)));});}
 async function execMsgDel(){if(!_msgDelSel.size||!_curChat)return;if(!await cfm('確定要刪除 '+_msgDelSel.size+' 則訊息嗎？\n此動作不可恢復！'))return;
 const sorted=[..._msgDelSel].sort((a,b)=>b-a);for(const idx of sorted)_curChat.msgs.splice(idx,1);
@@ -1501,7 +1494,7 @@ function updateSSBanner(){$('msg-ss-banner').innerHTML=_ssFree?'自由模式：�
 function toggleSS(idx){if(_ssFree){if(_ssSel.has(idx))_ssSel.delete(idx);else _ssSel.add(idx);}else{if(_ssStart===idx&&_ssEnd===idx){_ssEnd=idx;}else if(idx<_ssStart){_ssStart=idx;}else{_ssEnd=idx;}_ssSel.clear();const lo=Math.min(_ssStart,_ssEnd),hi=Math.max(_ssStart,_ssEnd);for(let i=lo;i<=hi;i++)_ssSel.add(i);}updateSSVisual();}
 function updateSSVisual(){document.querySelectorAll('.msg-row').forEach(r=>{const i=parseInt(r.dataset.msgIdx);r.classList.toggle('msg-ss-sel',_ssSel.has(i));});$('msg-ss-exec').textContent='截圖 ('+_ssSel.size+')';}
 (function(){let t=null,mv=false;const el=$('c-msgs');if(!el)return;
-el.addEventListener('touchstart',e=>{if(!_ssMode)return;mv=false;t=setTimeout(()=>{if(!mv&&_ssMode){toggleSSMode();}},500);},{passive:true});
+el.addEventListener('touchstart',e=>{if(!_ssMode&&!_msgDelMode)return;mv=false;t=setTimeout(()=>{if(!mv){if(_ssMode)toggleSSMode();else if(_msgDelMode)toggleMsgDelMode();}},500);},{passive:true});
 el.addEventListener('touchmove',()=>{mv=true;clearTimeout(t);});
 el.addEventListener('touchend',()=>{clearTimeout(t);});})();async function execScreenshot(){if(!_ssSel.size)return;toast('生成中...');
 const sorted=[..._ssSel].sort((a,b)=>a-b);
