@@ -154,13 +154,17 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:4px;font-weigh
 .fp{display:none;position:fixed;inset:0;z-index:260;background:var(--bg);flex-direction:column;}.fp.show{display:flex;}
 .fp-head{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;background:var(--bg2);flex-shrink:0;}.fp-title{font-size:17px;font-weight:600;color:var(--tx3);flex:1;}
 .fp-btn{background:none;border:none;color:var(--ac);font-size:16px;font-weight:600;cursor:pointer;padding:6px 2px;font-family:inherit;}.fp-btn:active{opacity:.5;}
-.fp-body{flex:1;overflow-y:auto;padding:16px;}.fp-body.full{padding:16px 0;display:flex;flex-direction:column;}.fp-body.full .f{padding:0 16px;}.fp-body.full .f:last-of-type{flex:1;display:flex;flex-direction:column;}.fp-body.full .f:last-of-type textarea{flex:1;min-height:120px;}
+.u-btn-full{width:100%;padding:10px;font-size:15px;}
+.u-head{font-size:15px;font-weight:600;}
+.u-tap{flex:1;min-width:0;cursor:pointer;}
+.u-bs-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;}
+.fp-body{flex:1;overflow-y:auto;padding:16px;}.fp-body.full{padding:16px 0;display:flex;flex-direction:column;}.fp-body.full .f{padding:0 16px;}.fp-body.full .f:has(textarea){flex:1;display:flex;flex-direction:column;min-height:0;}.fp-body.full .f:has(textarea) textarea{flex:1;min-height:120px;resize:none;}
 .drag-h{cursor:grab;color:var(--bd2);font-size:16px;padding:0 4px;user-select:none;touch-action:none;}.drag-h:active{cursor:grabbing;color:var(--ac);}
 .theme-row{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;}.theme-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid var(--bd);transition:all .15s;}.theme-dot:hover{transform:scale(1.1);}.theme-dot.active{border-color:var(--tx3);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--tx3);}
 .toast{position:fixed;top:20px;left:16px;right:16px;transform:none;background:var(--bg2);color:var(--tx);padding:14px 20px;border-radius:12px;font-size:16px;font-weight:500;z-index:600;opacity:0;transition:opacity .3s;pointer-events:none;text-align:center;border:1px solid var(--bd);box-shadow:0 4px 16px var(--sh);}.toast.show{opacity:1;}
 .empty{text-align:center;padding:40px 20px;color:var(--tx2);font-size:16px;}
 .hidden{display:none;}
-.av-editor{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:16px;position:relative;width:180px;margin-left:auto;margin-right:auto;margin-top:8px;}
+.av-editor{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:16px;position:relative;z-index:1;width:180px;margin-left:auto;margin-right:auto;margin-top:8px;}
 .av-ed-wrap{position:relative;width:160px;height:160px;border-radius:50%;overflow:hidden;border:2px solid var(--bd);background:var(--bgi);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:56px;color:var(--ac);font-weight:500;}
 #pf-av-wrap{width:160px;height:160px;border-radius:50%;}
 .av-ed-wrap img{width:100%;height:100%;object-fit:cover;pointer-events:none;}
@@ -204,6 +208,45 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 .pcmd-panel{position:fixed;bottom:0;left:0;right:0;z-index:251;background:var(--bg2);border-top:1px solid var(--bd);box-shadow:0 -4px 16px rgba(0,0,0,.08);border-radius:16px 16px 0 0;height:60vh;overflow:hidden;padding:20px 16px;transition:transform .25s ease;display:none;flex-direction:column;}.pcmd-panel.show{display:flex;}
 .pcmd-panel-handle{width:36px;height:4px;background:var(--bd2);border-radius:2px;margin:0 auto 14px;}
 .pcmd-overlay{display:none;position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.25);}.pcmd-overlay.show{display:block;}
+.mp-swipe-wrap{flex:1;min-height:0;overflow:hidden;position:relative;}
+.mp-swipe-track{display:flex;height:100%;transition:transform .3s cubic-bezier(.25,.46,.45,.94);}
+.mp-swipe-page{flex-shrink:0;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 16px 20px;}
+.grim-style-bar{display:flex;gap:8px;padding:4px 16px 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.grim-style-bar::-webkit-scrollbar{display:none;}
+.grim-style-opt{position:relative;flex-shrink:0;width:64px;aspect-ratio:3/4;border-radius:8px;border:1.5px solid var(--bd);background:var(--bg2);cursor:pointer;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:4px;transition:all .15s;color:var(--tx2);}
+.grim-style-opt.active{border-color:var(--ac);box-shadow:0 0 0 2px var(--acl);}
+.grim-style-opt:active{transform:scale(.94);}
+.grim-style-opt .grim-style-label{font-size:8px;font-weight:600;opacity:.7;letter-spacing:.03em;}
+.grim-style-opt .grim-style-deco{font-size:20px;opacity:.4;margin-bottom:4px;}
+.grim-shelf{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:16px;}
+.grim-book{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:14px;text-align:center;transition:transform .15s;-webkit-tap-highlight-color:transparent;background:var(--bg2);color:var(--tx);border:1.5px solid var(--bd);}
+.grim-book:active{transform:scale(.96);}
+.grim-book .grim-title{font-size:15px;font-weight:700;line-height:1.3;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.grim-book .grim-count{font-size:11px;margin-top:4px;opacity:.5;}
+.grim-book .grim-deco{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);font-size:40px;opacity:.15;pointer-events:none;}
+.grim-book .grim-spine{position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--bd);}
+.grim-shelf.gs-tome .grim-book{border-radius:4px;}
+.grim-shelf.gs-tome .grim-book .grim-spine{border-right:1px solid var(--tx2);opacity:.3;}
+.grim-shelf.gs-scroll .grim-book{border-radius:20px;}
+.grim-shelf.gs-scroll .grim-book .grim-spine{display:none;}
+.grim-shelf.gs-memorial .grim-book{border-radius:2px;border-style:double;border-width:3px;}
+.grim-shelf.gs-memorial .grim-book .grim-spine{display:none;}
+.grim-shelf.gs-edict .grim-book{border-radius:2px;border-top:3px solid var(--tx2);border-bottom:3px solid var(--tx2);}
+.grim-shelf.gs-edict .grim-book .grim-spine{display:none;}
+.grim-shelf.gs-talisman .grim-book{border-radius:2px;border-style:dashed;}
+.grim-shelf.gs-talisman .grim-book .grim-spine{display:none;}
+.grim-shelf.gs-tablet .grim-book{border-radius:6px;border-width:2px;}
+.grim-shelf.gs-tablet .grim-book .grim-spine{width:0;border-right:2px dotted var(--bd);background:none;opacity:.5;}
+.grim-add{border:2px dashed var(--bd);background:var(--bg3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--tx2);font-size:14px;border-radius:12px;aspect-ratio:3/4;cursor:pointer;transition:border-color .15s;}
+.grim-add:active{border-color:var(--ac);color:var(--ac);}
+.grim-open-btn{display:flex;align-items:center;gap:6px;padding:10px 14px;margin:0 0 6px;border:1px solid var(--bd);border-radius:10px;background:var(--bg3);color:var(--tx2);font-size:13px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.grim-open-btn:active{background:var(--ac);color:#fff;border-color:var(--ac);}
+.grim-spell-item{display:flex;align-items:center;gap:10px;padding:14px;border:1px solid var(--bd);border-radius:10px;margin-bottom:8px;background:var(--bg3);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.grim-spell-item:active{background:var(--bgi);}
+.grim-spell-item .lt{font-size:15px;font-weight:500;}
+.grim-spell-item .ls{font-size:13px;color:var(--tx2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px;}
+.grim-pin{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;cursor:pointer;color:var(--tx2);transition:all .15s;}
+.grim-pin.on{color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);}
 .batch-del-bar{display:none;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--bd);gap:10px;align-items:center;justify-content:space-between;}.batch-del-bar.show{display:flex;}
 .batch-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--bd2);background:transparent;flex-shrink:0;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}.batch-dot.sel{border-color:var(--ac);background:var(--ac);}
 .batch-dot.sel::after{content:'✓';color:#fff;font-size:12px;font-weight:700;}
@@ -357,7 +400,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
     <div class="msg-del-bar" id="msg-del-bar"><button class="mdel-main" id="msg-del-exec" onclick="execMsgDel()">刪除 (0)</button><button class="mdel-cancel" onclick="cancelMsgDel()">取消選擇</button></div>
     <div class="msg-ss-bar" id="msg-ss-bar"><button class="mss-main" id="msg-ss-exec" onclick="execScreenshot()">截圖 (0)</button><button class="mss-cancel" onclick="cancelScreenshot()">取消</button></div>
     <div class="pcmd-overlay" id="pcmd-overlay" onclick="closePcmdPanel()"></div>
-    <div class="pcmd-panel" id="pcmd-panel"><div class="pcmd-panel-handle" id="pcmd-handle"></div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0px;"><div class="sb-tabs" id="pcmd-tabs" style="flex:1;margin-bottom:0;"><div class="sb-tab active" onclick="switchPcmdTab(0,this)">指令匣</div><div class="sb-tab" onclick="switchPcmdTab(1,this)">咒語書</div></div><div class="ham" id="pcmd-add-btn" onclick="newPcmd()" style="width:32px;height:32px;flex-shrink:0;"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div id="pcmd-tab-0" style="flex:1;overflow-y:auto;min-height:0;padding-top:10px;"><div class="sb-hint">開啟的指令會隨每次訊息一起傳給 AI，影響回覆風格與行為。</div><div id="pcmd-list"></div></div><div id="pcmd-tab-1" style="display:none;flex:1;overflow-y:auto;min-height:0;padding-top:10px;"><div class="sb-hint">儲存常用的訊息片段，點擊貼入輸入框。長按拖曳調整順序。</div><div id="spell-list"></div></div></div>
+    <div class="pcmd-panel" id="pcmd-panel"><div class="pcmd-panel-handle" id="pcmd-handle"></div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0px;"><div class="sb-tabs" id="pcmd-tabs" style="flex:1;margin-bottom:0;"><div class="sb-tab active" onclick="pcmdGoTab(0)">指令匣</div><div class="sb-tab" onclick="pcmdGoTab(1)">咒語書</div></div><div class="ham" id="pcmd-add-btn" onclick="newPcmd()" style="width:32px;height:32px;flex-shrink:0;"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div class="mp-swipe-wrap" id="pcmd-swipe"><div class="mp-swipe-track" id="pcmd-track" style="width:200%;"><div class="mp-swipe-page" id="pcmd-tab-0" style="width:50%;padding:10px 0 0;"><div class="sb-hint">開啟的指令會隨每次訊息一起傳給 AI，影響回覆風格與行為。</div><div id="pcmd-list"></div></div><div class="mp-swipe-page" id="pcmd-tab-1" style="width:50%;padding:10px 0 0;"><div class="sb-hint">快捷咒語，點擊貼入輸入框。進入咒語書庫管理全部咒語。</div><div class="grim-open-btn" onclick="closePcmdPanel();openFP('fp-grimoire');renderGrimoire();"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>咒語書庫</div><div id="spell-list"></div></div></div></div></div>
     <div class="ci" id="ci"><div class="pcmd-plus" id="pcmd-plus-btn" onclick="togglePcmdPanel()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></div><div class="ci-box"><textarea rows="1" placeholder="輸入..." id="c-inp" onkeydown="handleCInpKey(event)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,200)+'px';"></textarea><div class="ci-send" onclick="sendMsg()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div></div></div>
   </div>
 </div>
@@ -537,26 +580,36 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
     </div>
   </div>
 </div><!-- Full Pages -->
-<div class="fp" id="fp-sum"><div class="fp-head"><span class="bk" onclick="closeFP('fp-sum')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">歷史摘要</div><button class="btn bp bs2" onclick="genSummary()">生成</button></div><div class="fp-body full"><div class="f"><label>摘要內容</label><textarea rows="30" id="sum-ta" oninput="cntF(this)" style="min-height:50vh;" placeholder="點擊「生成摘要」或手動編輯..."></textarea><div class="ctr">0 字</div></div><div style="padding:0 16px;"><button class="btn bp bs2" onclick="saveSummary()">儲存</button></div></div></div>
+<div class="fp" id="fp-sum"><div class="fp-head"><span class="bk" onclick="closeFP('fp-sum')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">歷史摘要</div><button class="fp-btn" onclick="genSummary()">生成</button></div><div class="fp-body full"><div class="f"><label>摘要內容</label><textarea rows="30" id="sum-ta" oninput="cntF(this)" style="min-height:50vh;" placeholder="點擊「生成摘要」或手動編輯..."></textarea><div class="ctr">0 字</div></div><div style="padding:0 16px;"><button class="fp-btn" onclick="saveSummary()">儲存</button></div></div></div>
 <div class="fp" id="fp-chat-ev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-ev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">事件管理</div></div><div class="fp-body" id="chat-ev-body"></div></div>
 <div class="fp" id="fp-cev-view"><div class="fp-head" style="border:none;"><span class="bk" onclick="closeFP('fp-cev-view')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title"></div></div><div class="fp-body" id="cev-view-body" style="padding:24px 20px;"></div></div>
-<div class="fp" id="fp-chat-ev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-ev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><button class="fp-btn" onclick="saveChatEv()">儲存</button></div><div class="fp-body full"><input type="hidden" id="cev2-id"><div class="f"><label>標題</label><input type="text" id="cev2-n"></div><div class="f"><label>觸發關鍵字 / 時間</label><input type="text" id="cev2-t"></div><div class="f"><label>內容</label><textarea rows="8" id="cev2-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="padding:4px 16px 16px;flex-shrink:0;"><button class="btn" onclick="delChatEv()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除事件</button></div></div></div>
-<div class="fp" id="fp-chat-mem"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-mem')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">記憶體</div><button class="btn bp bs2" onclick="newChatMem()">+ 新增</button></div><div class="fp-body" id="chat-mem-body"></div></div>
+<div class="fp" id="fp-chat-ev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-ev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><button class="fp-btn" onclick="saveChatEv()">儲存</button></div><div class="fp-body full"><input type="hidden" id="cev2-id"><div class="f"><label>標題</label><input type="text" id="cev2-n"></div><div class="f"><label>觸發關鍵字 / 時間</label><input type="text" id="cev2-t"></div><div class="f"><label>內容</label><textarea id="cev2-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="padding:4px 16px 16px;flex-shrink:0;"><button class="btn" onclick="delChatEv()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除事件</button></div></div></div>
+<div class="fp" id="fp-chat-mem"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-mem')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">記憶體</div><button class="fp-btn" onclick="newChatMem()">+ 新增</button></div><div class="fp-body" id="chat-mem-body"></div></div>
 <div class="popup-ov" id="mem-edit-pop" onclick="if(event.target===this)closePopup('mem-edit-pop')"><div class="popup" style="width:90%;max-width:400px;"><div class="popup-title" id="mem-edit-title">新增記憶</div><input type="hidden" id="cmem-id"><input type="hidden" id="cmem-src" value="local"><div class="f" style="padding:0 4px;"><textarea rows="6" id="cmem-c" oninput="cntF(this)" style="min-height:120px;width:100%;box-sizing:border-box;" placeholder="輸入記憶內容…"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:8px;padding:8px 4px 0;"><button class="btn bp" style="flex:1;" onclick="saveChatMem()">儲存</button></div></div></div>
-<div class="fp" id="fp-chat-memo"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-memo')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">MEMO</div><button class="btn bp bs2" onclick="newMemo()">+ 新增</button></div><div class="fp-body" id="chat-memo-body"></div></div>
+<div class="fp" id="fp-chat-memo"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-memo')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">MEMO</div><button class="fp-btn" onclick="newMemo()">+ 新增</button></div><div class="fp-body" id="chat-memo-body"></div></div>
 <div class="popup-ov" id="memo-edit-pop" onclick="if(event.target===this)closePopup('memo-edit-pop')"><div class="popup" style="width:90%;max-width:400px;"><div class="popup-title" id="memo-edit-title">新增 MEMO</div><input type="hidden" id="memo-eid"><div class="f" style="padding:0 4px;"><textarea rows="6" id="memo-ec" oninput="cntF(this)" style="min-height:180px;width:100%;box-sizing:border-box;" placeholder="輸入備忘內容…"></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:8px;padding:8px 4px 0;"><button class="btn bp" style="flex:1;" onclick="saveMemoEdit()">儲存</button></div></div></div>
 <div class="sf-editor" id="sf-editor" onclick="if(event.target===this)closeSceneEditor()"><div class="sf-editor-panel">
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-shrink:0;"><div style="font-size:18px;font-weight:600;color:var(--tx);">場景板</div><button class="btn bp bs2" onclick="saveSceneBoard()">儲存</button></div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-shrink:0;"><div style="font-size:18px;font-weight:600;color:var(--tx);">場景板</div><button class="fp-btn" onclick="saveSceneBoard()">儲存</button></div>
 <div class="sb-tabs"><div class="sb-tab active" onclick="switchSBTab(0,this)">場景內容</div><div class="sb-tab" onclick="switchSBTab(1,this)">追蹤格式</div></div>
 <div id="sb-tab-0"><div class="sb-hint">開啟「自動更新」後，每次 AI 回覆會自動更新場景。開啟「注入對話」後，場景內容會供主 AI 參考。</div><textarea class="sb-content-area" id="sb-content" placeholder="AI 會根據對話自動填寫場景狀態…&#10;你也可以直接手動編輯。"></textarea><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn bs2" id="sb-auto-btn" onclick="toggleSBBtn('sb-auto-btn')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>自動更新</button><button class="btn bs2" id="sb-inject-btn" onclick="toggleSBBtn('sb-inject-btn')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><path d="M4 12h16"/><path d="M12 4v16"/></svg>注入對話</button><button class="btn bs2" id="sb-gen-btn" onclick="genSceneBoard()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>生成</button></div></div>
 <div id="sb-tab-1" style="display:none;"><div class="sb-hint">告訴 AI 你想追蹤什麼、用什麼格式呈現。AI 會在每次回覆後根據這段指示更新場景內容。</div><textarea class="sb-prompt-area" id="sb-prompt" placeholder="例：&#10;請按照以下格式總結：&#10;- 背景：目前季節、時間和地點&#10;- 情況：用一行話總結當前情況&#10;- 在場人物：列出目前在場的所有角色" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea></div>
 </div></div>
-<div class="fp" id="fp-cev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title" id="cev-t">預設事件</div><button class="btn bp bs2" onclick="newCEv()">+ 新增</button></div><div class="fp-body" id="cev-body"></div></div>
-<div class="fp" id="fp-cev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><button class="fp-btn" onclick="saveCEv()">儲存</button></div><div class="fp-body full"><input type="hidden" id="ev-id"><div class="f"><label>標題</label><input type="text" id="ev-n"></div><div class="f"><label>時間 / 關鍵字</label><input type="text" id="ev-t"></div><div class="f"><label>內容</label><textarea rows="8" id="ev-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="padding:4px 16px 16px;flex-shrink:0;"><button class="btn" onclick="delCEv()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除事件</button></div></div></div>
+<div class="fp" id="fp-cev"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title" id="cev-t">預設事件</div><button class="fp-btn" onclick="newCEv()">+ 新增</button></div><div class="fp-body" id="cev-body"></div></div>
+<div class="fp" id="fp-cev-d"><div class="fp-head"><span class="bk" onclick="closeFP('fp-cev-d')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯事件</div><button class="fp-btn" onclick="saveCEv()">儲存</button></div><div class="fp-body full"><input type="hidden" id="ev-id"><div class="f"><label>標題</label><input type="text" id="ev-n"></div><div class="f"><label>時間 / 關鍵字</label><input type="text" id="ev-t"></div><div class="f"><label>內容</label><textarea id="ev-c" oninput="cntF(this)"></textarea><div class="ctr">0 字</div></div><div style="padding:4px 16px 16px;flex-shrink:0;"><button class="btn" onclick="delCEv()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除事件</button></div></div></div>
 <!-- 聊天視窗世界書管理 -->
 <div class="fp" id="fp-chat-wb"><div class="fp-head"><span class="bk" onclick="closeFP('fp-chat-wb')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">世界書</div></div><div class="fp-body" id="chat-wb-body"></div></div>
 <!-- API 設定面板 -->
 <div class="fp" id="fp-api-cfg"><div class="fp-head"><span class="bk" onclick="closeFP('fp-api-cfg')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">編輯 API</div><button class="fp-btn" onclick="saveApiCfg()">儲存</button></div><div class="fp-body full" style="padding:16px 20px;"><input type="hidden" id="acfg-id"><div class="f"><label>名稱</label><input type="text" id="acfg-name" placeholder="例：Anthropic 主力"></div><div class="f"><label>供應商</label><div class="rp-sel" id="acfg-provider-btn" onclick="openPopup('provider-pop')">Anthropic</div><input type="hidden" id="acfg-provider" value="anthropic"></div><div class="f"><label>API Key</label><input type="password" id="acfg-key" placeholder="sk-..." style="font-family:monospace;"></div><div style="padding-top:4px;"><button class="btn bs2" onclick="testApiConn()" id="acfg-test-btn" style="width:100%;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);">測試連線</button><div id="acfg-test-result" style="margin-top:8px;font-size:13px;display:none;"></div></div><div class="stt" style="margin-top:20px;">聊天參數</div><div class="f"><label>Temperature</label><div class="sr"><input type="range" id="acfg-temp" min="0" max="100" value="80" oninput="this.nextElementSibling.textContent=(this.value/100).toFixed(2)"><span class="svl">0.80</span></div></div><div id="acfg-sampling-extra"></div><div class="fr"><div class="f"><label>Max Input</label><input type="number" id="acfg-maxin" value="20000" min="1000"></div><div class="f"><label>Max Output</label><input type="number" id="acfg-maxout" value="1200" min="100"></div></div><div style="padding:4px 0 0;flex-shrink:0;"><button class="btn" onclick="delApiCfg()" style="width:100%;font-size:15px;padding:10px;background:var(--del);color:#fff;border:none;border-radius:12px;font-weight:600;">刪除 API</button></div></div></div>
+<!-- 咒語書庫 -->
+<div class="fp" id="fp-grimoire">
+  <div class="fp-head"><span class="bk" onclick="closeFP('fp-grimoire')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title">咒語書庫</div><div class="ham" onclick="newGrimBook()" style="width:32px;height:32px;"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+  <div class="grim-style-bar" id="grim-style-bar"></div>
+  <div id="grim-shelf" class="grim-shelf"></div>
+</div>
+<div class="fp" id="fp-grim-book">
+  <div class="fp-head"><span class="bk" onclick="closeFP('fp-grim-book')" style="margin:0;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span><div class="fp-title" id="grim-book-title">咒語書</div><div style="display:flex;gap:4px;"><div class="ham" onclick="newGrimSpell()" style="width:32px;height:32px;"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="ham" onclick="grimBookMenu()" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></div></div></div>
+  <div style="padding:8px 16px 16px;" id="grim-book-spells"></div>
+</div>
 </div><!-- /main -->
 <!-- Nav -->
 <div class="nav-w" id="navw"><div class="nav-i">
@@ -568,7 +621,7 @@ background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;}
 </div></div>
 <script>
 // === IndexedDB Data Layer ===
-const DB_NAME='reverie_local',DB_VER=7;let _db=null;
+const DB_NAME='reverie_local',DB_VER=8;let _db=null;
 // ═══ Default Prompts ═══
 const DEFAULT_RP_PROMPT='你是一位專業的角色扮演敘事者。請根據角色設定與場景，以豐富的文學筆觸推進劇情。\n\n## 回覆規則\n- 以第三人稱描寫角色的動作、表情、心理活動\n- 對話使用「」包裹，內心獨白使用（）包裹\n- 每次回覆控制在 200～400 字之間\n- 不要替玩家角色做出決定或說話\n- 適當描寫環境氛圍與感官細節\n- 根據角色的性格與好感度調整互動方式\n\n## 敘事風格\n保持沉浸感，避免跳出角色。如果玩家的行為超出場景邏輯，角色應以符合設定的方式自然回應。';
 const DEFAULT_SUM_PROMPT='你是一個對話摘要助手。請將以下角色扮演對話濃縮成一份簡潔的摘要，保留重要的劇情發展、角色關係變化和關鍵事件。摘要必須控制在 500 tokens 以內。使用繁體中文。';
@@ -576,7 +629,7 @@ const DEFAULT_MEM_PROMPT='從以下對話中提取重要記憶，將所有重點
 const DEFAULT_MEMO_PROMPT='You are analyzing {{user}} (the player character) ONLY.\n\nYour job is to detect LASTING traits about {{user}} as a person — things that define who they are across ANY story, not just this scene.\n\nRecord ONLY if the conversation reveals:\n- A core value or belief {{user}} consistently acts on\n- A deep personality trait shown through repeated behavior (not a one-time reaction)\n- A significant shift in how {{user}} relates to {{char}}\n- Something {{user}} explicitly states about themselves\n\nNEVER record:\n- What happened in the scene (that is plot, not personality)\n- Single emotional reactions (e.g. \"felt sad\", \"was angry\")\n- Anything about {{char}}\n- Preferences or opinions expressed only once\n- Anything you could infer just by reading the recent conversation\n\nTHRESHOLD: Ask yourself — \"Would this still matter 50 messages from now?\" If the answer is not a clear YES, output NOTHING.\n\nDefault output: NOTHING. Silence is correct 80% of the time.';
 const DEFAULT_SB_PROMPT='*嚴格遵守要求格式撰寫內容，禁止擅自增減\n*簡記當前場景的以下資訊，每項一行：\n\n- 地點：劇情場所\n- 時間：YYYY/MM/DD HH:mm，依照互動合理更新時間推移\n- 角色衣著：在場角色的衣著打扮';
 function openDB(){return new Promise((res,rej)=>{if(_db){res(_db);return;}const req=indexedDB.open(DB_NAME,DB_VER);req.onupgradeneeded=e=>{const db=e.target.result;
-const stores={characters:{},character_extras:{indexes:{character_id:'character_id'}},character_events:{indexes:{character_id:'character_id'}},profiles:{},prompts:{},chats:{},messages:{indexes:{chat_id:'chat_id'}},chat_events:{indexes:{chat_id:'chat_id'}},chat_creator_event_toggles:{indexes:{chat_id:'chat_id'}},memories:{indexes:{chat_id:'chat_id'}},settings:{},api_configs:{},persistent_commands:{},avatars:{},worldbooks:{},worldbook_entries:{indexes:{worldbook_id:'worldbook_id'}},spellbook:{},favorites:{indexes:{character_id:'character_id'}}};
+const stores={characters:{},character_extras:{indexes:{character_id:'character_id'}},character_events:{indexes:{character_id:'character_id'}},profiles:{},prompts:{},chats:{},messages:{indexes:{chat_id:'chat_id'}},chat_events:{indexes:{chat_id:'chat_id'}},chat_creator_event_toggles:{indexes:{chat_id:'chat_id'}},memories:{indexes:{chat_id:'chat_id'}},settings:{},api_configs:{},persistent_commands:{},avatars:{},worldbooks:{},worldbook_entries:{indexes:{worldbook_id:'worldbook_id'}},spellbook:{indexes:{book_id:'book_id'}},spell_books:{},favorites:{indexes:{character_id:'character_id'}}};
 for(const[s,cfg] of Object.entries(stores)){let st;if(!db.objectStoreNames.contains(s)){st=db.createObjectStore(s,{keyPath:'id'});}else{st=e.target.transaction.objectStore(s);}
 if(cfg.indexes){for(const[iName,iKey] of Object.entries(cfg.indexes)){if(!st.indexNames.contains(iName))st.createIndex(iName,iKey);}}}
 };req.onsuccess=e=>{_db=e.target.result;res(_db);};req.onerror=e=>rej(e.target.error);req.onblocked=()=>{console.warn('DB upgrade blocked - close other tabs');toast('請關閉其他分頁後重新整理');};});}
@@ -600,8 +653,8 @@ async function vectorSearch(store,indexField,indexVal,queryEmb,count,threshold){
 async function rebuildAllEmb(){if(!getSettings().emb_local){toast('請先啟用');return;}if(!await cfm('重新生成所有向量？'))return;const pipe=await loadEmbeddingModel();if(!pipe)return;let c=0;toast('處理中...');for(const x of await dbAll('character_extras')){await embedAndPatch('character_extras',x.id,(x.title||'')+' '+(x.content||''));c++;}for(const x of await dbAll('character_events')){await embedAndPatch('character_events',x.id,(x.name||'')+' '+(x.time_or_keyword||'')+' '+(x.content||''));c++;}for(const x of await dbAll('memories')){await embedAndPatch('memories',x.id,x.content||'');c++;}for(const x of await dbAll('worldbook_entries')){await embedAndPatch('worldbook_entries',x.id,(x.name||'')+' '+(x.keywords||'')+' '+(x.content||''));c++;}toast('已完成 '+c+' 筆');}
 
 // === Storage Info ===
-async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook','favorites'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
-async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook'])try{await dbClear(s);}catch(e){}toast('已清除');location.reload();}
+async function calcStorageInfo(){const el=$('storage-info');el.textContent='計算中...';try{const stores=['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','memories','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook','spell_books','favorites'];let lines=[],total=0;for(const s of stores){const n=(await dbAll(s)).length;total+=n;lines.push(s+': '+n+' 筆');}if(navigator.storage&&navigator.storage.estimate){const est=await navigator.storage.estimate();lines.unshift('空間: '+((est.usage||0)/1048576).toFixed(1)+' / '+((est.quota||0)/1048576).toFixed(0)+' MB');}lines.push('總計: '+total+' 筆');el.innerHTML=lines.join('<br>');}catch(e){el.textContent='失敗';}}
+async function clearAllData(){if(!await cfm('確定清除所有資料？'))return;if(!await cfm('再次確認？'))return;for(const s of['characters','character_extras','character_events','profiles','prompts','chats','messages','chat_events','chat_creator_event_toggles','memories','settings','api_configs','persistent_commands','avatars','worldbooks','worldbook_entries','spellbook','spell_books'])try{await dbClear(s);}catch(e){}toast('已清除');location.reload();}
 // === Core UI ===
 const $=id=>document.getElementById(id);marked.setOptions({breaks:true,gfm:true});const _renderer=new marked.Renderer();_renderer.heading=function(tok){const lvl=tok.depth||1;const prefix='#'.repeat(lvl)+' ';return '<p>'+prefix+(typeof tok==='string'?tok:(tok.text||''))+'</p>\n';};marked.use({renderer:_renderer});
 // Prevent marked from converting list syntax — escape before parsing, restore after
@@ -1166,7 +1219,7 @@ function pickPfGen(el,v){el.closest('.popup').querySelectorAll('.popup-item').fo
 
 // === IMPORT / EXPORT ===
 function dlJson(data,fn){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download=fn;a.click();URL.revokeObjectURL(a.href);}
-async function exportAll(){toast('匯出中...');try{const strip=arr=>(arr||[]).map(x=>{const c={...x};delete c.embedding;return c;});const data={_type:'rp_studio_backup',_version:2,_storage:'local',_date:new Date().toISOString(),characters:strip(await dbAll('characters')),character_extras:strip(await dbAll('character_extras')),character_events:strip(await dbAll('character_events')),profiles:await dbAll('profiles'),prompts:await dbAll('prompts'),api_configs:await dbAll('api_configs'),settings:[_settings],persistent_commands:await dbAll('persistent_commands'),chats:await dbAll('chats'),messages:await dbAll('messages'),chat_events:await dbAll('chat_events'),memories:strip(await dbAll('memories')),worldbooks:await dbAll('worldbooks'),worldbook_entries:strip(await dbAll('worldbook_entries')),spellbook:await dbAll('spellbook')};dlJson(data,'rp-backup-'+new Date().toISOString().slice(0,10)+'.json');toast('已匯出');}catch(e){toast('失敗: '+e.message.substring(0,50));}}
+async function exportAll(){toast('匯出中...');try{const strip=arr=>(arr||[]).map(x=>{const c={...x};delete c.embedding;return c;});const data={_type:'rp_studio_backup',_version:2,_storage:'local',_date:new Date().toISOString(),characters:strip(await dbAll('characters')),character_extras:strip(await dbAll('character_extras')),character_events:strip(await dbAll('character_events')),profiles:await dbAll('profiles'),prompts:await dbAll('prompts'),api_configs:await dbAll('api_configs'),settings:[_settings],persistent_commands:await dbAll('persistent_commands'),chats:await dbAll('chats'),messages:await dbAll('messages'),chat_events:await dbAll('chat_events'),memories:strip(await dbAll('memories')),worldbooks:await dbAll('worldbooks'),worldbook_entries:strip(await dbAll('worldbook_entries')),spellbook:await dbAll('spellbook'),spell_books:await dbAll('spell_books')};dlJson(data,'rp-backup-'+new Date().toISOString().slice(0,10)+'.json');toast('已匯出');}catch(e){toast('失敗: '+e.message.substring(0,50));}}
 async function exportChars(){toast('匯出中...');try{dlJson({_type:'rp_studio_characters',_version:2,_date:new Date().toISOString(),characters:await dbAll('characters'),character_extras:await dbAll('character_extras'),character_events:await dbAll('character_events')},'rp-chars-'+new Date().toISOString().slice(0,10)+'.json');toast('已匯出');}catch(e){toast('失敗');}}
 async function exportChats(){toast('匯出中...');try{const strip=arr=>(arr||[]).map(x=>{const c={...x};delete c.embedding;return c;});dlJson({_type:'rp_studio_chats',_version:2,_date:new Date().toISOString(),chats:await dbAll('chats'),messages:await dbAll('messages'),chat_events:await dbAll('chat_events'),memories:strip(await dbAll('memories'))},'rp-chats-'+new Date().toISOString().slice(0,10)+'.json');toast('已匯出');}catch(e){toast('失敗');}}
 async function importFile(inp){if(!inp.files[0])return;try{const file=inp.files[0],name=file.name.toLowerCase();
@@ -1181,7 +1234,7 @@ else{toast('無法辨識格式');return;}
 await initApp();}catch(e){toast('失敗: '+e.message.substring(0,60));}}
 
 async function importReverie(data){let total=0;const up=async(s,rows)=>{if(!rows||!rows.length)return 0;for(const r of rows){const c={...r};delete c.embedding;await dbPut(s,c);}return rows.length;};
-if(data.characters)total+=await up('characters',data.characters);if(data.character_extras)total+=await up('character_extras',data.character_extras);if(data.character_events)total+=await up('character_events',data.character_events);if(data.profiles)total+=await up('profiles',data.profiles);if(data.prompts)total+=await up('prompts',data.prompts);if(data.api_configs)total+=await up('api_configs',data.api_configs);if(data.settings&&data.settings[0]){data.settings[0].id=SETTINGS_ID;await dbPut('settings',data.settings[0]);total++;}if(data.persistent_commands)total+=await up('persistent_commands',data.persistent_commands);if(data.chats)total+=await up('chats',data.chats);if(data.messages)total+=await up('messages',data.messages);if(data.chat_events)total+=await up('chat_events',data.chat_events);if(data.memories)total+=await up('memories',data.memories);if(data.worldbooks)total+=await up('worldbooks',data.worldbooks);if(data.worldbook_entries)total+=await up('worldbook_entries',data.worldbook_entries);if(data.spellbook)total+=await up('spellbook',data.spellbook);
+if(data.characters)total+=await up('characters',data.characters);if(data.character_extras)total+=await up('character_extras',data.character_extras);if(data.character_events)total+=await up('character_events',data.character_events);if(data.profiles)total+=await up('profiles',data.profiles);if(data.prompts)total+=await up('prompts',data.prompts);if(data.api_configs)total+=await up('api_configs',data.api_configs);if(data.settings&&data.settings[0]){data.settings[0].id=SETTINGS_ID;await dbPut('settings',data.settings[0]);total++;}if(data.persistent_commands)total+=await up('persistent_commands',data.persistent_commands);if(data.chats)total+=await up('chats',data.chats);if(data.messages)total+=await up('messages',data.messages);if(data.chat_events)total+=await up('chat_events',data.chat_events);if(data.memories)total+=await up('memories',data.memories);if(data.worldbooks)total+=await up('worldbooks',data.worldbooks);if(data.worldbook_entries)total+=await up('worldbook_entries',data.worldbook_entries);if(data.spellbook)total+=await up('spellbook',data.spellbook);if(data.spell_books)total+=await up('spell_books',data.spell_books);
 toast('已完成 '+total+' 筆');}
 
 async function importSTCard(d){const cid=uid();const c={id:cid,name:d.name||'未命名',sort_order:chars.length,created_at:new Date().toISOString()};
@@ -1267,6 +1320,7 @@ async function initApp(){
     loadPf().catch(e=>console.warn('loadPf',e)),
     loadPcmds().catch(e=>console.warn('loadPcmds',e)),
     loadSpells().catch(e=>console.warn('loadSpells',e)),
+    loadSpellBooks().catch(e=>console.warn('loadSpellBooks',e)),
     loadWBs().catch(e=>console.warn('loadWBs',e))
   ]);
   await loadChatIndex().catch(e=>console.warn('loadChatIndex',e));
@@ -1681,7 +1735,7 @@ const cd=await getCharData(_curChat.charId);const cEvs=cd.events;
 let creatorToggles={};try{(await dbByIndex('chat_creator_event_toggles','chat_id',_curChatId)).forEach(r=>{creatorToggles[r.event_id]=r.enabled;});}catch(e){}
 if(cEvs.length){b.innerHTML+='<div class="stt" style="margin-top:4px;">創作者事件</div>';cEvs.forEach(ev=>{const on=creatorToggles[ev.id]!==false;b.innerHTML+='<div class="ev-toggle-item"><div class="lb" onclick="viewCreatorEv(\''+ev.id+'\')" style="cursor:pointer;"><div class="lt">'+esc(tplReplace(ev.name))+'</div><div class="ls">'+(ev.time_or_keyword?esc(tplReplace(ev.time_or_keyword)):'—')+'</div></div><div class="tog'+(on?' on':'')+'" onclick="event.stopPropagation();toggleCrEv(\''+ev.id+'\',this)"></div></div>';});}
 let playerEvs=sortBy(await dbByIndex('chat_events','chat_id',_curChatId),'sort_order');
-b.innerHTML+='<div class="stt" style="margin-top:32px;display:flex;align-items:center;justify-content:space-between;">玩家事件<button class="btn bp bs2" onclick="newChatEv()">+ 新增</button></div>';
+b.innerHTML+='<div class="stt" style="margin-top:32px;display:flex;align-items:center;justify-content:space-between;">玩家事件<button class="fp-btn" onclick="newChatEv()">+ 新增</button></div>';
 if(!playerEvs.length)b.innerHTML+='<div style="color:var(--tx2);font-size:13px;padding:12px;">尚未新增</div>';
 else{b.innerHTML+='<div id="pl-ev-drag">';playerEvs.forEach(ev=>{b.innerHTML+='<div class="ev-toggle-item" data-evid="'+ev.id+'"><div class="lb" onclick="openChatEvD(\''+ev.id+'\')" style="cursor:pointer;"><div class="lt">'+esc(tplReplace(ev.name))+'</div><div class="ls">'+(ev.keyword?esc(tplReplace(ev.keyword)):'—')+'</div></div><div class="tog'+(ev.enabled!==false?' on':'')+'" onclick="event.stopPropagation();togglePlEv(\''+ev.id+'\',this)"></div></div>';});b.innerHTML+='</div>';setTimeout(()=>{const dc=$('pl-ev-drag');if(dc)initEvDrag(dc,'chat_events','data-evid');},0);}
 openFP('fp-chat-ev');}
@@ -1793,20 +1847,23 @@ finally{btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:
 // ═══ Persistent Commands ═══
 let _pcmds=[];
 async function loadPcmds(){_pcmds=sortBy(await dbAll('persistent_commands'),'sort_order');}
-function togglePcmdPanel(){const p=$('pcmd-panel');if(p.classList.contains('show')){closePcmdPanel();}else{renderPcmdList();renderSpellList();const tabs=document.querySelectorAll('#pcmd-tabs .sb-tab');switchPcmdTab(_pcmdTabIdx,tabs[_pcmdTabIdx]);p.classList.add('show');$('pcmd-overlay').classList.add('show');$('pcmd-plus-btn').classList.add('active');}}
+function togglePcmdPanel(){const p=$('pcmd-panel');if(p.classList.contains('show')){closePcmdPanel();}else{renderPcmdList();renderSpellList();pcmdGoTab(_pcmdTabIdx);p.classList.add('show');$('pcmd-overlay').classList.add('show');$('pcmd-plus-btn').classList.add('active');if(window._initPcmdSwipe)window._initPcmdSwipe();}}
 function closePcmdPanel(){$('pcmd-panel').classList.remove('show');$('pcmd-panel').style.transform='';$('pcmd-overlay').classList.remove('show');$('pcmd-plus-btn').classList.remove('active');}
-(function(){let startY=0,curY=0,dragging=false;const panel=$('pcmd-panel');if(!panel)return;
-panel.addEventListener('touchstart',e=>{const touch=e.touches[0];const touchEl=document.elementFromPoint(touch.clientX,touch.clientY);const activeList=_pcmdTabIdx===0?$('pcmd-tab-0'):$('pcmd-tab-1');const inList=activeList&&activeList.contains(touchEl);
+(function(){let startX=0,startY=0,curY=0,dragging=false,decided=false;const panel=$('pcmd-panel');if(!panel)return;
+panel.addEventListener('touchstart',e=>{if(window._lpDragging)return;const touch=e.touches[0];const touchEl=document.elementFromPoint(touch.clientX,touch.clientY);const activeList=_pcmdTabIdx===0?$('pcmd-tab-0'):$('pcmd-tab-1');const inList=activeList&&activeList.contains(touchEl);
 if(inList&&activeList.scrollTop>0)return;
-startY=touch.clientY;curY=startY;dragging=true;panel.style.transition='none';},{passive:true});
-panel.addEventListener('touchmove',e=>{if(!dragging)return;curY=e.touches[0].clientY;const dy=curY-startY;if(dy>0){panel.style.transform='translateY('+dy+'px)';e.preventDefault();}else{dragging=false;panel.style.transition='transform .25s ease';panel.style.transform='';}},{passive:false});
-panel.addEventListener('touchend',()=>{if(!dragging)return;dragging=false;panel.style.transition='transform .25s ease';if(curY-startY>80){closePcmdPanel();}else{panel.style.transform='';}});})();
+startX=touch.clientX;startY=touch.clientY;curY=startY;dragging=false;decided=false;panel.style.transition='none';},{passive:true});
+panel.addEventListener('touchmove',e=>{if(window._lpDragging){dragging=false;return;}const cx=e.touches[0].clientX;curY=e.touches[0].clientY;const dx=cx-startX;const dy=curY-startY;
+if(!decided){if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>8){decided=true;dragging=false;return;}if(Math.abs(dy)<10)return;decided=true;dragging=dy>0;if(!dragging)return;}
+if(!dragging)return;
+const d=curY-startY;if(d>0){panel.style.transform='translateY('+d+'px)';e.preventDefault();}else{panel.style.transform='';dragging=false;}},{passive:false});
+panel.addEventListener('touchend',()=>{if(!dragging){panel.style.transition='transform .25s ease';panel.style.transform='';return;}dragging=false;decided=false;panel.style.transition='transform .25s ease';if(curY-startY>80){closePcmdPanel();}else{panel.style.transform='';}});})();
 function renderPcmdList(){const el=$('pcmd-list');if(!_pcmds.length){el.innerHTML='<div style="color:var(--tx2);font-size:15px;padding:8px;">尚未建立指令</div>';return;}
 const t=(_curChat&&_curChat.pcmdToggles)||{};
-el.innerHTML=_pcmds.map((p,i)=>{const isOn=t[p.id]!==undefined?t[p.id]!==false:p.enabled===true;return '<div class="ev-toggle-item" data-pcid="'+p.id+'"><div style="flex:1;min-width:0;cursor:pointer;" onclick="editPcmd(\''+p.id+'\')"><div class="lt">'+esc(p.name||'未命名')+'</div><div class="ls">'+esc((p.content||'').substring(0,80))+'</div></div><div class="tog'+(isOn?' on':'')+'" onclick="event.stopPropagation();togglePcmdEnabled('+i+',this)"></div></div>';}).join('');initPcmdDrag(el);}
+el.innerHTML=_pcmds.map((p,i)=>{const isOn=t[p.id]!==undefined?t[p.id]!==false:p.enabled===true;return '<div class="ev-toggle-item" data-pcid="'+p.id+'"><div class="u-tap" onclick="editPcmd(\''+p.id+'\')"><div class="lt">'+esc(p.name||'未命名')+'</div><div class="ls">'+esc((p.content||'').substring(0,80))+'</div></div><div class="tog'+(isOn?' on':'')+'" onclick="event.stopPropagation();togglePcmdEnabled('+i+',this)"></div></div>';}).join('');initPcmdDrag(el);}
 function togglePcmdEnabled(i,el){if(!_pcmds[i]||!_curChat)return;if(!_curChat.pcmdToggles)_curChat.pcmdToggles={};const pid=_pcmds[i].id;_curChat.pcmdToggles[pid]=!(_curChat.pcmdToggles[pid]!==false);el.classList.toggle('on');saveChatStore();}
-function newPcmd(){closePcmdPanel();$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">新增指令</div><input type="hidden" id="pcmd-id" value=""><div class="f"><label>名稱</label><input type="text" id="pcmd-name" placeholder="例：加強情緒描寫"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)" placeholder="這段文字會隨每次訊息一起傳給 AI..."></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button></div></div>';$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
-function editPcmd(id){closePcmdPanel();const p=_pcmds.find(x=>x.id===id);if(!p)return;$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">編輯指令</div><input type="hidden" id="pcmd-id" value="'+id+'"><div class="f"><label>名稱</label><input type="text" id="pcmd-name" value="'+esc(p.name||'')+'"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)">'+esc(p.content||'')+'</textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="savePcmd()">儲存</button><button class="btn bdel bs2" onclick="delPcmd()">刪除</button></div></div>';cntF($('pcmd-content'));$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
+function newPcmd(){closePcmdPanel();$('bs-body').innerHTML='<div style="padding:0;"><div class="u-bs-head"><div class="u-head">新增指令</div><button class="fp-btn" onclick="savePcmd()">儲存</button></div><div style="padding:0 16px 16px;"><input type="hidden" id="pcmd-id" value=""><div class="f"><label>名稱</label><input type="text" id="pcmd-name" placeholder="例：加強情緒描寫"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)" placeholder="這段文字會隨每次訊息一起傳給 AI..."></textarea><div class="ctr">0 字</div></div></div></div>';$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
+function editPcmd(id){closePcmdPanel();const p=_pcmds.find(x=>x.id===id);if(!p)return;$('bs-body').innerHTML='<div style="padding:0;"><div class="u-bs-head"><div class="u-head">編輯指令</div><button class="fp-btn" onclick="savePcmd()">儲存</button></div><div style="padding:0 16px 16px;"><input type="hidden" id="pcmd-id" value="'+id+'"><div class="f"><label>名稱</label><input type="text" id="pcmd-name" value="'+esc(p.name||'')+'"></div><div class="f"><label>指令內容</label><textarea rows="10" id="pcmd-content" oninput="cntF(this)">'+esc(p.content||'')+'</textarea><div class="ctr">0 字</div></div><button class="btn bdel bs2 u-btn-full" onclick="delPcmd()">刪除指令</button></div></div>';cntF($('pcmd-content'));$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
 async function savePcmd(){const id=$('pcmd-id').value,name=$('pcmd-name').value.trim()||'未命名',content=$('pcmd-content').value;
 if(id){const p=await dbGet('persistent_commands',id)||{id};Object.assign(p,{name,content});await dbPut('persistent_commands',p);}
 else await dbPut('persistent_commands',{id:uid(),name,content,enabled:true,sort_order:_pcmds.length});
@@ -1814,23 +1871,267 @@ await loadPcmds();renderPcmdList();toast('已儲存');closeBs();togglePcmdPanel(
 async function delPcmd(){const id=$('pcmd-id').value;if(!id)return;if(!await cfm('確定刪除？'))return;await dbDel('persistent_commands',id);await loadPcmds();renderPcmdList();toast('已刪除');closeBs();togglePcmdPanel();}
 function getActivePcmds(){const t=(_curChat&&_curChat.pcmdToggles)||{};return _pcmds.filter(p=>{const v=t[p.id];return v===true||(v===undefined&&p.enabled===true);}).map(p=>p.content).join('\n');}
 let _pcmdTabIdx=0;
-function switchPcmdTab(idx,el){_pcmdTabIdx=idx;document.querySelectorAll('#pcmd-tabs .sb-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');$('pcmd-tab-0').style.display=idx===0?'block':'none';$('pcmd-tab-1').style.display=idx===1?'block':'none';const addBtn=$('pcmd-add-btn');if(idx===0){addBtn.setAttribute('onclick','newPcmd()');}else{addBtn.setAttribute('onclick','newSpell()');}}
+function pcmdGoTab(idx){_pcmdTabIdx=idx;$('pcmd-track').style.transform='translateX(-'+(idx*50)+'%)';document.querySelectorAll('#pcmd-tabs .sb-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));const addBtn=$('pcmd-add-btn');if(idx===0){addBtn.setAttribute('onclick','newPcmd()');}else{addBtn.setAttribute('onclick','newSpell()');}}
+(function(){let _pcmdSwipeInit=false;
+window._initPcmdSwipe=function(){if(_pcmdSwipeInit)return;_pcmdSwipeInit=true;
+const wrap=$('pcmd-swipe'),track=$('pcmd-track');if(!wrap||!track)return;
+let sx=0,sy=0,dx=0,dir=null;
+wrap.addEventListener('touchstart',e=>{if(window._lpDragging){dir='skip';return;}sx=e.touches[0].clientX;sy=e.touches[0].clientY;dx=0;dir=null;},{passive:true});
+wrap.addEventListener('touchmove',e=>{if(dir==='skip'||window._lpDragging)return;const cx=e.touches[0].clientX;const cy=e.touches[0].clientY;dx=cx-sx;const dy=cy-sy;
+if(!dir){if(Math.abs(dy)>12){dir='v';return;}if(Math.abs(dx)>12){dir='h';track.style.transition='none';}else return;}
+if(dir==='h'){e.preventDefault();const base=-_pcmdTabIdx*(wrap.offsetWidth);track.style.transform='translateX('+(base+dx)+'px)';}},{passive:false});
+wrap.addEventListener('touchend',()=>{if(dir==='h'){track.style.transition='transform .3s cubic-bezier(.25,.46,.45,.94)';if(dx<-50&&_pcmdTabIdx<1)pcmdGoTab(1);else if(dx>50&&_pcmdTabIdx>0)pcmdGoTab(0);else pcmdGoTab(_pcmdTabIdx);}dir=null;},{passive:true});};})();
 
-// ═══ Spellbook (咒語書) ═══
+// ═══ Spellbook & Grimoire (咒語書 & 書倉) ═══
 let _spells=[];
+let _spellBooks=[];
+let _curGrimBookId=null;
+const GRIM_STYLES=[
+  {id:'tome',label:'古書',deco:'📖'},
+  {id:'scroll',label:'卷軸',deco:'📜'},
+  {id:'memorial',label:'奏折',deco:'📋'},
+  {id:'edict',label:'聖旨',deco:'📛'},
+  {id:'talisman',label:'符咒',deco:'🧧'},
+  {id:'tablet',label:'石板',deco:'🪨'},
+];
+function getGrimStyle(){return getSettings().grim_style||'tome';}
+function setGrimStyle(id){
+  const s=getSettings();s.grim_style=id;saveSettingsObj(s);
+  renderGrimStyleBar();renderGrimShelf();
+}
+function renderGrimStyleBar(){
+  const el=$('grim-style-bar');if(!el)return;
+  const cur=getGrimStyle();
+  el.innerHTML=GRIM_STYLES.map(s=>{
+    return '<div class="grim-style-opt'+(s.id===cur?' active':'')+'" onclick="setGrimStyle(\''+s.id+'\')">'+
+      '<div class="grim-style-deco">'+s.deco+'</div>'+
+      '<div class="grim-style-label">'+s.label+'</div></div>';
+  }).join('');
+}
 async function loadSpells(){_spells=sortBy(await dbAll('spellbook'),'sort_order');}
-function renderSpellList(){const el=$('spell-list');if(!_spells.length){el.innerHTML='<div style="color:var(--tx2);font-size:15px;padding:8px;">尚未建立咒語</div>';return;}
-el.innerHTML=_spells.map(s=>'<div class="ev-toggle-item" data-spid="'+s.id+'"><div style="flex:1;min-width:0;cursor:pointer;" onclick="pasteSpell(\''+s.id+'\')"><div class="lt">'+esc(s.name||'未命名')+'</div><div class="ls">'+esc((s.content||'').substring(0,80))+'</div></div><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--tx2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;cursor:pointer;" onclick="event.stopPropagation();editSpell(\''+s.id+'\')"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>').join('');initSpellDrag(el);}
+async function loadSpellBooks(){_spellBooks=sortBy(await dbAll('spell_books'),'sort_order');}
+
+// — Chat panel: only show pinned spells —
+function renderSpellList(){
+  const el=$('spell-list');
+  const pinned=_spells.filter(s=>s.pinned);
+  if(!pinned.length){el.innerHTML='<div style="color:var(--tx2);font-size:15px;padding:8px;">尚無快捷咒語。進入咒語書庫釘選常用咒語。</div>';return;}
+  el.innerHTML=pinned.map(s=>'<div class="ev-toggle-item" data-spid="'+s.id+'" style="position:relative;"><div class="u-tap" onclick="pasteSpell(\''+s.id+'\')"><div class="lt" style="padding-right:24px;">'+esc(s.name||'未命名')+'</div><div class="ls">'+esc((s.content||'').substring(0,80))+'</div></div><svg viewBox="0 0 24 24" style="position:absolute;top:8px;right:8px;width:14px;height:14px;stroke:var(--tx2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;cursor:pointer;opacity:.5;" onclick="event.stopPropagation();editSpell(\''+s.id+'\')"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>').join('');
+  initSpellDrag(el);
+}
 async function saveSpellOrder(c){const items=c.querySelectorAll('.ev-toggle-item[data-spid]');const ns=[];for(let i=0;i<items.length;i++){const id=items[i].getAttribute('data-spid'),s=_spells.find(x=>x.id===id);if(s){ns.push(s);const o=await dbGet('spellbook',id);if(o){o.sort_order=i;await dbPut('spellbook',o);}}}_spells=ns;}
 function initSpellDrag(container){initLPDrag(container,'.ev-toggle-item[data-spid]',saveSpellOrder);}
 function pasteSpell(id){const s=_spells.find(x=>x.id===id);if(!s)return;const inp=$('c-inp');inp.value+=s.content;inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,200)+'px';closePcmdPanel();toast('已貼入');}
-function newSpell(){closePcmdPanel();$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">新增咒語</div><input type="hidden" id="spell-id" value=""><div class="f"><label>名稱</label><input type="text" id="spell-name" placeholder="例：場景描寫起手式"></div><div class="f"><label>內容</label><textarea rows="10" id="spell-content" oninput="cntF(this)" placeholder="點擊咒語會將這段文字貼入輸入框..."></textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="saveSpell()">儲存</button></div></div>';$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
-function editSpell(id){closePcmdPanel();const s=_spells.find(x=>x.id===id);if(!s)return;$('bs-body').innerHTML='<div style="padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">編輯咒語</div><input type="hidden" id="spell-id" value="'+id+'"><div class="f"><label>名稱</label><input type="text" id="spell-name" value="'+esc(s.name||'')+'"></div><div class="f"><label>內容</label><textarea rows="10" id="spell-content" oninput="cntF(this)">'+esc(s.content||'')+'</textarea><div class="ctr">0 字</div></div><div style="display:flex;gap:6px;margin-top:8px;"><button class="btn bp bs2" onclick="saveSpell()">儲存</button><button class="btn bdel bs2" onclick="delSpell()">刪除</button></div></div>';cntF($('spell-content'));$('bs-body').classList.add('wide');$('bs-ov').classList.add('show');}
-async function saveSpell(){const id=$('spell-id').value,name=$('spell-name').value.trim()||'未命名',content=$('spell-content').value;
-if(id){const s=await dbGet('spellbook',id)||{id};Object.assign(s,{name,content});await dbPut('spellbook',s);}
-else await dbPut('spellbook',{id:uid(),name,content,sort_order:_spells.length});
-await loadSpells();renderSpellList();toast('已儲存');closeBs();_pcmdTabIdx=1;togglePcmdPanel();}
-async function delSpell(){const id=$('spell-id').value;if(!id)return;if(!await cfm('確定刪除？'))return;await dbDel('spellbook',id);await loadSpells();renderSpellList();toast('已刪除');closeBs();_pcmdTabIdx=1;togglePcmdPanel();}
+
+// — Spell CRUD (shared by panel + grimoire) —
+function _spellForm(title,s,bookId){
+  const books=_spellBooks;
+  const bkSel=books.map(b=>'<option value="'+b.id+'"'+(((s&&s.book_id)||bookId)===b.id?' selected':'')+'>'+esc(b.name)+'</option>').join('');
+  $('bs-body').innerHTML='<div style="padding:0;"><div class="u-bs-head"><div class="u-head">'+title+'</div><button class="fp-btn" onclick="saveSpell()">儲存</button></div><div style="padding:0 16px 16px;">'+
+    '<input type="hidden" id="spell-id" value="'+(s?s.id:'')+'">'+
+    '<input type="hidden" id="spell-book-id" value="'+(s?s.book_id||'':bookId||'')+'">'+
+    '<div class="f"><label>名稱</label><input type="text" id="spell-name" value="'+esc(s?s.name:'')+'"></div>'+
+    (books.length?'<div class="f"><label>所屬書籍</label><select id="spell-book-sel" class="sel" style="width:100%;">'+bkSel+'</select></div>':'')+
+    '<div class="f"><label>內容</label><textarea rows="10" id="spell-content" oninput="cntF(this)">'+esc(s?s.content:'')+'</textarea><div class="ctr">0 字</div></div>'+
+    (s?'<button class="btn bdel bs2 u-btn-full" onclick="delSpell()">刪除咒語</button>':'')+
+  '</div></div>';
+  if(s)cntF($('spell-content'));
+  $('bs-body').classList.add('wide');$('bs-ov').classList.add('show');
+}
+function newSpell(){closePcmdPanel();_spellForm('新增咒語',null,null);}
+function editSpell(id){closePcmdPanel();const s=_spells.find(x=>x.id===id);if(!s)return;_spellForm('編輯咒語',s,null);}
+async function saveSpell(){
+  const id=$('spell-id').value,name=$('spell-name').value.trim()||'未命名',content=$('spell-content').value;
+  const bookSel=$('spell-book-sel');
+  const bookId=bookSel?bookSel.value:($('spell-book-id')?$('spell-book-id').value:'');
+  if(id){
+    const s=await dbGet('spellbook',id)||{id};
+    Object.assign(s,{name,content,book_id:bookId});
+    await dbPut('spellbook',s);
+  }else{
+    await dbPut('spellbook',{id:uid(),name,content,book_id:bookId,pinned:false,sort_order:_spells.length});
+  }
+  await loadSpells();renderSpellList();toast('已儲存');closeBs();
+  if(_curGrimBookId)renderGrimBookSpells(_curGrimBookId);
+}
+async function delSpell(){
+  const id=$('spell-id').value;if(!id)return;if(!await cfm('確定刪除？'))return;
+  await dbDel('spellbook',id);await loadSpells();renderSpellList();toast('已刪除');closeBs();
+  if(_curGrimBookId)renderGrimBookSpells(_curGrimBookId);
+}
+
+// — Grimoire: shelf render —
+async function renderGrimoire(){
+  await loadSpellBooks();await loadSpells();
+  renderGrimStyleBar();renderGrimShelf();
+}
+function renderGrimShelf(){
+  const style=getGrimStyle();
+  const el=$('grim-shelf');
+  el.className='grim-shelf gs-'+style;
+  const st=GRIM_STYLES.find(s=>s.id===style)||GRIM_STYLES[0];
+  const deco=st.deco;
+  let h=_spellBooks.map(b=>{
+    const count=_spells.filter(s=>s.book_id===b.id).length;
+    return '<div class="grim-book" onclick="openGrimBook(\''+b.id+'\')">'+
+      '<div class="grim-spine"></div>'+
+      '<div class="grim-deco">'+deco+'</div>'+
+      '<div class="grim-title">'+esc(b.name)+'</div>'+
+      '<div class="grim-count">'+count+' 則咒語</div>'+
+    '</div>';
+  }).join('');
+  const uncatCount=_spells.filter(s=>!s.book_id).length;
+  if(uncatCount){
+    h+='<div class="grim-book" onclick="openGrimBook(\'__uncat__\')" style="opacity:.7;">'+
+      '<div class="grim-spine"></div>'+
+      '<div class="grim-deco">📦</div>'+
+      '<div class="grim-title">未分類</div>'+
+      '<div class="grim-count">'+uncatCount+' 則咒語</div>'+
+    '</div>';
+  }
+  h+='<div class="grim-add" onclick="newGrimBook()"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>新增書籍</div>';
+  el.innerHTML=h;
+}
+
+// — Grimoire: Book CRUD —
+function newGrimBook(){
+  $('bs-body').innerHTML='<div style="padding:0;"><div class="u-bs-head"><div class="u-head">新增咒語書</div><button class="fp-btn" onclick="saveGrimBook()">儲存</button></div><div style="padding:0 16px 16px;">'+
+    '<input type="hidden" id="gbook-id" value="">'+
+    '<div class="f"><label>書名</label><input type="text" id="gbook-name" placeholder="例：戰鬥咒語"></div>'+
+  '</div></div>';
+  $('bs-body').classList.add('wide');$('bs-ov').classList.add('show');
+}
+function editGrimBook(id){
+  const b=_spellBooks.find(x=>x.id===id);if(!b)return;
+  $('bs-body').innerHTML='<div style="padding:0;"><div class="u-bs-head"><div class="u-head">編輯咒語書</div><button class="fp-btn" onclick="saveGrimBook()">儲存</button></div><div style="padding:0 16px 16px;">'+
+    '<input type="hidden" id="gbook-id" value="'+id+'">'+
+    '<div class="f"><label>書名</label><input type="text" id="gbook-name" value="'+esc(b.name||'')+'"></div>'+
+    '<button class="btn bdel bs2 u-btn-full" onclick="delGrimBook()">刪除書籍</button>'+
+  '</div></div>';
+  $('bs-body').classList.add('wide');$('bs-ov').classList.add('show');
+}
+async function saveGrimBook(){
+  const id=$('gbook-id').value;
+  const name=$('gbook-name').value.trim()||'未命名';
+  if(id){
+    const b=await dbGet('spell_books',id)||{id};
+    b.name=name;await dbPut('spell_books',b);
+  }else{
+    await dbPut('spell_books',{id:uid(),name,sort_order:_spellBooks.length});
+  }
+  await loadSpellBooks();renderGrimShelf();toast('已儲存');closeBs();
+}
+async function delGrimBook(){
+  closeBs();delGrimBookAsk();
+}
+function grimBookMenu(){
+  if(!_curGrimBookId||_curGrimBookId==='__uncat__')return;
+  const b=_spellBooks.find(x=>x.id===_curGrimBookId);if(!b)return;
+  $('bs-body').innerHTML='<div style="padding:8px 0;">'+
+    '<div style="padding:14px 20px;font-size:16px;cursor:pointer;" onclick="closeBs();editGrimBook(\''+b.id+'\')">編輯咒語書名稱</div>'+
+    '<div style="padding:14px 20px;font-size:16px;cursor:pointer;color:var(--del);" onclick="closeBs();delGrimBookAsk()">刪除咒語書</div>'+
+  '</div>';
+  $('bs-ov').classList.add('show');
+}
+async function delGrimBookAsk(){
+  const id=_curGrimBookId;if(!id||id==='__uncat__')return;
+  const b=_spellBooks.find(x=>x.id===id);if(!b)return;
+  const spells=_spells.filter(s=>s.book_id===id);
+  if(!spells.length){
+    if(!await cfm('確定刪除「'+b.name+'」？'))return;
+    await dbDel('spell_books',id);
+    await loadSpellBooks();renderGrimShelf();toast('已刪除');
+    closeFP('fp-grim-book');_curGrimBookId=null;
+    return;
+  }
+  $('bs-body').innerHTML='<div style="padding:24px 20px;max-width:280px;margin:0 auto;">'+
+    '<div style="font-size:18px;font-weight:600;text-align:center;margin-bottom:20px;">刪除「'+esc(b.name)+'」</div>'+
+    '<div style="display:flex;flex-direction:column;gap:10px;">'+
+      '<button class="btn" onclick="delGrimBookExec(false)" style="width:100%;padding:12px;font-size:15px;background:var(--bg3);border:1px solid var(--bd);border-radius:12px;color:var(--tx);">保留咒語（移至未分類）</button>'+
+      '<button class="btn" onclick="delGrimBookExec(true)" style="width:100%;padding:12px;font-size:15px;background:var(--del);border:none;border-radius:12px;color:#fff;font-weight:600;">連咒語一起刪除</button>'+
+      '<button class="btn" onclick="closeBs()" style="width:100%;padding:10px;font-size:14px;background:transparent;border:none;color:var(--tx2);">取消</button>'+
+    '</div></div>';
+  $('bs-body').classList.add('wide');$('bs-ov').classList.add('show');
+}
+async function delGrimBookExec(deleteSpells){
+  const id=_curGrimBookId;if(!id)return;
+  const spells=_spells.filter(s=>s.book_id===id);
+  if(deleteSpells){
+    for(const s of spells)await dbDel('spellbook',s.id);
+  }else{
+    for(const s of spells){s.book_id='';await dbPut('spellbook',s);}
+  }
+  await dbDel('spell_books',id);
+  await loadSpellBooks();await loadSpells();
+  renderGrimShelf();renderSpellList();
+  toast('已刪除');closeBs();
+  closeFP('fp-grim-book');_curGrimBookId=null;
+}
+
+// — Grimoire: Book detail (spell list inside a book) —
+function openGrimBook(bookId){
+  _curGrimBookId=bookId;
+  if(bookId==='__uncat__'){
+    $('grim-book-title').textContent='未分類';
+  }else{
+    const b=_spellBooks.find(x=>x.id===bookId);
+    $('grim-book-title').textContent=b?b.name:'咒語書';
+  }
+  renderGrimBookSpells(bookId);
+  openFP('fp-grim-book');
+}
+function renderGrimBookSpells(bookId){
+  const spells=bookId==='__uncat__'?
+    _spells.filter(s=>!s.book_id):
+    _spells.filter(s=>s.book_id===bookId);
+  const el=$('grim-book-spells');
+  if(!spells.length){el.innerHTML='<div class="empty" style="padding:40px 0;text-align:center;color:var(--tx2);">尚未建立咒語</div>';return;}
+  el.innerHTML=spells.map((s,i)=>{
+    const pinCls=s.pinned?'grim-pin on':'grim-pin';
+    const pinSvg=s.pinned?
+      '<svg viewBox="0 0 24 24" width="16" height="16" fill="var(--ac)" stroke="var(--ac)" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>':
+      '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>';
+    const upBtn=i>0?'<div style="padding:6px;cursor:pointer;-webkit-tap-highlight-color:transparent;" onclick="event.stopPropagation();grimSpellMove(\''+s.id+'\',-1)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--tx2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></div>':'<div style="width:30px;height:30px;"></div>';
+    const dnBtn=i<spells.length-1?'<div style="padding:6px;cursor:pointer;-webkit-tap-highlight-color:transparent;" onclick="event.stopPropagation();grimSpellMove(\''+s.id+'\',1)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--tx2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>':'<div style="width:30px;height:30px;"></div>';
+    return '<div class="grim-spell-item" style="position:relative;">'+
+      '<div class="'+pinCls+'" onclick="event.stopPropagation();toggleSpellPin(\''+s.id+'\')" title="'+(s.pinned?'取消快捷':'加入快捷')+'">'+pinSvg+'</div>'+
+      '<div class="u-tap" onclick="pasteSpell(\''+s.id+'\')"><div class="lt" style="padding-right:24px;">'+esc(s.name||'未命名')+'</div><div class="ls">'+esc((s.content||'').substring(0,80))+'</div></div>'+
+      '<div style="display:flex;flex-direction:column;gap:0px;flex-shrink:0;align-items:center;align-self:flex-end;margin-right:20px;">'+upBtn+dnBtn+'</div>'+
+      '<svg viewBox="0 0 24 24" style="position:absolute;top:8px;right:8px;width:14px;height:14px;stroke:var(--tx2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;cursor:pointer;opacity:.5;" onclick="event.stopPropagation();editSpell(\''+s.id+'\')"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'+
+    '</div>';
+  }).join('');
+}
+async function grimSpellMove(id,dir){
+  const bookId=_curGrimBookId;
+  const spells=bookId==='__uncat__'?
+    _spells.filter(s=>!s.book_id):
+    _spells.filter(s=>s.book_id===bookId);
+  const idx=spells.findIndex(s=>s.id===id);
+  if(idx<0)return;
+  const newIdx=idx+dir;
+  if(newIdx<0||newIdx>=spells.length)return;
+  const a=spells[idx],b=spells[newIdx];
+  const tmpOrder=a.sort_order;
+  a.sort_order=b.sort_order;
+  b.sort_order=tmpOrder;
+  if(a.sort_order===b.sort_order){a.sort_order=newIdx;b.sort_order=idx;}
+  await dbPut('spellbook',a);
+  await dbPut('spellbook',b);
+  await loadSpells();
+  renderGrimBookSpells(bookId);
+}
+function newGrimSpell(){
+  _spellForm('新增咒語',null,_curGrimBookId==='__uncat__'?'':_curGrimBookId);
+}
+async function toggleSpellPin(id){
+  const s=await dbGet('spellbook',id);if(!s)return;
+  s.pinned=!s.pinned;
+  await dbPut('spellbook',s);
+  await loadSpells();
+  renderSpellList();
+  if(_curGrimBookId)renderGrimBookSpells(_curGrimBookId);
+  toast(s.pinned?'已加入快捷':'已取消快捷');
+}
 
 // ═══ Batch Delete ═══
 let _batchMode=false,_batchSel=new Set();
