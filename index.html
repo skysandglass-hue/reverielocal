@@ -1352,7 +1352,7 @@ _chatPlayerId=null;_chatRpId=prompts.length?prompts[0].id:null;openPopup('chat-s
 function pickSetupPf(id,el){_chatPlayerId=id;el.closest('#setup-pf-list').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
 function pickSetupRp(id,el){_chatRpId=id;el.closest('#setup-rp-list').querySelectorAll('.popup-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
 async function confirmChatSetup(){closePopup('chat-setup-pop');const cid=_pendingChatCharId;if(!cid)return;const c=chars.find(x=>x.id===cid);if(!c){toast('角色不存在');return;}
-const id='chat_'+Date.now();_curChatId=id;_curChat={charId:cid,charName:c.name,windowName:c.name,avatarUrl:c.avatar_url||'',avatarThumb:c.avatar_thumb||'',msgs:[],memories:[],rpId:_chatRpId,playerId:_chatPlayerId,pinned:false,updated:Date.now(),worldbook_ids:(c.worldbook_ids||[]).slice()};
+const id='chat_'+Date.now();_curChatId=id;const _initToggles={};_pcmds.forEach(p=>{_initToggles[p.id]=false;});_curChat={charId:cid,charName:c.name,windowName:c.name,avatarUrl:c.avatar_url||'',avatarThumb:c.avatar_thumb||'',msgs:[],memories:[],rpId:_chatRpId,playerId:_chatPlayerId,pinned:false,updated:Date.now(),worldbook_ids:(c.worldbook_ids||[]).slice(),pcmdToggles:_initToggles};
 if(_chatRpId){const p=prompts.find(x=>x.id===_chatRpId);if(p)$('rp-btn').childNodes[0].textContent=p.name;syncRpPopup();}
 _chatStore[id]=_curChat;await saveChatMeta();$('c-name').textContent=c.name;$('c-msgs').innerHTML='';_lazyRendered=0;renderSidePlayer();openChat(c.name);
 if(c.greeting_message)await appendMsgAwait('ai',c.name,c.greeting_message,c.avatar_url);
